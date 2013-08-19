@@ -12,7 +12,7 @@ public static class GameTime
   {
     get
     {
-      return (GameSettings.Instance.paused ? 0f : UnityEngine.Time.deltaTime);
+      return (LevelManager.Instance.paused ? 0f : UnityEngine.Time.deltaTime);
     }
   }
 

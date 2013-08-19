@@ -55,6 +55,10 @@
      <Compile Include="Assets\Code\Game\Combat\Health.cs" />
      <Compile Include="Assets\Code\Game\Combat\HitInfo.cs" />
      <Compile Include="Assets\Code\Game\GUI\HUDFPS.cs" />
+     <Compile Include="Assets\Code\Game\Player\PlayerInfo.cs" />
+     <Compile Include="Assets\Code\Game\Scene\LevelManager.cs" />
+     <Compile Include="Assets\Code\Game\Singletons\GameData.cs" />
+     <Compile Include="Assets\Code\Game\Singletons\GameResources.cs" />
      <Compile Include="Assets\Code\Game\Singletons\GameSettings.cs" />
      <Compile Include="Assets\Code\Game\Singletons\JobManager.cs" />
      <Compile Include="Assets\Code\Game\Singletons\Singleton.cs" />
@@ -62,6 +66,7 @@
      <Compile Include="Assets\Code\Game\Static\Time.cs" />
      <Compile Include="Assets\Code\Test\Checker.cs" />
      <Compile Include="Assets\Code\Test\DebugManager.cs" />
+     <Compile Include="Assets\Code\Test\TestRoomLevelManager.cs" />
      <None Include="Assets\Files\To Do.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

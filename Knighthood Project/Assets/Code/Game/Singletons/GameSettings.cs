@@ -10,22 +10,13 @@ using System.Collections;
 /// </summary>
 public class GameSettings : Singleton<GameSettings>
 {
-  public bool paused { get; private set; }
+  #region MonoBehaviour Overrides
 
-  public EventHandler<PauseEventArgs> PauseEvent;
-
-
-  /// <summary>
-  /// Toggle pause.
-  /// </summary>
-  /// <param name="player">Player that paused the game.</param>
-  public void TogglePause(int player)
+  private void Awake()
   {
-    paused = !paused;
-    if (PauseEvent != null)
-    {
-      PauseEvent(this, new PauseEventArgs(paused, player));
-    }
-  } // end TogglePause
+    DontDestroyOnLoad(gameObject);
+  } // end Awake
+
+  #endregion
 
 } // end GameSettings class

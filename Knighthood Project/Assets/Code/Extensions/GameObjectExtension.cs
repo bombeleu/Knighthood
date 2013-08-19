@@ -14,7 +14,7 @@ public static class GameObjectExtension
     T component = go.GetComponent<T>();
     if (component == null)
     {
-      Debug.LogError("Could not find component " + typeof(T).ToString(), go);
+      Debugger.LogError("Could not find component " + typeof(T).ToString(), go);
     }
 
     return component;

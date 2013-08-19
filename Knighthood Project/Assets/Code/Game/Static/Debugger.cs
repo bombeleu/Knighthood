@@ -7,7 +7,7 @@ using System.Collections;
 /// <summary>
 /// Wrapper for Unity's Debug class.
 /// </summary>
-public static class DebuggerManager
+public static class Debugger
 {
   public static void Log(object message)
   {
@@ -56,4 +56,4 @@ public static class DebuggerManager
     Debug.LogException(exception, context);
   } // end LogException
 
-} // end DebuggerManager class
+} // end Debugger class

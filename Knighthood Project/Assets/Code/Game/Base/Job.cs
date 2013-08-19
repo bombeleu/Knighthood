@@ -55,7 +55,7 @@ public class Job
 
 
   /// <summary>
-  /// 
+  /// Toggle pause.
   /// </summary>
   public void TogglePause()
   {
@@ -64,7 +64,7 @@ public class Job
 
 
   /// <summary>
-  /// 
+  /// Run the coroutine.
   /// </summary>
   public void Start()
   {
@@ -74,9 +74,9 @@ public class Job
 
 
   /// <summary>
-  /// 
+  /// Run the coroutine.
   /// </summary>
-  /// <returns></returns>
+  /// <returns>Return the coroutine as it runs.</returns>
   public IEnumerator StartAsCoroutine()
   {
     running = true;
