@@ -32,13 +32,13 @@ public class Player : Character
   protected override void Awake()
   {
     base.Awake();
-    Log("hello");
+
     // create states
-    CreateState(States.Spawning, SpawningEnter, info => { Debugger.Log("Spawning Exit"); });
-    CreateState(States.Idling, IdlingEnter, info => { Debugger.Log("Idling Exit"); });
-    CreateState(States.Jumping, info => { Debugger.Log("Jumping Enter"); }, info => { Debugger.Log("Jumping Exit"); });
-    CreateState(States.Moving, info => { Debugger.Log("Moving Enter"); currentStateJob = new Job(MovingUpdate()); }, info => { Debugger.Log("Moving Exit"); });
-    CreateState(States.Falling, info => { Debugger.Log("Falling Enter"); }, info => { Debugger.Log("Falling Exit"); });
+    CreateState(States.Spawning, SpawningEnter, info => { Log("Spawning Exit"); });
+    CreateState(States.Idling, IdlingEnter, info => { Log("Idling Exit"); });
+    CreateState(States.Jumping, JumpingEnter, info => { Log("Jumping Exit"); });
+    CreateState(States.Moving, info => { Log("Moving Enter"); currentStateJob = new Job(MovingUpdate()); }, info => { Log("Moving Exit"); });
+    CreateState(States.Falling, info => { Log("Falling Enter"); }, info => { Debugger.Log("Falling Exit"); });
     initialState = States.Spawning;
   } // end Awake
 
@@ -65,7 +65,7 @@ public class Player : Character
 
   private void SpawningEnter(Dictionary<string, object> info)
   {
-    Debugger.Log("Spawning Enter.");
+    Log("Spawning Enter.");
 
     currentStateJob = new Job(SpawningUpdate());
     currentStateJob.JobCompleteEvent += (killed) => SetState(States.Idling, null);
@@ -80,7 +80,7 @@ public class Player : Character
 
   private void IdlingEnter(Dictionary<string, object> info)
   {
-    Debugger.Log("Idling Enter");
+    Log("Idling Enter");
 
     currentStateJob = new Job(IdlingUpdate());
   } // end IdlingEnter
@@ -150,6 +150,63 @@ public class Player : Character
     }
   } // end MovingUpdate
 
+
+  private void JumpingEnter(Dictionary<string, object> info)
+  {
+    Log("Jumping Enter");
+
+    currentStateJob = new Job(JumpingUpdate(), false);
+    
+    currentStateJob.CreateChildJob(Leap(), jumpingInfo.leapTime);
+    currentStateJob.CreateChildJob(Climb(), jumpingInfo.climbTime);
+    currentStateJob.CreateChildJob(Float(), jumpingInfo.floatTime);
+
+    currentStateJob.JobCompleteEvent += (killed) => SetState(States.Falling, null);
+    currentStateJob.Start();
+  } // end JumpingEnter
+
+
+  private IEnumerator JumpingUpdate()
+  {
+    yield return null;
+  } // end JumpingUpdate
+
+
+  private IEnumerator Leap()
+  {
+    velocity.y = jumpingInfo.jumpSpeed;
+
+    while (true)
+    {
+      CC.Move(velocity * GameTime.deltaTime);
+      yield return null;
+    }
+  } // end Leap
+
+
+  private IEnumerator Climb()
+  {
+    velocity.y = jumpingInfo.jumpSpeed;
+
+    while (GetJumpingInput(true))
+    {
+      CC.Move(velocity * GameTime.deltaTime);
+      yield return null;
+    }
+  } // end Climb
+
+
+  private IEnumerator Float()
+  {
+    float vel = 0f;
+    while (true)
+    {
+      velocity.y = Mathf.SmoothDamp(velocity.y, 0f, ref vel, jumpingInfo.floatTime);
+      CC.Move(velocity * GameTime.deltaTime);
+      yield return null;
+    }
+  } // end Float
+
   #endregion
 
   #region Input Methods
@@ -157,16 +214,31 @@ public class Player : Character
   /// <summary>
   /// Detect jumping input.
   /// </summary>
-  /// <returns>True, if the jump button has been pressed.</returns>
-  private bool GetJumpingInput()
+  /// <param name="held">Does the button need to be held.</param>
+  /// <returns>True, if the jump button has been pressed/held.</returns>
+  private bool GetJumpingInput(bool held = false)
   {
-    if (keyboard)
+    if (held)
     {
-      return Input.GetKeyDown(KeyCode.Space);
+      if (keyboard)
+      {
+        return Input.GetKey(KeyCode.Space);
+      }
+      else
+      {
+        return Input.GetButton("A_" + playerInfo.playerNumber);
+      }
     }
     else
     {
-      return Input.GetButtonDown("A_" + playerInfo.playerNumber);
+      if (keyboard)
+      {
+        return Input.GetKeyDown(KeyCode.Space);
+      }
+      else
+      {
+        return Input.GetButtonDown("A_" + playerInfo.playerNumber);
+      }
     }
   } // end GetJumpingInput
 

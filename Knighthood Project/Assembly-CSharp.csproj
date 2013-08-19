@@ -51,6 +51,7 @@
      <Compile Include="Assets\Code\Game\Base\Job.cs" />
      <Compile Include="Assets\Code\Game\Base\ObjectRecycler.cs" />
      <Compile Include="Assets\Code\Game\Characters\Character.cs" />
+     <Compile Include="Assets\Code\Game\Characters\JumpingInfo.cs" />
      <Compile Include="Assets\Code\Game\Characters\Player.cs" />
      <Compile Include="Assets\Code\Game\Combat\Health.cs" />
      <Compile Include="Assets\Code\Game\Combat\HitInfo.cs" />

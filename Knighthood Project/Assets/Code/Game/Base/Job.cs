@@ -16,9 +16,10 @@ public class Job
   public event Action<bool> JobCompleteEvent;
   private IEnumerator coroutine;
   private bool killed;
+  private float runtime;
   public bool paused { get; private set; }
   public bool running { get; private set; }
-  private Stack<Job> childJobs;
+  private Queue<Job> childJobs;
 
 
   /// <summary>
@@ -29,6 +30,23 @@ public class Job
   public Job(IEnumerator coroutine, bool start = true)
   {
     this.coroutine = coroutine;
+    if (start)
+    {
+      Start();
+    }
+  } // end Job
+
+
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="coroutine"></param>
+  /// <param name="runtime"></param>
+  /// <param name="start"></param>
+  public Job(IEnumerator coroutine, float runtime, bool start = true)
+  {
+    this.coroutine = coroutine;
+    this.runtime = runtime;
     if (start)
     {
       Start();
@@ -70,6 +88,11 @@ public class Job
   {
     running = true;
     JobManager.Instance.StartCoroutine(Work());
+
+    if (runtime > 0f)
+    {
+      End(runtime);
+    }
   } // end Start
 
 
@@ -80,12 +103,16 @@ public class Job
   public IEnumerator StartAsCoroutine()
   {
     running = true;
+    if (runtime > 0f)
+    {
+      End(runtime);
+    }
     yield return JobManager.Instance.StartCoroutine(Work());
   } // end StartAsCoroutine
 
 
   /// <summary>
-  /// 
+  /// End Job by killing it.
   /// </summary>
   public void Kill()
   {
@@ -96,9 +123,9 @@ public class Job
 
 
   /// <summary>
-  /// 
+  /// End Job by killing it.
   /// </summary>
-  /// <param name="delay"></param>
+  /// <param name="delay">Time in seconds to delay before killing.</param>
   public void Kill(float delay)
   {
     delay *= 1000;
@@ -113,13 +140,41 @@ public class Job
 
 
   /// <summary>
+  /// End Job without killing it.
+  /// </summary>
+  public void End()
+  {
+    killed = false;
+    running = false;
+    paused = false;
+  } // end End
+
+
+  /// <summary>
+  /// End Job without killing it.
+  /// </summary>
+  /// <param name="delay">Delay in seconds before ending.</param>
+  private void End(float delay)
+  {
+    delay *= 1000;
+    new Timer(obj =>
+    {
+      lock (this)
+      {
+        End();
+      }
+    }, null, (int)delay, Timeout.Infinite);
+  } // end End
+
+
+  /// <summary>
   /// 
   /// </summary>
   /// <param name="child"></param>
   /// <returns></returns>
-  public Job CreateChildJob(IEnumerator child)
+  public Job CreateChildJob(IEnumerator child, float runtime = 0f)
   {
-    Job job = new Job(child, false);
+    Job job = new Job(child, runtime, false);
     AddChildJob(job);
     return job;
   } // end CreateChildJob
@@ -133,9 +188,9 @@ public class Job
   {
     if (childJobs == null)
     {
-      childJobs = new Stack<Job>();
+      childJobs = new Queue<Job>();
     }
-    childJobs.Push(child);
+    childJobs.Enqueue(child);
   } // end AddChildJob
 
 
@@ -191,7 +246,7 @@ public class Job
     {
       do
       {
-        Job childJob = childJobs.Pop();
+        Job childJob = childJobs.Dequeue();
         yield return JobManager.Instance.StartCoroutine(childJob.StartAsCoroutine());
       } while (childJobs.Count > 0);
     }

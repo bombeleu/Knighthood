@@ -53,13 +53,7 @@ public class BaseMono : MonoBehaviour
   /// <returns>Component if found</returns>
   public T GetSafeComponent<T>() where T : class
   {
-    T component = GetComponent(typeof(T)) as T;
-    if (component == null)
-    {
-      Debugger.LogError("Could not find component " + typeof(T).ToString(), this);
-    }
-
-    return component;
+    return gameObject.GetSafeComponent<T>();
   } // end GetSafeComponent
 
   #endregion
