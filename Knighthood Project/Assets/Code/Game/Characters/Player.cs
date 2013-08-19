@@ -31,10 +31,14 @@ public class Player : Character
 
   protected override void Awake()
   {
+    base.Awake();
+    Log("hello");
     // create states
     CreateState(States.Spawning, SpawningEnter, info => { Debugger.Log("Spawning Exit"); });
     CreateState(States.Idling, IdlingEnter, info => { Debugger.Log("Idling Exit"); });
     CreateState(States.Jumping, info => { Debugger.Log("Jumping Enter"); }, info => { Debugger.Log("Jumping Exit"); });
+    CreateState(States.Moving, info => { Debugger.Log("Moving Enter"); currentStateJob = new Job(MovingUpdate()); }, info => { Debugger.Log("Moving Exit"); });
+    CreateState(States.Falling, info => { Debugger.Log("Falling Enter"); }, info => { Debugger.Log("Falling Exit"); });
     initialState = States.Spawning;
   } // end Awake
 
@@ -92,9 +96,59 @@ public class Player : Character
         SetState(States.Jumping, null);
         yield break;
       }
+
+      // enter moving state
+      if (GetMovingInput().x != 0f)
+      {
+        SetState(States.Moving, null);
+        yield break;
+      }
+
       yield return null;
     }
   } // end IdlingUpdate
+
+
+  private IEnumerator MovingUpdate()
+  {
+    Vector3 moveVector;
+      
+    while (true)
+    {
+      // enter jumping state
+      if (GetJumpingInput())
+      {
+        SetState(States.Jumping, null);
+        yield break;
+      }
+
+      moveVector = GetMovingInput();
+
+      // enter idling state
+      if (moveVector.x == 0f)
+      {
+        SetState(States.Idling, null);
+        yield break;
+      }
+
+      // rotate
+      myTransform.rotation = Quaternion.LookRotation(new Vector3(moveVector.x, 0f, 0f));
+
+      // move
+      velocity.x = moveVector.x * moveSpeed;
+      velocity.y = -gravity;
+      CC.Move(velocity * GameTime.deltaTime);
+
+      // enter falling state
+      if (!CC.isGrounded)
+      {
+        SetState(States.Falling, null);
+        yield break;
+      }
+
+      yield return null;
+    }
+  } // end MovingUpdate
 
   #endregion
 

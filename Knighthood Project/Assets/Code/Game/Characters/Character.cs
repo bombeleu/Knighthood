@@ -17,6 +17,7 @@ public class Character : BaseMono
   #region Reference Fields
 
   protected CharacterController CC;
+  protected Transform myTransform;
 
   #endregion
 
@@ -31,13 +32,22 @@ public class Character : BaseMono
 
   #endregion
 
+  #region Movement Fields
+
+  public float moveSpeed;
+  protected Vector3 velocity;
+  public float gravity;
+
+  #endregion
+
 
   #region MonoBehaviour Overrides
 
   protected virtual void Awake()
   {
     // get references
-    CC = GetComponent<CharacterController>();
+    CC = GetSafeComponent<CharacterController>();
+    myTransform = transform;
   } // end Awake
 
   #endregion

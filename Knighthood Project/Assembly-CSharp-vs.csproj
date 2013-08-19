@@ -65,7 +65,6 @@
      <Compile Include="Assets\Code\Game\Static\Debugger.cs" />
      <Compile Include="Assets\Code\Game\Static\Time.cs" />
      <Compile Include="Assets\Code\Test\Checker.cs" />
-     <Compile Include="Assets\Code\Test\DebugManager.cs" />
      <Compile Include="Assets\Code\Test\TestRoomLevelManager.cs" />
      <None Include="Assets\Files\To Do.txt" />
   </ItemGroup>

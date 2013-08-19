@@ -10,7 +10,7 @@ using System.Collections.Generic;
 /// </summary>
 public class BaseMono : MonoBehaviour
 {
-  #region Interface Methods
+  #region Component Methods
 
   /// <summary>
   /// Get a component that implements certain interface.
@@ -44,6 +44,32 @@ public class BaseMono : MonoBehaviour
 
     return list;
   } // end FindObjectsOfInterface
+
+
+  /// <summary>
+  /// Get component, Logs Error if not found.
+  /// </summary>
+  /// <typeparam name="T">Component type.</typeparam>
+  /// <returns>Component if found</returns>
+  public T GetSafeComponent<T>() where T : class
+  {
+    T component = GetComponent(typeof(T)) as T;
+    if (component == null)
+    {
+      Debugger.LogError("Could not find component " + typeof(T).ToString(), this);
+    }
+
+    return component;
+  } // end GetSafeComponent
+
+  #endregion
+
+  #region Log Methods
+
+  protected void Log(object message)
+  {
+    Debugger.Log(message, this);
+  } // end Log
 
   #endregion
 
