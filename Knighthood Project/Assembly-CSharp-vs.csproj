@@ -57,6 +57,7 @@
      <Compile Include="Assets\Code\Game\Combat\HitInfo.cs" />
      <Compile Include="Assets\Code\Game\GUI\HUDFPS.cs" />
      <Compile Include="Assets\Code\Game\Player\PlayerInfo.cs" />
+     <Compile Include="Assets\Code\Game\Scene\CameraInfo.cs" />
      <Compile Include="Assets\Code\Game\Scene\LevelManager.cs" />
      <Compile Include="Assets\Code\Game\Singletons\GameData.cs" />
      <Compile Include="Assets\Code\Game\Singletons\GameResources.cs" />

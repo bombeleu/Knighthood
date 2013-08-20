@@ -38,9 +38,20 @@ public class Player : Character
     CreateState(States.Idling, IdlingEnter, info => { Log("Idling Exit"); });
     CreateState(States.Jumping, JumpingEnter, info => { Log("Jumping Exit"); });
     CreateState(States.Moving, info => { Log("Moving Enter"); currentStateJob = new Job(MovingUpdate()); }, info => { Log("Moving Exit"); });
-    CreateState(States.Falling, info => { Log("Falling Enter"); }, info => { Debugger.Log("Falling Exit"); });
+    CreateState(States.Falling, FallingEnter, info => { Debugger.Log("Falling Exit"); });
     initialState = States.Spawning;
   } // end Awake
+
+
+  //private void Update()
+  //{
+  //  if (currentState == States.Moving)
+  //  {
+  //    velocity.x = GetMovingInput().x * moveSpeed;
+  //    velocity.y = -gravity;
+  //    CC.Move(velocity * GameTime.deltaTime);
+  //  }
+  //} // end Update
 
   #endregion
 
@@ -81,6 +92,9 @@ public class Player : Character
   private void IdlingEnter(Dictionary<string, object> info)
   {
     Log("Idling Enter");
+    
+    // reset values
+    velocity = Vector3.zero;
 
     currentStateJob = new Job(IdlingUpdate());
   } // end IdlingEnter
@@ -132,11 +146,11 @@ public class Player : Character
       }
 
       // rotate
-      myTransform.rotation = Quaternion.LookRotation(new Vector3(moveVector.x, 0f, 0f));
+      SetRotation();
 
       // move
       velocity.x = moveVector.x * moveSpeed;
-      velocity.y = -gravity;
+      velocity.y = -gravity/2;
       CC.Move(velocity * GameTime.deltaTime);
 
       // enter falling state
@@ -157,7 +171,6 @@ public class Player : Character
 
     currentStateJob = new Job(JumpingUpdate(), false);
     
-    currentStateJob.CreateChildJob(Leap(), jumpingInfo.leapTime);
     currentStateJob.CreateChildJob(Climb(), jumpingInfo.climbTime);
     currentStateJob.CreateChildJob(Float(), jumpingInfo.floatTime);
 
@@ -172,24 +185,13 @@ public class Player : Character
   } // end JumpingUpdate
 
 
-  private IEnumerator Leap()
-  {
-    velocity.y = jumpingInfo.jumpSpeed;
-
-    while (true)
-    {
-      CC.Move(velocity * GameTime.deltaTime);
-      yield return null;
-    }
-  } // end Leap
-
-
   private IEnumerator Climb()
   {
     velocity.y = jumpingInfo.jumpSpeed;
 
     while (GetJumpingInput(true))
     {
+      SetRotation();
       CC.Move(velocity * GameTime.deltaTime);
       yield return null;
     }
@@ -201,11 +203,47 @@ public class Player : Character
     float vel = 0f;
     while (true)
     {
+      SetRotation();
       velocity.y = Mathf.SmoothDamp(velocity.y, 0f, ref vel, jumpingInfo.floatTime);
       CC.Move(velocity * GameTime.deltaTime);
       yield return null;
     }
   } // end Float
+
+
+  private void FallingEnter(Dictionary<string, object> info)
+  {
+    Log("Falling Enter");
+    
+    // reset values
+    velocity.y = 0f;
+
+    currentStateJob = new Job(FallingUpdate());
+  } // end FallingEnter
+
+
+  private IEnumerator FallingUpdate()
+  {
+    while (true)
+    {
+      // enter idling state
+      if (CC.isGrounded)
+      {
+        SetState(States.Idling, null);
+        yield break;
+      }
+
+      // move
+      SetRotation();
+      velocity.x = GetMovingInput().x * moveSpeed;
+      velocity.y -= gravity * GameTime.deltaTime;
+      if (velocity.y < -terminalVelocity) velocity.y = -terminalVelocity;
+      CC.Move(velocity * GameTime.deltaTime);
+
+      yield return null;
+    }
+
+  } // end Falling Update
 
   #endregion
 
@@ -258,6 +296,23 @@ public class Player : Character
       return new Vector3(Input.GetAxis("L_XAxis_" + playerInfo.playerNumber), Input.GetAxis("L_YAxis_" + playerInfo.playerNumber), 0f);
     }
   } // end GetMovingInput
+
+
+  /// <summary>
+  /// Set correct y rotation based on GetMovingInput.
+  /// </summary>
+  private void SetRotation()
+  {
+    float x = GetMovingInput().x;
+    if (x > 0)
+    {
+      myTransform.rotation = Quaternion.Euler(0f, 90f, 0f);
+    }
+    else if (x < 0)
+    {
+      myTransform.rotation = Quaternion.Euler(0f, 270f, 0f);
+    }
+  } // end SetRotation
 
   #endregion
 

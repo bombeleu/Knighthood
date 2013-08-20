@@ -11,8 +11,10 @@ public class TestRoomLevelManager : LevelManager
 {
   #region MonoBehaviour Overrides
 
-  private void Awake()
+  protected override void Awake()
   {
+    base.Awake();
+
     CreatePlayers();
   } // end Awake
 

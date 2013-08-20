@@ -35,8 +35,9 @@ public class Character : BaseMono
   #region Movement Fields
 
   public float moveSpeed;
-  protected Vector3 velocity;
+  public Vector3 velocity;
   public float gravity;
+  public float terminalVelocity;
   public JumpingInfo jumpingInfo;
 
   #endregion

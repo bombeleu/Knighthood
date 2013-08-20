@@ -13,7 +13,16 @@ public class LevelManager : Singleton<LevelManager>
 {
   #region Player Fields
 
-  protected Dictionary<string, GameObject> players = new Dictionary<string, GameObject>();
+  protected List<string> playerUsernames = new List<string>();
+  protected List<Transform> playerTransforms = new List<Transform>();
+
+  #endregion
+
+  #region Camera Fields
+
+  public CameraInfo cameraInfo;
+  new protected Camera camera;
+  protected Transform cameraTransform;
 
   #endregion
 
@@ -29,6 +38,23 @@ public class LevelManager : Singleton<LevelManager>
 
   #endregion
 
+
+  #region MonoBehaviour Overrides
+
+  protected virtual void Awake()
+  {
+    // get references
+    camera = Camera.main;
+    cameraTransform = camera.transform;
+  } // end Awake
+
+
+  private void Update()
+  {
+    UpdateCamera();
+  } // end Update
+
+  #endregion
 
   #region Pause Methods
 
@@ -49,6 +75,9 @@ public class LevelManager : Singleton<LevelManager>
 
   #region Spawn Methods
 
+  /// <summary>
+  /// Create the players at the beginning of the level.
+  /// </summary>
   protected void CreatePlayers()
   {
     Transform playerParent = (new GameObject().transform);
@@ -57,11 +86,54 @@ public class LevelManager : Singleton<LevelManager>
     for (int i = 0; i < GameData.Instance.playerUsernames.Count; i++)
     {
       GameObject player = (GameObject)Instantiate(GameResources.Instance.Player_Prefab, new Vector3(-17f, 0f, 0f), Quaternion.Euler(0f, 90f, 0f));
-      players.Add(GameData.Instance.playerUsernames[i], player);
+      playerUsernames.Add(GameData.Instance.playerUsernames[i]);
+      playerTransforms.Add(player.transform);
       player.GetSafeComponent<Player>().Initialize(GameData.Instance.playerUsernames[i], i);
       player.transform.parent = playerParent;
     }
   } // end CreatePlayers
+
+  #endregion
+
+  #region Camera Methods
+
+  /// <summary>
+  /// Update the camera to keep the players on screen.
+  /// </summary>
+  protected void UpdateCamera()
+  {
+    if (cameraInfo.locked) return;
+
+    bool moveRight = false, moveLeft = false;
+    float speed = 0f;
+
+    foreach (Transform player in playerTransforms)
+    {
+      float screenXPercent = camera.WorldToScreenPoint(player.position).x / Screen.width;
+
+      // move left
+      if (screenXPercent <= cameraInfo.boundaryDynamic)
+      {
+        moveLeft = true;
+        speed = Mathf.Abs(player.GetComponent<Player>().velocity.x);
+      }
+      // move right
+      else if (screenXPercent >= (1f - cameraInfo.boundaryDynamic))
+      {
+        moveRight = true;
+        speed = Mathf.Abs(player.GetComponent<Player>().velocity.x);
+      }
+    }
+
+    if (moveLeft && !moveRight)
+    {
+      cameraTransform.position += Vector3.left * speed * GameTime.deltaTime;
+    }
+    else if (moveRight && !moveLeft)
+    {
+      cameraTransform.position += Vector3.right * speed * GameTime.deltaTime;
+    }
+  } // end UpdateCamera
 
   #endregion
 
