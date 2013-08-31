@@ -9,6 +9,14 @@ using System.Collections;
 /// </summary>
 public class TestRoomLevelManager : LevelManager
 {
+  #region Test Fields
+
+  public float fireballSpawnMin;
+  public float fireballSpawnMax;
+
+  #endregion
+
+
   #region MonoBehaviour Overrides
 
   protected override void Awake()
@@ -17,6 +25,19 @@ public class TestRoomLevelManager : LevelManager
 
     CreatePlayers();
   } // end Awake
+
+  #endregion
+
+  #region Test Methods
+
+  private IEnumerator Fireballs()
+  {
+    while (true)
+    {
+
+      yield return new WaitForSeconds(Random.Range(fireballSpawnMin, fireballSpawnMax));
+    }
+  } // end Fireballs
 
   #endregion
 

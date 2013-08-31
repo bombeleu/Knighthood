@@ -1,0 +1,13 @@
+<Enemies>
+  <Enemy>
+    <TestDummy>
+      <health>50</health>
+      <physicalAttack>5</physicalAttack>
+      <physicaldefense>10</physicaldefense>
+      <magicAttack>1</magicAttack>
+      <magicPool>0</magicPool>
+      <magicDefense>1</magicDefense>
+      <attackSpeed>1</attackSpeed>
+    </TestDummy>
+  </Enemy>
+</Enemies>

@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System;
 
 [RequireComponent(typeof(Health))]
-[RequireComponent(typeof(CharacterController))]
 
 /// <summary>
 /// Base class for any character.
@@ -16,14 +15,15 @@ public class Character : BaseMono
 {
   #region Reference Fields
 
-  protected CharacterController CC;
+  protected CharacterMotor CM;
   protected Transform myTransform;
+  protected Rigidbody myRigidbody;
 
   #endregion
 
   #region State Fields
 
-  public enum States { Spawning, Idling, Moving, Jumping, Falling, Flinching, Dying }
+  public enum States { Spawning, Idling, Moving, Jumping, Falling, Attacking, Flinching, Dying }
   public States currentState;// { get; protected set; }
   protected States initialState;
   private Dictionary<States, Action<Dictionary<string, object>>> EnterMethods = new Dictionary<States, Action<Dictionary<string, object>>>();
@@ -42,14 +42,21 @@ public class Character : BaseMono
 
   #endregion
 
+  #region Stat Fields
+
+  public StatManager statManager { get; protected set; }
+
+  #endregion
+
 
   #region MonoBehaviour Overrides
 
   protected virtual void Awake()
   {
     // get references
-    CC = GetSafeComponent<CharacterController>();
+    CM = GetSafeComponent<CharacterMotor>();
     myTransform = transform;
+    myRigidbody = rigidbody;
   } // end Awake
 
   #endregion
@@ -74,7 +81,7 @@ public class Character : BaseMono
   /// </summary>
   /// <param name="stateName">State to transition to.</param>
   /// <param name="info">Info to pass to the exit and enter states.</param>
-  protected void SetState(States stateName, Dictionary<string, object> info)
+  public void SetState(States stateName, Dictionary<string, object> info)
   {
     ExitMethods[currentState](info);
     currentStateJob.Kill();

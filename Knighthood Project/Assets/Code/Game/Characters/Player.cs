@@ -7,15 +7,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 
-
 /// <summary>
 /// Base class for players. Interacts with Character
 /// </summary>
 public class Player : Character
 {
-  #region Reference Fields
+  #region References
+
+  private PlayerAttackSystems attackSystems;
+
+  #endregion
+
+  #region State Fields
 
   public float spawnTime;
+  public float fastFallSpeed;
+  public float extraJumpTime;
+  private bool canExtraJump = false;
 
   #endregion
 
@@ -23,6 +31,8 @@ public class Player : Character
 
   private PlayerInfo playerInfo;
   public bool keyboard = false;
+  public float attackDeadZone = 0.7f;
+  public float magicModifierDeadZone = 0.8f;
 
   #endregion
 
@@ -35,23 +45,22 @@ public class Player : Character
 
     // create states
     CreateState(States.Spawning, SpawningEnter, info => { Log("Spawning Exit"); });
-    CreateState(States.Idling, IdlingEnter, info => { Log("Idling Exit"); });
+    CreateState(States.Idling, IdlingEnter, IdlingExit);
     CreateState(States.Jumping, JumpingEnter, info => { Log("Jumping Exit"); });
-    CreateState(States.Moving, info => { Log("Moving Enter"); currentStateJob = new Job(MovingUpdate()); }, info => { Log("Moving Exit"); });
+    CreateState(States.Moving, info => { Log("Moving Enter"); currentStateJob = new Job(MovingUpdate()); }, MovingExit);
     CreateState(States.Falling, FallingEnter, info => { Debugger.Log("Falling Exit"); });
+    CreateState(States.Attacking, AttackingEnter, AttackingExit);
     initialState = States.Spawning;
+
+    // combat
+    attackSystems = GetSafeComponent<PlayerAttackSystems>();
   } // end Awake
 
-
-  //private void Update()
+  
+  //private void OnDrawGizmos()
   //{
-  //  if (currentState == States.Moving)
-  //  {
-  //    velocity.x = GetMovingInput().x * moveSpeed;
-  //    velocity.y = -gravity;
-  //    CC.Move(velocity * GameTime.deltaTime);
-  //  }
-  //} // end Update
+  //  Gizmos.DrawSphere(myTransform.position + Vector3.up + myTransform.forward * Mathf.Abs(velocity.x * GameTime.deltaTime), 0.5f);
+  //} // end OnDrawGizmos
 
   #endregion
 
@@ -79,13 +88,14 @@ public class Player : Character
     Log("Spawning Enter.");
 
     currentStateJob = new Job(SpawningUpdate());
-    currentStateJob.JobCompleteEvent += (killed) => SetState(States.Idling, null);
   } // end SpawningEnter
 
 
   private IEnumerator SpawningUpdate()
   {
-    yield return new WaitForSeconds(spawnTime);
+    yield return WaitForTime(spawnTime);
+
+    SetState(States.Idling, null);
   } // end SpawningUpdate
 
 
@@ -95,6 +105,7 @@ public class Player : Character
     
     // reset values
     velocity = Vector3.zero;
+    SetVelocity(velocity);
 
     currentStateJob = new Job(IdlingUpdate());
   } // end IdlingEnter
@@ -104,6 +115,15 @@ public class Player : Character
   {
     while (true)
     {
+      // enter attacking state
+      if (GetAttackingInput() != PlayerAttackSystems.Attacks.None)
+      {
+        Dictionary<string, object> info = new Dictionary<string,object>();
+        info.Add("attack", GetAttackingInput());
+        SetState(States.Attacking, info);
+        yield break;
+      }
+
       // enter jumping state
       if (GetJumpingInput())
       {
@@ -118,9 +138,22 @@ public class Player : Character
         yield break;
       }
 
+      // enter falling state
+      if (!CM.IsGrounded())
+      {
+        SetState(States.Falling, null);
+        yield break;
+      }
+
       yield return null;
     }
   } // end IdlingUpdate
+
+
+  private void IdlingExit(Dictionary<string, object> info)
+  {
+    velocity.y = 0f;
+  } // end IdlingExit
 
 
   private IEnumerator MovingUpdate()
@@ -129,6 +162,15 @@ public class Player : Character
       
     while (true)
     {
+      // enter attacking state
+      if (GetAttackingInput() != PlayerAttackSystems.Attacks.None)
+      {
+        Dictionary<string, object> info = new Dictionary<string, object>();
+        info.Add("attack", GetAttackingInput());
+        SetState(States.Attacking, info);
+        yield break;
+      }
+
       // enter jumping state
       if (GetJumpingInput())
       {
@@ -150,13 +192,14 @@ public class Player : Character
 
       // move
       velocity.x = moveVector.x * moveSpeed;
-      velocity.y = -gravity/2;
-      CC.Move(velocity * GameTime.deltaTime);
+      SetVelocity(velocity);
 
       // enter falling state
-      if (!CC.isGrounded)
+      if (!CM.IsGrounded())
       {
-        SetState(States.Falling, null);
+        Dictionary<string, object> info = new Dictionary<string, object>();
+        info.Add("extraJump", true);
+        SetState(States.Falling, info);
         yield break;
       }
 
@@ -165,16 +208,26 @@ public class Player : Character
   } // end MovingUpdate
 
 
+  private void MovingExit(Dictionary<string, object> info)
+  {
+    velocity.y = 0f;
+  } // end MovingExit
+
+
   private void JumpingEnter(Dictionary<string, object> info)
   {
     Log("Jumping Enter");
 
     currentStateJob = new Job(JumpingUpdate(), false);
-    
     currentStateJob.CreateChildJob(Climb(), jumpingInfo.climbTime);
-    currentStateJob.CreateChildJob(Float(), jumpingInfo.floatTime);
+    currentStateJob.CreateChildJob(Float());
 
-    currentStateJob.JobCompleteEvent += (killed) => SetState(States.Falling, null);
+    currentStateJob.JobCompleteEvent += (killed) =>
+                                        {
+                                          info = new Dictionary<string, object>();
+                                          info.Add("fromJump", true);
+                                          SetState(States.Falling, info);
+                                        };
     currentStateJob.Start();
   } // end JumpingEnter
 
@@ -187,12 +240,14 @@ public class Player : Character
 
   private IEnumerator Climb()
   {
+    Log("Climb");
     velocity.y = jumpingInfo.jumpSpeed;
 
     while (GetJumpingInput(true))
     {
       SetRotation();
-      CC.Move(velocity * GameTime.deltaTime);
+      velocity.x = GetMovingInput().x * moveSpeed;
+      SetVelocity(velocity);
       yield return null;
     }
   } // end Climb
@@ -200,12 +255,13 @@ public class Player : Character
 
   private IEnumerator Float()
   {
-    float vel = 0f;
-    while (true)
+    Log("Float");
+    while (velocity.y > 0.1f)
     {
       SetRotation();
-      velocity.y = Mathf.SmoothDamp(velocity.y, 0f, ref vel, jumpingInfo.floatTime);
-      CC.Move(velocity * GameTime.deltaTime);
+      velocity.x = GetMovingInput().x * moveSpeed;
+      velocity.y -= gravity * GameTime.deltaTime;
+      SetVelocity(velocity);
       yield return null;
     }
   } // end Float
@@ -215,8 +271,19 @@ public class Player : Character
   {
     Log("Falling Enter");
     
-    // reset values
-    velocity.y = 0f;
+    // make sure falling
+    if (CM.IsGrounded())
+    {
+      SetState(States.Idling, null);
+      return;
+    }
+
+    // give extra jump waitTime
+    if (info != null && info.ContainsKey("extraJump"))
+    {
+      canExtraJump = true;
+      InvokeAction(() => { canExtraJump = false; }, extraJumpTime);
+    }
 
     currentStateJob = new Job(FallingUpdate());
   } // end FallingEnter
@@ -227,23 +294,79 @@ public class Player : Character
     while (true)
     {
       // enter idling state
-      if (CC.isGrounded)
+      if (CM.IsGrounded())
       {
         SetState(States.Idling, null);
         yield break;
+      }
+
+      // enter attacking state
+      if (GetAttackingInput() != PlayerAttackSystems.Attacks.None)
+      {
+        Dictionary<string, object> info = new Dictionary<string, object>();
+        info.Add("attack", GetAttackingInput());
+        SetState(States.Attacking, info);
+        yield break;
+      }
+
+      // enter jumping state
+      if (canExtraJump && GetJumpingInput())
+      {
+        Log("EXTRA JUMP!!!!!!!!!!!!!!!!!!!!!!!!!");
+        SetState(States.Jumping, null);
+        yield break;
+      }
+
+      // fast fall
+      if (GetMovingInput().y < -0.9f)
+      {
+        Log("Fast falling");
+        velocity.y -= fastFallSpeed * GameTime.deltaTime;
       }
 
       // move
       SetRotation();
       velocity.x = GetMovingInput().x * moveSpeed;
       velocity.y -= gravity * GameTime.deltaTime;
-      if (velocity.y < -terminalVelocity) velocity.y = -terminalVelocity;
-      CC.Move(velocity * GameTime.deltaTime);
+      if (velocity.y < -terminalVelocity)
+      {
+        Log("Terminal");
+        velocity.y = -terminalVelocity;
+      }
+      SetVelocity(velocity);
 
       yield return null;
     }
 
   } // end Falling Update
+
+
+  private void AttackingEnter(Dictionary<string, object> info)
+  {
+    Log("Attacking Enter");
+
+    if (attackSystems.Initiate((PlayerAttackSystems.Attacks)info["attack"]))
+    {
+      currentStateJob = new Job(AttackingUpdate());
+    }
+    else
+    {
+      SetState(States.Idling, null);
+    }
+  } // end AttackingEnter
+
+
+  private IEnumerator AttackingUpdate()
+  {
+    SetState(States.Idling, null);
+    yield return null;
+  } // end AttackingUpdate
+
+
+  private void AttackingExit(Dictionary<string, object> info)
+  {
+    Log("Attacking Exit");
+  } // end AttackingExit
 
   #endregion
 
@@ -313,6 +436,214 @@ public class Player : Character
       myTransform.rotation = Quaternion.Euler(0f, 270f, 0f);
     }
   } // end SetRotation
+
+
+  /// <summary>
+  /// Detect attack input.
+  /// </summary>
+  /// <returns>Returns corresponding attack type.</returns>
+  private PlayerAttackSystems.Attacks GetAttackingInput()
+  {
+    if (keyboard)
+    {
+      // magic
+      if (Input.GetKey(KeyCode.LeftShift))
+      {
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+          return PlayerAttackSystems.Attacks.MagicLeft;
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+          return PlayerAttackSystems.Attacks.MagicUp;
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+          return PlayerAttackSystems.Attacks.MagicRight;
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+          return PlayerAttackSystems.Attacks.MagicDown;
+        }
+      }
+
+      Vector2 joystick = GetMovingInput();
+
+      // light
+      if (Input.GetKeyDown(KeyCode.LeftArrow))
+      {
+        if (joystick.y > attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.LightUp;
+        }
+        if (joystick.y < -attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.LightDown;
+        }
+        if (Mathf.Abs(joystick.x) > attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.LightSide;
+        }
+
+        return PlayerAttackSystems.Attacks.LightNormal;
+      }
+
+      // heavy
+      if (Input.GetKeyDown(KeyCode.UpArrow))
+      {
+        if (joystick.y > attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.HeavyUp;
+        }
+        if (joystick.y < -attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.HeavyDown;
+        }
+        if (Mathf.Abs(joystick.x) > attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.HeavySide;
+        }
+
+        return PlayerAttackSystems.Attacks.HeavyNormal;
+      }
+
+      // ranged
+      if (Input.GetKeyDown(KeyCode.RightArrow))
+      {
+        if (joystick.y > attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.RangedUp;
+        }
+        if (joystick.y < -attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.RangedDown;
+        }
+        if (Mathf.Abs(joystick.x) > attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.RangedSide;
+        }
+
+        return PlayerAttackSystems.Attacks.RangedNormal;
+      }
+    }
+    else
+    {
+      // magic
+      if (Input.GetAxis("TriggersR_" + playerInfo.playerNumber) >= magicModifierDeadZone)
+      {
+        if (Input.GetButtonDown("X_" + playerInfo.playerNumber))
+        {
+          return PlayerAttackSystems.Attacks.MagicLeft;
+        }
+        if (Input.GetButtonDown("Y_" + playerInfo.playerNumber))
+        {
+          return PlayerAttackSystems.Attacks.MagicUp;
+        }
+        if (Input.GetButtonDown("B_" + playerInfo.playerNumber))
+        {
+          return PlayerAttackSystems.Attacks.MagicRight;
+        }
+        if (Input.GetButtonDown("A_" + playerInfo.playerNumber))
+        {
+          return PlayerAttackSystems.Attacks.MagicDown;
+        }
+      }
+
+      Vector2 joystick = GetMovingInput();
+
+      // light
+      if (Input.GetButtonDown("X_" + playerInfo.playerNumber))
+      {
+        if (joystick.y > attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.LightUp;
+        }
+        if (joystick.y < -attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.LightDown;
+        }
+        if (Mathf.Abs(joystick.x) > attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.LightSide;
+        }
+
+        return PlayerAttackSystems.Attacks.LightNormal;
+      }
+
+      // heavy
+      if (Input.GetButtonDown("Y_" + playerInfo.playerNumber))
+      {
+        if (joystick.y > attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.HeavyUp;
+        }
+        if (joystick.y < -attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.HeavyDown;
+        }
+        if (Mathf.Abs(joystick.x) > attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.HeavySide;
+        }
+
+        return PlayerAttackSystems.Attacks.HeavyNormal;
+      }
+
+      // ranged
+      if (Input.GetButtonDown("B_" + playerInfo.playerNumber))
+      {
+        if (joystick.y > attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.RangedUp;
+        }
+        if (joystick.y < -attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.RangedDown;
+        }
+        if (Mathf.Abs(joystick.x) > attackDeadZone)
+        {
+          return PlayerAttackSystems.Attacks.RangedSide;
+        }
+
+        return PlayerAttackSystems.Attacks.RangedNormal;
+      }
+    }
+
+    return PlayerAttackSystems.Attacks.None;
+  } // end GetAttackingInput
+
+  #endregion
+
+  #region Movement Methods
+
+  /// <summary>
+  /// Set the CharacterMotor velocity if allow.
+  /// </summary>
+  /// <param name="moveVector">Move vector not multiplied by deltaTime.</param>
+  private void SetVelocity(Vector3 moveVector)
+  {
+    float screenX = LevelManager.Instance.camera.WorldToScreenPoint(myTransform.position).x / Screen.width;
+
+    // screen right
+    if (GetMovingInput().x > 0 && screenX >= (1 - LevelCamera.Instance.boundaryHorizontalOuter))
+    {
+      moveVector.x = 0f;
+    }
+    // screen left
+    else if (GetMovingInput().x < 0 && screenX <= LevelCamera.Instance.boundaryHorizontalOuter)
+    {
+      moveVector.x = 0f;
+    }
+
+    // blocked
+    RaycastHit rayInfo;
+    if (Physics.SphereCast(myTransform.position + Vector3.up, 0.5f, myTransform.forward, out rayInfo, Mathf.Abs(moveVector.x * GameTime.deltaTime), 1 << LayerMask.NameToLayer("Terrain")))
+    {
+        moveVector.x = 0f;
+    }
+
+    CM.velocity = moveVector;
+  } // end SetVelocity
 
   #endregion
 

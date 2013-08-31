@@ -8,7 +8,7 @@ using System.Collections;
 /// Base class for all singletons.
 /// </summary>
 /// <typeparam name="T">Inherited class.</typeparam>
-public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+public class Singleton<T> : BaseMono where T : MonoBehaviour
 {
   protected static T instance;
 

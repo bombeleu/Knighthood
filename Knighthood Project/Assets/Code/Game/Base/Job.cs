@@ -116,6 +116,14 @@ public class Job
   /// </summary>
   public void Kill()
   {
+    if (childJobs != null)
+    {
+      while (childJobs.Count > 0)
+      {
+        childJobs.Dequeue().Kill();
+      }
+    }
+
     killed = true;
     running = false;
     paused = false;
@@ -168,10 +176,10 @@ public class Job
 
 
   /// <summary>
-  /// 
+  /// Create a new child job.
   /// </summary>
-  /// <param name="child"></param>
-  /// <returns></returns>
+  /// <param name="child">Child method.</param>
+  /// <returns>New child job.</returns>
   public Job CreateChildJob(IEnumerator child, float runtime = 0f)
   {
     Job job = new Job(child, runtime, false);
@@ -181,9 +189,9 @@ public class Job
 
 
   /// <summary>
-  /// 
+  /// Add an existing job as a child.
   /// </summary>
-  /// <param name="child"></param>
+  /// <param name="child">Job to add.</param>
   public void AddChildJob(Job child)
   {
     if (childJobs == null)
@@ -195,9 +203,8 @@ public class Job
 
 
   /// <summary>
-  /// 
+  /// Run, run children, or pause.
   /// </summary>
-  /// <returns></returns>
   private IEnumerator Work()
   {
     // return null in case of starting paused
@@ -237,9 +244,8 @@ public class Job
 
 
   /// <summary>
-  /// 
+  /// Run all child jobs in order.
   /// </summary>
-  /// <returns></returns>
   private IEnumerator RunChildJobs()
   {
     if (childJobs != null && childJobs.Count > 0)

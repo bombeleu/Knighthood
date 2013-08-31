@@ -14,15 +14,13 @@ public class LevelManager : Singleton<LevelManager>
   #region Player Fields
 
   protected List<string> playerUsernames = new List<string>();
-  protected List<Transform> playerTransforms = new List<Transform>();
+  public List<Transform> playerTransforms { get; private set; }
 
   #endregion
 
   #region Camera Fields
 
-  public CameraInfo cameraInfo;
-  new protected Camera camera;
-  protected Transform cameraTransform;
+  new public Camera camera { get; private set; }
 
   #endregion
 
@@ -45,14 +43,7 @@ public class LevelManager : Singleton<LevelManager>
   {
     // get references
     camera = Camera.main;
-    cameraTransform = camera.transform;
   } // end Awake
-
-
-  private void Update()
-  {
-    UpdateCamera();
-  } // end Update
 
   #endregion
 
@@ -80,60 +71,20 @@ public class LevelManager : Singleton<LevelManager>
   /// </summary>
   protected void CreatePlayers()
   {
+    playerTransforms = new List<Transform>();
+
     Transform playerParent = (new GameObject().transform);
     playerParent.name = "Players";
 
     for (int i = 0; i < GameData.Instance.playerUsernames.Count; i++)
     {
-      GameObject player = (GameObject)Instantiate(GameResources.Instance.Player_Prefab, new Vector3(-17f, 0f, 0f), Quaternion.Euler(0f, 90f, 0f));
+      GameObject player = (GameObject)Instantiate(GameResources.Instance.Player_Prefabs[i], new Vector3(-17f + 2f * i, 0.5f, 0f), Quaternion.Euler(0f, 90f, 0f));
       playerUsernames.Add(GameData.Instance.playerUsernames[i]);
       playerTransforms.Add(player.transform);
       player.GetSafeComponent<Player>().Initialize(GameData.Instance.playerUsernames[i], i);
       player.transform.parent = playerParent;
     }
   } // end CreatePlayers
-
-  #endregion
-
-  #region Camera Methods
-
-  /// <summary>
-  /// Update the camera to keep the players on screen.
-  /// </summary>
-  protected void UpdateCamera()
-  {
-    if (cameraInfo.locked) return;
-
-    bool moveRight = false, moveLeft = false;
-    float speed = 0f;
-
-    foreach (Transform player in playerTransforms)
-    {
-      float screenXPercent = camera.WorldToScreenPoint(player.position).x / Screen.width;
-
-      // move left
-      if (screenXPercent <= cameraInfo.boundaryDynamic)
-      {
-        moveLeft = true;
-        speed = Mathf.Abs(player.GetComponent<Player>().velocity.x);
-      }
-      // move right
-      else if (screenXPercent >= (1f - cameraInfo.boundaryDynamic))
-      {
-        moveRight = true;
-        speed = Mathf.Abs(player.GetComponent<Player>().velocity.x);
-      }
-    }
-
-    if (moveLeft && !moveRight)
-    {
-      cameraTransform.position += Vector3.left * speed * GameTime.deltaTime;
-    }
-    else if (moveRight && !moveLeft)
-    {
-      cameraTransform.position += Vector3.right * speed * GameTime.deltaTime;
-    }
-  } // end UpdateCamera
 
   #endregion
 

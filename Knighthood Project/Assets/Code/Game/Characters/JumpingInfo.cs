@@ -11,11 +11,9 @@ using System;
 [Serializable]
 public class JumpingInfo
 {
-  /// <summary></summary>
+  /// <summary>How fast the character moves upward.</summary>
   public float jumpSpeed;
-  /// <summary></summary>
+  /// <summary>How long the character can jump.</summary>
   public float climbTime;
-  /// <summary></summary>
-  public float floatTime;
 
 } // end JumpingInfo class

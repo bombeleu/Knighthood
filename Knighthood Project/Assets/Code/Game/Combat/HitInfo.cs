@@ -3,23 +3,45 @@
 
 using UnityEngine;
 using System.Collections;
+using System;
 
 /// <summary>
 /// Info to pass from an attack.
 /// </summary>
+[Serializable]
 public class HitInfo
 {
   /// <summary>How much damage being applied.</summary>
-  public readonly int damage;
+  public int damage;
+  public enum Effects { None, Fire, Acid, Earth, Ice }
+  public Effects effect;
+  public Vector3 knockBack;
 
 
-  /// <summary>
-  /// Constructor.
-  /// </summary>
-  /// <param name="damage">How much damage being applied.</param>
-  public HitInfo(int damage)
+
+  public void FactorAttackStats(StatManager statManager)
   {
-    this.damage = damage;
-  } // end HitInfo
+    if (effect == Effects.None)
+    {
+      damage *= statManager.physicalAttack;
+    }
+    else
+    {
+      damage *= statManager.magicAttack;
+    }
+  } // end FactorAttackStats
+
+
+  public void FactorDefendStats(StatManager statManager)
+  {
+    if (effect == Effects.None)
+    {
+      damage /= statManager.physicalAttack;
+    }
+    else
+    {
+      damage /= statManager.magicAttack;
+    }
+  } // end FactorDefendStats
 
 } // end HitInfo class

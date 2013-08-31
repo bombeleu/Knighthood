@@ -59,4 +59,18 @@ public class ObjectRecycler
     }
   } // end nextFree
 
+
+  /// <summary>
+  /// Destroy all objects in pool and clear list.
+  /// </summary>
+  public void Clear()
+  {
+    foreach (GameObject go in objects)
+    {
+      MonoBehaviour.Destroy(go);
+    }
+
+    objects.Clear();
+  } // end Clear
+
 } // end ObjectRecycler class

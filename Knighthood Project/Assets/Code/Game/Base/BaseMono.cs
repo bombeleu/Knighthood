@@ -4,6 +4,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// Wrapper for Unity MonoBehaviour.
@@ -64,6 +65,52 @@ public class BaseMono : MonoBehaviour
   {
     Debugger.Log(message, this);
   } // end Log
+
+  #endregion
+
+  #region Invoke Methods
+
+  //
+  public void InvokeAction(Action action, float time)
+  {
+    StartCoroutine(InvokedAction(action, time));
+  } // end InvokeAction
+
+
+  private IEnumerator InvokedAction(Action action, float time)
+  {
+    yield return new WaitForSeconds(time);
+    action.Invoke();
+  } // end InvokedAction
+
+  #endregion
+
+  #region Coroutine Methods
+
+  /// <summary>
+  /// Wait for a set amount of GameTime.
+  /// </summary>
+  /// <param name="waitTime">Time to wait in seconds.</param>
+  public Coroutine WaitForTime(float waitTime)
+  {
+    return StartCoroutine(Wait(waitTime));
+  } // end WaitForTime
+
+
+  /// <summary>
+  /// Wait for seconds in GameTime.
+  /// </summary>
+  /// <param name="waitTime">Time in seconds.</param>
+  private IEnumerator Wait(float waitTime)
+  {
+    Debug.Log("Wait");
+    float timer = 0f;
+    while (timer < waitTime)
+    {
+      timer += GameTime.deltaTime;
+      yield return null;
+    }
+  } // end Wait
 
   #endregion
 

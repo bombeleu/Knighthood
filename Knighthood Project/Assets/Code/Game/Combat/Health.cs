@@ -10,17 +10,30 @@ using System.Collections;
 /// </summary>
 public class Health : BaseMono
 {
+  #region Health Fields
+
   public int maxHealth;
-  public int currentHealth { get; private set; }
+  public int currentHealth { get; protected set; }
   public bool invincible { get; private set; }
+  private int lastHitID;
+
+  #endregion
+
+  #region Events
 
   public EventHandler<HitEventArgs> HitEvent;
 
+  #endregion
+
+
+  #region MonoBehaviour Overrides
 
   private void Awake()
   {
     Initialize();
   } // end Awake
+
+  #endregion
 
 
   /// <summary>
@@ -57,11 +70,15 @@ public class Health : BaseMono
   /// </summary>
   /// <param name="sender">Who sent the attack.</param>
   /// <param name="hitInfo">Attack info associated with the attack.</param>
-  public void RecieveHit(object sender, HitInfo hitInfo)
+  public virtual void RecieveHit(object sender, int hitID, HitInfo hitInfo)
   {
     if (invincible) return;
+    if (hitID == lastHitID) return;
+
+    lastHitID = hitID;
 
     ChangeHealth(hitInfo.damage);
+    GameResources.Instance.DamageIndicator_Pool.nextFree.GetComponent<DamageIndicator>().Initiate(transform, hitInfo.damage);
 
     if (HitEvent != null)
     {

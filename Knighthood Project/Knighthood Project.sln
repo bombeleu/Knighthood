@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 
 Project("{7E7B0B9A-E958-BD82-5144-D853A5BE8C99}") = "Knighthood Project", "Assembly-CSharp.csproj", "{C24DBAEA-3670-A77A-D7F1-205C6E666B85}"
 EndProject
+Project("{7E7B0B9A-E958-BD82-5144-D853A5BE8C99}") = "Knighthood Project", "Assembly-CSharp-Editor.csproj", "{9190981F-2277-ECEE-0E60-B987B3C7F2C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,11 +15,15 @@ Global
 		{C24DBAEA-3670-A77A-D7F1-205C6E666B85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C24DBAEA-3670-A77A-D7F1-205C6E666B85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C24DBAEA-3670-A77A-D7F1-205C6E666B85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9190981F-2277-ECEE-0E60-B987B3C7F2C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9190981F-2277-ECEE-0E60-B987B3C7F2C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9190981F-2277-ECEE-0E60-B987B3C7F2C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9190981F-2277-ECEE-0E60-B987B3C7F2C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																															GlobalSection(MonoDevelopProperties) = preSolution
+																																																																																																	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
