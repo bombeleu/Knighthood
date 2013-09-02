@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 /// <summary>
-/// Singleton to hold game data.
+/// Singleton to hold game data and handle player sign in.
 /// </summary>
 public class GameData : Singleton<GameData>
 {
@@ -33,6 +33,32 @@ public class GameData : Singleton<GameData>
     {
         DontDestroyOnLoad(gameObject);
     } // end Start
+
+
+    private void Update()
+    {
+        // player disconnect
+        if (playerUsernames.Count > Input.GetJoystickNames().Length)
+        {
+            Log("Player disconnected");
+        }
+
+        // new player
+        if (playerUsernames.Count < Input.GetJoystickNames().Length)
+        {
+            Log("New Player");
+
+            // set first player to default username
+            if (playerUsernames.Count == 0 && !string.IsNullOrEmpty(PlayerPrefs.GetString("Default Username", null)))
+            {
+                playerUsernames.Add(PlayerPrefs.GetString("Default Username"));
+            }
+            else
+            {
+                playerUsernames.Add("Player " + (playerUsernames.Count+1).ToString());
+            }
+        }
+    } // end Update
 
     #endregion
 
@@ -65,14 +91,29 @@ public class GameData : Singleton<GameData>
 
 
     /// <summary>
-    /// Add a new username. Saves to PlayerPrefs.
+    /// Add a new username. Saves to PlayerPrefs. Set Default Username if applicable.
     /// </summary>
     /// <param name="newUsername">Username to add.</param>
     public void AddUsername(string newUsername)
     {
+        if (string.IsNullOrEmpty(PlayerPrefs.GetString("Default Username", null)))
+        {
+            PlayerPrefs.SetString("Default Username", newUsername);
+        }
+
         allUsernames.Add(newUsername);
         PlayerPrefs.SetString("All Usernames", string.Join("|", allUsernames.ToArray()));
     } // end AddUsername
+
+    #endregion
+
+    #region SignIn Methods
+
+    private int GetSignInInput()
+    {
+
+        return -1;
+    } // end GetSignInInput
 
     #endregion
 
