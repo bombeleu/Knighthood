@@ -11,37 +11,45 @@ using System;
 [Serializable]
 public class HitInfo
 {
-  /// <summary>How much damage being applied.</summary>
-  public int damage;
-  public enum Effects { None, Fire, Acid, Earth, Ice }
-  public Effects effect;
-  public Vector3 knockBack;
+    /// <summary>Base damage before stats are factored in.</summary>
+    public int damage;
+    public enum Effects { None, Fire, Acid, Earth, Ice }
+    public Effects effect;
+    public Vector3 knockBack;
 
 
 
-  public void FactorAttackStats(StatManager statManager)
-  {
-    if (effect == Effects.None)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="statManager"></param>
+    public void FactorAttackStats(StatManager statManager)
     {
-      damage *= statManager.physicalAttack;
-    }
-    else
-    {
-      damage *= statManager.magicAttack;
-    }
-  } // end FactorAttackStats
+        if (effect == Effects.None)
+        {
+            damage *= statManager.physicalAttack;
+        }
+        else
+        {
+            damage *= statManager.magicAttack;
+        }
+    } // end FactorAttackStats
 
 
-  public void FactorDefendStats(StatManager statManager)
-  {
-    if (effect == Effects.None)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="statManager"></param>
+    public void FactorDefendStats(StatManager statManager)
     {
-      damage /= statManager.physicalAttack;
-    }
-    else
-    {
-      damage /= statManager.magicAttack;
-    }
-  } // end FactorDefendStats
+        if (effect == Effects.None)
+        {
+            damage /= statManager.physicalAttack;
+        }
+        else
+        {
+            damage /= statManager.magicAttack;
+        }
+    } // end FactorDefendStats
 
 } // end HitInfo class

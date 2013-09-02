@@ -15,9 +15,9 @@ public class MeleeHitbox : Hitbox
   public void Initialize(Character sender, Vector3 size, HitInfo hitInfo, float time)
   {
     myTransform.localScale = size;
-    this.hitInfo = hitInfo;
-    this.time = time;
-    base.Initialize(sender);
+    //this.hitInfo = hitInfo;
+    //this.time = time;
+    //base.Initialize(sender);
   } // end Initialize
 
 } // end MeleeHitbox class

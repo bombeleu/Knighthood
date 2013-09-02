@@ -9,39 +9,39 @@ using System.Collections;
 /// </summary>
 public class MagicAttackSystem : AttackSystem
 {
-  private Magic magic;
-  public int magicRequired;
+    private Magic magic;
+    public int magicRequired;
 
 
 
-  #region MonoBehaviour Overrides
+    #region MonoBehaviour Overrides
 
-  protected override void Awake()
-  {
-    base.Awake();
-    magic = GetSafeComponent<Magic>();
-  } // end Awake
+    protected override void Awake()
+    {
+        base.Awake();
+        magic = GetSafeComponent<Magic>();
+    } // end Awake
 
-  #endregion
+    #endregion
 
 
-  public override bool Initiate()
-  {
-    if (magic.CastMagic(magicRequired))
+    public override bool Initiate()
+    {
+        if (magic.CastMagic(magicRequired) && !attacking)
+        {
+            Attack();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } // end Activate
+
+
+    public override void Attack()
     {
 
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  } // end Initiate
-
-
-  public override void Attack()
-  {
-    
-  } // end Attack
+    } // end Attack
 
 } // end MagicAttackSystem class

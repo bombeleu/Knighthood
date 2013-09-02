@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityVS.Knighthood Project.CSharp.Editor", "UnityVS.Knighthood Project.CSharp.Editor.csproj", "{320AAD41-3780-70D5-5B6F-1B684CF3F56A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityVS.Knighthood Project.CSharp", "UnityVS.Knighthood Project.CSharp.csproj", "{5757DA1E-E592-C59B-7294-B7E904379122}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{320AAD41-3780-70D5-5B6F-1B684CF3F56A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{320AAD41-3780-70D5-5B6F-1B684CF3F56A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{320AAD41-3780-70D5-5B6F-1B684CF3F56A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{320AAD41-3780-70D5-5B6F-1B684CF3F56A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5757DA1E-E592-C59B-7294-B7E904379122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5757DA1E-E592-C59B-7294-B7E904379122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5757DA1E-E592-C59B-7294-B7E904379122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5757DA1E-E592-C59B-7294-B7E904379122}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

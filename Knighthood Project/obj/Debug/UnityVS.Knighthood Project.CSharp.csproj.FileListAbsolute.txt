@@ -1,0 +1,9 @@
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\Assembly-CSharp.dll
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\Assembly-CSharp.pdb
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\UnityEditor.dll
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\UnityEngine.dll
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\UnityEngine.xml
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\UnityEditor.xml
+D:\Documents\GitHub\Knighthood\Knighthood Project\obj\Debug\UnityVS.Knighthood Project.CSharp.csprojResolveAssemblyReference.cache
+D:\Documents\GitHub\Knighthood\Knighthood Project\obj\Debug\Assembly-CSharp.dll
+D:\Documents\GitHub\Knighthood\Knighthood Project\obj\Debug\Assembly-CSharp.pdb

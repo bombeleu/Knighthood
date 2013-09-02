@@ -10,77 +10,77 @@ using System.Collections;
 [RequireComponent(typeof(TextMesh))]
 public class DamageIndicator : BaseMono
 {
-  #region References
+    #region References
 
-  private Transform myTransform;
-  private Transform parent;
+    private Transform myTransform;
+    private Transform parent;
 
-  #endregion
+    #endregion
 
-  #region Display Fields
+    #region Display Fields
 
-  /// <summary>How long to stay visible.</summary>
-  public float time;
-  /// <summary>How fast to move upwards.</summary>
-  public float speed;
-  /// <summary>How far above the parent's origion to start.</summary>
-  private const float startHeight = 1.5f;
-  //
-  private float currentHeight = 0f;
+    /// <summary>How long to stay visible.</summary>
+    public float time;
+    /// <summary>How fast to move upwards.</summary>
+    public float speed;
+    /// <summary>How far above the parent's origion to start.</summary>
+    private const float startHeight = 1.5f;
+    //
+    private float currentHeight = 0f;
 
-  #endregion
-
-
-  #region MonoBehaviour Overrides
-
-  private void Awake()
-  {
-    // get references
-    myTransform = transform;
-  } // end Awake
+    #endregion
 
 
-  private void Update()
-  {
-    currentHeight += speed * Time.deltaTime;
-    myTransform.position = parent.position + Vector3.up * (startHeight + currentHeight);
-  } // end Update
+    #region MonoBehaviour Overrides
 
-  #endregion
-
-  #region Indicator Methods
-
-  /// <summary>
-  /// 
-  /// </summary>
-  /// <param name="position"></param>
-  /// <param name="damage"></param>
-  public void Initiate(Transform parent, int damage)
-  {
-    myTransform.position = parent.position + Vector3.up * startHeight;
-    this.parent = parent;
-    currentHeight = 0f;
-
-    GetComponent<TextMesh>().text = Mathf.Abs(damage).ToString();
-    if (damage > 0)
+    private void Awake()
     {
-      GetComponent<TextMesh>().color = Color.green;
-    }
-    else
+        // get references
+        myTransform = transform;
+    } // end Awake
+
+
+    private void Update()
     {
-      GetComponent<TextMesh>().color = Color.red;
-    }
+        currentHeight += speed * Time.deltaTime;
+        myTransform.position = parent.position + Vector3.up * (startHeight + currentHeight);
+    } // end Update
 
-    StartCoroutine(KillTimer());
-  } // end Initiate
+    #endregion
+
+    #region Indicator Methods
+
+    /// <summary>
+    /// Set position, text, and color.
+    /// </summary>
+    /// <param name="parent">Set transform to parent.</param>
+    /// <param name="damage">Damage for text.</param>
+    public void Initiate(Transform parent, int damage)
+    {
+        myTransform.position = parent.position + Vector3.up * startHeight;
+        this.parent = parent;
+        currentHeight = 0f;
+
+        GetComponent<TextMesh>().text = Mathf.Abs(damage).ToString();
+        if (damage < 0)
+        {
+            GetComponent<TextMesh>().color = Color.green;
+        }
+        else
+        {
+            GetComponent<TextMesh>().color = Color.red;
+        }
+
+        StartCoroutine(KillTimer());
+    } // end Activate
 
 
-  private IEnumerator KillTimer()
-  {
-    yield return new WaitForSeconds(time);
-    gameObject.SetActive(false);
-  } // end KillTimer
+    private IEnumerator KillTimer()
+    {
+        yield return WaitForTime(time);
+        gameObject.SetActive(false);
+    } // end KillTimer
 
-  #endregion
+    #endregion
 
 } // end DamageIndicator class

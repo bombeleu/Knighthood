@@ -56,7 +56,7 @@
      <Compile Include="Assets\Code\Game\Characters\JumpingInfo.cs" />
      <Compile Include="Assets\Code\Game\Characters\Player.cs" />
      <Compile Include="Assets\Code\Game\Characters\StatManager.cs" />
-     <Compile Include="Assets\Code\Game\Combat\AttackInfo.cs" />
+     <Compile Include="Assets\Code\Game\Combat\Attack.cs" />
      <Compile Include="Assets\Code\Game\Combat\AttackSystem.cs" />
      <Compile Include="Assets\Code\Game\Combat\CharacterHealth.cs" />
      <Compile Include="Assets\Code\Game\Combat\ComboAttackSystem.cs" />
@@ -66,12 +66,18 @@
      <Compile Include="Assets\Code\Game\Combat\Hitbox.cs" />
      <Compile Include="Assets\Code\Game\Combat\Magic.cs" />
      <Compile Include="Assets\Code\Game\Combat\MagicAttackSystem.cs" />
+     <Compile Include="Assets\Code\Game\Combat\MeleeAttack.cs" />
+     <Compile Include="Assets\Code\Game\Combat\MeleeAttackSystem.cs" />
      <Compile Include="Assets\Code\Game\Combat\MeleeHitbox.cs" />
-     <Compile Include="Assets\Code\Game\Combat\PlayerAttackSystems.cs" />
+     <Compile Include="Assets\Code\Game\Combat\PlayerAttacks.cs" />
      <Compile Include="Assets\Code\Game\Data\PlayerInfo.cs" />
      <Compile Include="Assets\Code\Game\Scene\CameraInfo.cs" />
      <Compile Include="Assets\Code\Game\Scene\LevelCamera.cs" />
      <Compile Include="Assets\Code\Game\Scene\LevelManager.cs" />
+     <Compile Include="Assets\Code\Game\Scene\LoadingScreenManager.cs" />
+     <Compile Include="Assets\Code\Game\Scene\MainMenuManager.cs" />
+     <Compile Include="Assets\Code\Game\Scene\SplashDevManager.cs" />
+     <Compile Include="Assets\Code\Game\Scene\SplashGameManager.cs" />
      <Compile Include="Assets\Code\Game\Singletons\GameData.cs" />
      <Compile Include="Assets\Code\Game\Singletons\GameResources.cs" />
      <Compile Include="Assets\Code\Game\Singletons\GameSettings.cs" />
@@ -79,6 +85,8 @@
      <Compile Include="Assets\Code\Game\Singletons\Singleton.cs" />
      <Compile Include="Assets\Code\Game\Static\Debugger.cs" />
      <Compile Include="Assets\Code\Game\Static\Time.cs" />
+     <Compile Include="Assets\Code\Test\AbilitySystem.cs" />
+     <Compile Include="Assets\Code\Test\AttackSystems.cs" />
      <Compile Include="Assets\Code\Test\Checker.cs" />
      <Compile Include="Assets\Code\Test\HUDFPS.cs" />
      <Compile Include="Assets\Code\Test\TestRoomLevelManager.cs" />

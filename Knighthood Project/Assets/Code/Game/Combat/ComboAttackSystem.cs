@@ -31,7 +31,7 @@ public class ComboAttackSystem : AttackSystem
     }
 
     return true;
-  } // end Initiate
+  } // end Activate
 
 
   /// <summary>

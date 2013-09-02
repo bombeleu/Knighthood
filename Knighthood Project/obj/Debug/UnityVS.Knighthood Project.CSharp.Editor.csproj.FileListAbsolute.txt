@@ -1,0 +1,12 @@
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\Assembly-CSharp-Editor.dll
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\Assembly-CSharp-Editor.pdb
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\SyntaxTree.VisualStudio.Unity.Bridge.dll
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\SyntaxTree.VisualStudio.Unity.Messaging.dll
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\UnityEditor.dll
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\UnityEngine.dll
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\Assembly-CSharp.pdb
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\UnityEngine.xml
+D:\Documents\GitHub\Knighthood\Knighthood Project\Temp\UnityVS_bin\Debug\UnityEditor.xml
+D:\Documents\GitHub\Knighthood\Knighthood Project\obj\Debug\UnityVS.Knighthood Project.CSharp.Editor.csprojResolveAssemblyReference.cache
+D:\Documents\GitHub\Knighthood\Knighthood Project\obj\Debug\Assembly-CSharp-Editor.dll
+D:\Documents\GitHub\Knighthood\Knighthood Project\obj\Debug\Assembly-CSharp-Editor.pdb

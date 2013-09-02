@@ -9,20 +9,40 @@ using System.Collections;
 /// </summary>
 public abstract class AttackSystem : BaseMono
 {
-  protected Transform myTransform;
-  protected Character character;
-  protected bool attacking = false;
+    protected Transform myTransform;
+    protected Character character;
+    protected bool attacking = false;
 
 
-  protected virtual void Awake()
-  {
-    // get references
-    myTransform = transform;
-    character = GetSafeComponent<Character>();
-  } // end Awake
+    #region MonoBehaviour Overrides
 
-  public abstract bool Initiate();
+    protected virtual void Awake()
+    {
+        // get references
+        myTransform = transform;
+        character = GetSafeComponent<Character>();
+    } // end Awake
 
-  public abstract void Attack();
+    #endregion
+
+    #region Abstract Methods
+
+    public abstract bool Initiate();
+
+    public abstract void Attack();
+
+    #endregion
+
+    #region Protected Methods
+
+    /// <summary>
+    /// Clean up the current attack. Set character state to idle.
+    /// </summary>
+    protected void EndAttack()
+    {
+        character.EndAttack();
+    } // end EndAttack
+
+    #endregion
 
 } // end AttackSystem class

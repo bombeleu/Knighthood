@@ -9,57 +9,70 @@ using System.Collections;
 /// </summary>
 public class Hitbox : BaseMono
 {
-  #region References
+    #region References
 
-  protected Transform myTransform;
+    protected Transform myTransform;
 
-  #endregion
+    #endregion
 
-  #region Combat Fields
+    #region Combat Fields
 
-  private static int hitIDs;
-  private int hitID;
-  private Character sender;
-  public HitInfo hitInfo;
-  public float time;
+    private static int hitIDs;
+    private int hitID;
+    private Character sender;
+    public HitInfo hitInfo { get; private set; }
 
-  #endregion
-
-
-  //
-  public void Initialize(Character sender)
-  {
-    this.sender = sender;
-    gameObject.layer = sender.gameObject.layer;
-    hitID = ++hitIDs;
-    Invoke("End", time);
-  } // end Initialize
+    #endregion
 
 
-  //
-  public void End()
-  {
-    gameObject.SetActive(false);
-  } // end End
+    #region MonoBehaviour Overrides
 
-  #region MonoBehaviour Overrides
-
-  private void Awake()
-  {
-    // get references
-    myTransform = transform;
-  } // end Awake
-
-
-  private void OnTriggerStay(Collider other)
-  {
-    Health opponentHealth = other.GetComponent<Health>();
-    if (opponentHealth != null)
+    private void Awake()
     {
-      opponentHealth.RecieveHit(sender, hitID, hitInfo);
-    }
-  } // end OnTriggerStay
+        // get references
+        myTransform = transform;
+    } // end Awake
 
-  #endregion
+
+    private void OnTriggerStay(Collider other)
+    {
+        Health opponentHealth = other.GetComponent<Health>();
+        if (opponentHealth != null)
+        {
+            opponentHealth.RecieveHit(sender, hitID, hitInfo);
+        }
+    } // end OnTriggerStay
+
+    #endregion
+
+    #region Public Methods
+
+    /// <summary>
+    /// Create a new hitbox with new data.
+    /// </summary>
+    /// <param name="sender">Character who sent the attack.</param>
+    /// <param name="hitInfo">HitInfo to pass along to the reciever's Health.</param>
+    /// <param name="time">How long the hitbox should last.</param>
+    public void Initialize(Character sender, HitInfo hitInfo, float time)
+    {
+        this.sender = sender;
+        this.hitInfo = hitInfo;
+
+        gameObject.layer = sender.gameObject.layer;
+        hitID = ++hitIDs;
+
+        InvokeMethod("End", time);
+    } // end Initialize
+
+
+    /// <summary>
+    /// End the current attack.
+    /// </summary>
+    public void End()
+    {
+        gameObject.SetActive(false);
+    } // end End
+
+    #endregion
 
 } // end Hitbox class
