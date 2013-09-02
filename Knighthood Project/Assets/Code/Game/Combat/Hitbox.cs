@@ -36,6 +36,8 @@ public class Hitbox : BaseMono
 
     private void OnTriggerStay(Collider other)
     {
+        if (other.tag == tag) return;
+
         Health opponentHealth = other.GetComponent<Health>();
         if (opponentHealth != null)
         {
@@ -58,7 +60,7 @@ public class Hitbox : BaseMono
         this.sender = sender;
         this.hitInfo = hitInfo;
 
-        gameObject.layer = sender.gameObject.layer;
+        gameObject.tag = sender.gameObject.tag;
         hitID = ++hitIDs;
 
         InvokeMethod("End", time);

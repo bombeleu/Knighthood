@@ -33,6 +33,7 @@ public class Player : Character
     public bool keyboard = false;
     public float attackDeadZone = 0.7f;
     public float magicModifierDeadZone = 0.8f;
+    public float moveBuffer = 0.1f;
 
     #endregion
 
@@ -161,6 +162,7 @@ public class Player : Character
 
     private IEnumerator MovingUpdate()
     {
+        yield return WaitForTime(moveBuffer);
         Vector3 moveVector;
 
         while (true)
@@ -393,7 +395,7 @@ public class Player : Character
     /// </summary>
     /// <param name="held">Does the button need to be held.</param>
     /// <returns>True, if the jump button has been pressed/held.</returns>
-    private bool GetJumpingInput(bool held = false)
+    private bool GetJumpingInput(bool held = true)
     {
         if (held)
         {

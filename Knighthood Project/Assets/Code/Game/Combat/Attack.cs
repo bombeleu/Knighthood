@@ -7,6 +7,7 @@ using System.Collections;
 /// <summary>
 /// Base class for all attacks.
 /// </summary>
+[ExecuteInEditMode()]
 public abstract class Attack : BaseMono
 {
     #region Protected Fields
