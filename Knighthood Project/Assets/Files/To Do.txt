@@ -1,1 +1,0 @@
-﻿- Get rid of Job Manager and replace it with a unique Monodevelop Owner.

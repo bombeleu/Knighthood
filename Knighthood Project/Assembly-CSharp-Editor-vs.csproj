@@ -47,10 +47,10 @@
      <Compile Include="Assets\Code\Editor\PlayerAttacksEditor.cs" />
      <Compile Include="Assets\Code\Test\Editor\AttackSystems_Editor.cs" />
      <Compile Include="Assets\Editor\Doxygen\DoxygenWindow.cs" />
+     <None Include="Assets\Files\Tips.txt" />
      <None Include="Assets\Editor\Doxygen\Resources\BaseDoxyfile.txt" />
      <None Include="Assets\Files\EnemyStats.xml" />
      <None Include="Assets\Editor\Doxygen\ReadMe.txt" />
-     <None Include="Assets\Files\To Do.txt" />
  <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
  <HintPath>Assets\UnityVS\Editor\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
  </Reference>

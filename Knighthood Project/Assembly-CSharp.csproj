@@ -90,10 +90,10 @@
      <Compile Include="Assets\Code\Test\Checker.cs" />
      <Compile Include="Assets\Code\Test\HUDFPS.cs" />
      <Compile Include="Assets\Code\Test\TestRoomLevelManager.cs" />
+     <None Include="Assets\Files\Tips.txt" />
      <None Include="Assets\Editor\Doxygen\Resources\BaseDoxyfile.txt" />
      <None Include="Assets\Files\EnemyStats.xml" />
      <None Include="Assets\Editor\Doxygen\ReadMe.txt" />
-     <None Include="Assets\Files\To Do.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
