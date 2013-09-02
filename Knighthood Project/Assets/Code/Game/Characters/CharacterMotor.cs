@@ -34,7 +34,7 @@ public class CharacterMotor : BaseMono
     myRigidbody = rigidbody;
 
     terrainLayer = 1 << LayerMask.NameToLayer("Terrain");
-  } // end Awake
+  } // end Start
 
 
   private void OnCollisionEnter(Collision info)

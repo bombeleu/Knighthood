@@ -72,10 +72,12 @@
      <Compile Include="Assets\Code\Game\Combat\PlayerAttacks.cs" />
      <Compile Include="Assets\Code\Game\Data\PlayerInfo.cs" />
      <Compile Include="Assets\Code\Game\Scene\CameraInfo.cs" />
+     <Compile Include="Assets\Code\Game\Scene\CharacterSelectMenuManager.cs" />
      <Compile Include="Assets\Code\Game\Scene\LevelCamera.cs" />
      <Compile Include="Assets\Code\Game\Scene\LevelManager.cs" />
      <Compile Include="Assets\Code\Game\Scene\LoadingScreenManager.cs" />
      <Compile Include="Assets\Code\Game\Scene\MainMenuManager.cs" />
+     <Compile Include="Assets\Code\Game\Scene\OptionsMenuManager.cs" />
      <Compile Include="Assets\Code\Game\Scene\SplashDevManager.cs" />
      <Compile Include="Assets\Code\Game\Scene\SplashGameManager.cs" />
      <Compile Include="Assets\Code\Game\Singletons\GameData.cs" />

@@ -20,7 +20,7 @@ public class MagicAttackSystem : AttackSystem
     {
         base.Awake();
         magic = GetSafeComponent<Magic>();
-    } // end Awake
+    } // end Start
 
     #endregion
 

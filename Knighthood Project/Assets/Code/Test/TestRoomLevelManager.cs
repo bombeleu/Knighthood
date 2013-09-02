@@ -24,7 +24,7 @@ public class TestRoomLevelManager : LevelManager
     base.Awake();
 
     CreatePlayers();
-  } // end Awake
+  } // end Start
 
   #endregion
 

@@ -31,7 +31,7 @@ public class Health : BaseMono
     private void Awake()
     {
         Initialize();
-    } // end Awake
+    } // end Start
 
     #endregion
 

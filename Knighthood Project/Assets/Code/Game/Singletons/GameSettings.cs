@@ -15,7 +15,7 @@ public class GameSettings : Singleton<GameSettings>
   private void Awake()
   {
     DontDestroyOnLoad(gameObject);
-  } // end Awake
+  } // end Start
 
   #endregion
 

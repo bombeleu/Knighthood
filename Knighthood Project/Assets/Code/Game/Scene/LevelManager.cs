@@ -43,7 +43,7 @@ public class LevelManager : Singleton<LevelManager>
   {
     // get references
     camera = Camera.main;
-  } // end Awake
+  } // end Start
 
   #endregion
 

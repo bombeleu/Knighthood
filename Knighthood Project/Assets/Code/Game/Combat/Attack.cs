@@ -36,7 +36,7 @@ public abstract class Attack : BaseMono
         // get references
         myTransform = transform;
         character = GetComponent<Character>();
-    } // end Awake
+    } // end Start
 
     #endregion
 

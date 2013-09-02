@@ -31,7 +31,7 @@ public class Hitbox : BaseMono
     {
         // get references
         myTransform = transform;
-    } // end Awake
+    } // end Start
 
 
     private void OnTriggerStay(Collider other)

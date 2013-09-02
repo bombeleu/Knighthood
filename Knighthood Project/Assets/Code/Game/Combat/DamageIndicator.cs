@@ -37,7 +37,7 @@ public class DamageIndicator : BaseMono
     {
         // get references
         myTransform = transform;
-    } // end Awake
+    } // end Start
 
 
     private void Update()

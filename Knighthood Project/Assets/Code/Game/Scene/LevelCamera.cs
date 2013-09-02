@@ -56,7 +56,7 @@ public class LevelCamera : Singleton<LevelCamera>
     // set up
     zoomDiff = zoomMax - zoomMin;
     distDiff = distMax - distMin;
-  } // end Awake
+  } // end Start
 
 
   private void Update()

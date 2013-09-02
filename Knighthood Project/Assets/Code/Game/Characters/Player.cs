@@ -57,7 +57,7 @@ public class Player : Character
 
         // test
         log = false;
-    } // end Awake
+    } // end Start
 
 
     //private void OnDrawGizmos()

@@ -56,7 +56,7 @@ public class Character : BaseMono
         CM = GetSafeComponent<CharacterMotor>();
         myTransform = transform;
         myRigidbody = rigidbody;
-    } // end Awake
+    } // end Start
 
     #endregion
 

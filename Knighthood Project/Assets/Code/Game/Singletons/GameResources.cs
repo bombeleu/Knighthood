@@ -39,7 +39,7 @@ public class GameResources : Singleton<GameResources>
 
     DamageIndicator_Pool = new ObjectRecycler(DamageIndicator_Prefab);
     Hitbox_Pool = new ObjectRecycler(Hitbox_Prefab);
-  } // end Awake
+  } // end Start
 
   #endregion
 

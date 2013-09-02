@@ -11,20 +11,40 @@ using System.Collections.Generic;
 /// </summary>
 public class GameData : Singleton<GameData>
 {
-  #region Player Fields
+    #region Player Fields
 
-  public List<string> playerUsernames;// { get; private set; }
+    public List<string> playerUsernames;// { get; private set; }
 
-  #endregion
+    #endregion
+
+    #region Loading Fields
+
+    public string previousScene { get; private set; }
+    public string nextScene { get; private set; }
+
+    #endregion
 
 
-  #region MonoBehaviour Overrides
+    #region MonoBehaviour Overrides
 
-  private void Awake()
-  {
-    DontDestroyOnLoad(gameObject);
-  } // end Awake
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    } // end Start
 
-  #endregion
+    #endregion
+
+
+    #region Loading Methods
+
+    public void LoadScene(string nextScene, bool load = false)
+    {
+        previousScene = Application.loadedLevelName;
+        this.nextScene = nextScene;
+
+        Application.LoadLevel(load ? "Loading Screen" : nextScene);
+    } // end LoadScene
+
+    #endregion
 
 } // end GameData class

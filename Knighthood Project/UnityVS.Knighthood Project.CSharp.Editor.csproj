@@ -65,7 +65,7 @@
     <None Include="Assets\Editor\Doxygen\ReadMe.txt" />
     <None Include="Assets\Editor\Doxygen\Resources\BaseDoxyfile.txt" />
     <None Include="Assets\Files\EnemyStats.xml" />
-    <None Include="Assets\Files\To Do.txt" />
+    <None Include="Assets\Files\Tips.txt" />
     <None Include="Assets\UnityVS\Editor\SyntaxTree.VisualStudio.Unity.Bridge.dll" />
     <None Include="Assets\UnityVS\Editor\SyntaxTree.VisualStudio.Unity.Messaging.dll" />
   </ItemGroup>

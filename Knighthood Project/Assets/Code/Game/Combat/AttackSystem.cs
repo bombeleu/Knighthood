@@ -21,7 +21,7 @@ public abstract class AttackSystem : BaseMono
         // get references
         myTransform = transform;
         character = GetSafeComponent<Character>();
-    } // end Awake
+    } // end Start
 
     #endregion
 

@@ -17,7 +17,7 @@ public class SplashDevManager : BaseMono
     private void Awake()
     {
         InvokeAction(() => Application.LoadLevel("Splash Game"), time);
-    } // end Awake
+    } // end Start
 
 
     private void Update()
