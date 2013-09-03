@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-[CustomEditor(typeof(PlayerAttacks))]
+//[CustomEditor(typeof(PlayerAttacks))]
 public class PlayerAttacksEditor : Editor
 {
     #region Toggle Fields

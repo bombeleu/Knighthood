@@ -59,6 +59,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Code\Editor\PlayerAttackManagerEditor.cs" />
     <Compile Include="Assets\Code\Editor\PlayerAttacksEditor.cs" />
     <Compile Include="Assets\Code\Test\Editor\AttackSystems_Editor.cs" />
     <Compile Include="Assets\Editor\Doxygen\DoxygenWindow.cs" />

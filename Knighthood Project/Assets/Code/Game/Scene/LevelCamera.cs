@@ -131,7 +131,6 @@ public class LevelCamera : Singleton<LevelCamera>
   private void MoveHorizontal(float speed, bool moveRight)
   {
     if (speed == 0) speed = baseSpeed;
-    Log(speed);
     myTransform.position += (moveRight ? Vector3.right : Vector3.left) * speed * Time.fixedDeltaTime;
     //myTransform.Translate((moveRight ? Vector3.right : Vector3.left) * speed * Time.deltaTime);
 

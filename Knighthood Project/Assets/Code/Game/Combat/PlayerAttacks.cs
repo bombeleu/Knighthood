@@ -3,10 +3,12 @@
 
 using UnityEngine;
 using System.Collections;
+using System;
 
 /// <summary>
 /// Holds all attacks for a player.
 /// </summary>
+[Obsolete("Use PlayerAttackManager instead", true)]
 public class PlayerAttacks : BaseMono
 {
     public enum Attacks

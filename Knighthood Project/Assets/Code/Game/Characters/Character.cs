@@ -23,7 +23,7 @@ public class Character : BaseMono
     #region State Fields
 
     public enum States { Spawning, Idling, Moving, Jumping, Falling, Attacking, Flinching, Dying }
-    public States currentState;// { get; protected set; }
+    protected States currentState;
     protected States initialState;
     private Dictionary<States, Action<Dictionary<string, object>>> EnterMethods = new Dictionary<States, Action<Dictionary<string, object>>>();
     private Dictionary<States, Action<Dictionary<string, object>>> ExitMethods = new Dictionary<States, Action<Dictionary<string, object>>>();
@@ -34,7 +34,7 @@ public class Character : BaseMono
     #region Movement Fields
 
     public float moveSpeed;
-    public Vector3 velocity;
+    protected Vector3 velocity;
     public float gravity;
     public float terminalVelocity;
     public JumpingInfo jumpingInfo;
@@ -82,8 +82,20 @@ public class Character : BaseMono
     /// <param name="info">Info to pass to the exit and enter states.</param>
     public void SetState(States stateName, Dictionary<string, object> info)
     {
+        // save previous state
+        if (info == null)
+        {
+            info = new Dictionary<string, object>();
+        }
+        info.Add("previous state", currentState);
+
+        // exit state
+        //Log(name + " Exiting: " + currentState);
         ExitMethods[currentState](info);
         currentStateJob.Kill();
+
+        // enter state
+        Log(name + " Entering: " + stateName + " - " + Time.timeSinceLevelLoad);
         currentState = stateName;
         EnterMethods[currentState](info);
     } // end SetState

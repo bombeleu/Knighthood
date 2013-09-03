@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// Attacks that only use the basic hitbox prefab.
+/// AttacksTypes that only use the basic hitbox prefab.
 /// </summary>
 public class MeleeAttack : Attack
 {

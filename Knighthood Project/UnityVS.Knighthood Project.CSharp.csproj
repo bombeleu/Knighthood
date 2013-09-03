@@ -72,6 +72,7 @@
     <Compile Include="Assets\Code\Game\Combat\MeleeAttack.cs" />
     <Compile Include="Assets\Code\Game\Combat\MeleeAttackSystem.cs" />
     <Compile Include="Assets\Code\Game\Combat\MeleeHitbox.cs" />
+    <Compile Include="Assets\Code\Game\Combat\PlayerAttackManager.cs" />
     <Compile Include="Assets\Code\Game\Combat\PlayerAttacks.cs" />
     <Compile Include="Assets\Code\Game\Data\PlayerInfo.cs" />
     <Compile Include="Assets\Code\Game\Scene\CameraInfo.cs" />
