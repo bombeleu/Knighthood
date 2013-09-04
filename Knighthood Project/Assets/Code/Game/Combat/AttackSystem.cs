@@ -2,7 +2,6 @@
 // 8.21.2013
 
 using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// Base class for all attacks.
