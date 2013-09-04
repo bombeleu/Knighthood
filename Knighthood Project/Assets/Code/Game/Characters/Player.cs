@@ -110,7 +110,7 @@ public class Player : Character
     private void IdlingEnter(Dictionary<string, object> info)
     {
         // make sure in correct state
-        if (!CM.IsGrounded())
+        if (!myMotor.IsGrounded())
         {
             SetState(States.Falling, null);
             return;
@@ -159,7 +159,7 @@ public class Player : Character
             }
 
             // enter falling state
-            if (!CM.IsGrounded())
+            if (!myMotor.IsGrounded())
             {
                 SetState(States.Falling, null);
                 yield break;
@@ -215,7 +215,7 @@ public class Player : Character
             SetVelocity(velocity);
 
             // enter falling state
-            if (!CM.IsGrounded())
+            if (!myMotor.IsGrounded())
             {
                 Dictionary<string, object> info = new Dictionary<string, object>();
                 info.Add("extraJump", true);
@@ -305,7 +305,7 @@ public class Player : Character
     private void FallingEnter(Dictionary<string, object> info)
     {
         // make sure falling
-        if (CM.IsGrounded())
+        if (myMotor.IsGrounded())
         {
             SetState((GetMovingInput().x == 0f ? States.Idling : States.Moving), null);
             return;
@@ -327,7 +327,7 @@ public class Player : Character
         while (true)
         {
             // enter idling state
-            if (CM.IsGrounded())
+            if (myMotor.IsGrounded())
             {
                 SetState(States.Idling, null);
                 yield break;
@@ -392,7 +392,7 @@ public class Player : Character
     {
         while (true)
         {
-            if (!CM.IsGrounded())
+            if (!myMotor.IsGrounded())
             {
                 velocity.y -= gravity * GameTime.deltaTime;
                 SetVelocity(velocity);
@@ -599,7 +599,7 @@ public class Player : Character
             //moveVector.x = 0f;
         }
 
-        CM.velocity = moveVector;
+        myMotor.velocity = moveVector;
     } // end SetVelocity
 
     #endregion

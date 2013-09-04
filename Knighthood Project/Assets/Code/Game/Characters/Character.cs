@@ -2,7 +2,6 @@
 // 8.18.2013
 
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System;
 
@@ -14,7 +13,7 @@ public class Character : BaseMono
 {
     #region Reference Fields
 
-    protected CharacterMotor CM;
+    protected CharacterMotor myMotor;
     protected Transform myTransform;
     protected Rigidbody myRigidbody;
 
@@ -25,8 +24,8 @@ public class Character : BaseMono
     public enum States { Spawning, Idling, Moving, Jumping, Falling, Attacking, Flinching, Dying }
     protected States currentState;
     protected States initialState;
-    private Dictionary<States, Action<Dictionary<string, object>>> EnterMethods = new Dictionary<States, Action<Dictionary<string, object>>>();
-    private Dictionary<States, Action<Dictionary<string, object>>> ExitMethods = new Dictionary<States, Action<Dictionary<string, object>>>();
+    private readonly Dictionary<States, Action<Dictionary<string, object>>> enterMethods = new Dictionary<States, Action<Dictionary<string, object>>>();
+    private readonly Dictionary<States, Action<Dictionary<string, object>>> exitMethods = new Dictionary<States, Action<Dictionary<string, object>>>();
     protected Job currentStateJob;
 
     #endregion
@@ -43,7 +42,7 @@ public class Character : BaseMono
 
     #region Stat Fields
 
-    public StatManager statManager { get; protected set; }
+    public StatManager StatManager { get; protected set; }
 
     #endregion
 
@@ -53,7 +52,7 @@ public class Character : BaseMono
     protected virtual void Awake()
     {
         // get references
-        CM = GetSafeComponent<CharacterMotor>();
+        myMotor = GetSafeComponent<CharacterMotor>();
         myTransform = transform;
         myRigidbody = rigidbody;
     } // end Start
@@ -66,12 +65,12 @@ public class Character : BaseMono
     /// Create a new currentState.
     /// </summary>
     /// <param name="stateName">State.</param>
-    /// <param name="EnterMethod">Enter method for currentState.</param>
-    /// <param name="ExitMethod">Exit method for currentState.</param>
-    protected void CreateState(States stateName, Action<Dictionary<string, object>> EnterMethod, Action<Dictionary<string, object>> ExitMethod)
+    /// <param name="enterMethod">Enter method for currentState.</param>
+    /// <param name="exitMethod">Exit method for currentState.</param>
+    protected void CreateState(States stateName, Action<Dictionary<string, object>> enterMethod, Action<Dictionary<string, object>> exitMethod)
     {
-        EnterMethods.Add(stateName, EnterMethod);
-        ExitMethods.Add(stateName, ExitMethod);
+        enterMethods.Add(stateName, enterMethod);
+        exitMethods.Add(stateName, exitMethod);
     } // end CreateState
 
 
@@ -91,13 +90,13 @@ public class Character : BaseMono
 
         // exit state
         //Log(name + " Exiting: " + currentState);
-        ExitMethods[currentState](info);
+        exitMethods[currentState](info);
         currentStateJob.Kill();
 
         // enter state
         Log(name + " Entering: " + stateName + " - " + Time.timeSinceLevelLoad);
         currentState = stateName;
-        EnterMethods[currentState](info);
+        enterMethods[currentState](info);
     } // end SetState
 
 
@@ -108,7 +107,7 @@ public class Character : BaseMono
     protected void StartInitialState(Dictionary<string, object> info)
     {
         currentState = initialState;
-        EnterMethods[initialState](info);
+        enterMethods[initialState](info);
     } // end StartInitialState
 
     #endregion
