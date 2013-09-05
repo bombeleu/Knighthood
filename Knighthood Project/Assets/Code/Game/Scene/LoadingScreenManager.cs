@@ -25,9 +25,9 @@ public class LoadingScreenManager : BaseMono
     {
         string[] tipsLines = tips.text.Split('\n');
         tip.text = tipsLines[Random.Range(0, tipsLines.Length)];
-        nextScene.text = GameData.Instance.nextScene;
+        nextScene.text = GameData.Instance.NextScene;
 
-        InvokeAction(() => Application.LoadLevel(GameData.Instance.nextScene), loadTime);
+        InvokeAction(() => Application.LoadLevel(GameData.Instance.NextScene), loadTime);
     } // end Start
 
     #endregion

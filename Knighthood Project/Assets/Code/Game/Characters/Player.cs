@@ -24,6 +24,8 @@ public class Player : Character
     public float fastFallSpeed;
     public float extraJumpTime;
     private bool canExtraJump = false;
+    private bool prematureJump;
+    public float prematureJumpTime;
 
     #endregion
 
@@ -54,7 +56,7 @@ public class Player : Character
         initialState = States.Spawning;
 
         // combat
-        attackManager = GetSafeComponent<PlayerAttackManager>();
+        attackManager = GetComponentInChildren<PlayerAttackManager>();
 
         // test
         //log = false;
@@ -69,7 +71,7 @@ public class Player : Character
 
     //private void OnDrawGizmos()
     //{
-    //  Gizmos.DrawSphere(myTransform.position + Vector3.up + myTransform.forward * Mathf.Abs(velocity.x * GameTime.deltaTime), 0.5f);
+    //  Gizmos.DrawSphere(myTransform.position + Vector3.up + myTransform.forward * Mathf.Abs(Velocity.x * GameTime.deltaTime), 0.5f);
     //} // end OnDrawGizmos
 
     #endregion
@@ -136,10 +138,9 @@ public class Player : Character
         while (true)
         {
             // enter attacking state
-            if (GetAttackingInput() != PlayerAttackManager.AttacksTypes.None)
+            if (GetAttackingInput() != PlayerAttackManager.AttackTypes.None)
             {
-                Dictionary<string, object> info = new Dictionary<string, object>();
-                info.Add("attack", GetAttackingInput());
+                var info = new Dictionary<string, object> {{"attack", GetAttackingInput()}};
                 SetState(States.Attacking, info);
                 yield break;
             }
@@ -183,7 +184,7 @@ public class Player : Character
         while (true)
         {
             // enter attacking state
-            if (GetAttackingInput() != PlayerAttackManager.AttacksTypes.None)
+            if (GetAttackingInput() != PlayerAttackManager.AttackTypes.None)
             {
                 Dictionary<string, object> info = new Dictionary<string, object>();
                 info.Add("attack", GetAttackingInput());
@@ -217,8 +218,7 @@ public class Player : Character
             // enter falling state
             if (!myMotor.IsGrounded())
             {
-                Dictionary<string, object> info = new Dictionary<string, object>();
-                info.Add("extraJump", true);
+                var info = new Dictionary<string, object> {{"extraJump", true}};
                 SetState(States.Falling, info);
                 yield break;
             }
@@ -242,8 +242,8 @@ public class Player : Character
 
         currentStateJob.JobCompleteEvent += (killed) =>
                                             {
-                                                info = new Dictionary<string, object>();
-                                                info.Add("fromJump", true);
+                                                if (killed) return;
+                                                info = new Dictionary<string, object> {{"fromJump", true}};
                                                 SetState(States.Falling, info);
                                             };
         currentStateJob.Start();
@@ -264,10 +264,9 @@ public class Player : Character
         while (GetJumpingInput(true))
         {
             // enter attacking state
-            if (GetAttackingInput() != PlayerAttackManager.AttacksTypes.None)
+            if (GetAttackingInput() != PlayerAttackManager.AttackTypes.None)
             {
-                Dictionary<string, object> info = new Dictionary<string, object>();
-                info.Add("attack", GetAttackingInput());
+                var info = new Dictionary<string, object> {{"attack", GetAttackingInput()}};
                 SetState(States.Attacking, info);
                 yield break;
             }
@@ -285,10 +284,9 @@ public class Player : Character
         while (velocity.y > 0.1f)
         {
             // enter attacking state
-            if (GetAttackingInput() != PlayerAttackManager.AttacksTypes.None)
+            if (GetAttackingInput() != PlayerAttackManager.AttackTypes.None)
             {
-                Dictionary<string, object> info = new Dictionary<string, object>();
-                info.Add("attack", GetAttackingInput());
+                var info = new Dictionary<string, object> {{"attack", GetAttackingInput()}};
                 SetState(States.Attacking, info);
                 yield break;
             }
@@ -326,18 +324,17 @@ public class Player : Character
     {
         while (true)
         {
-            // enter idling state
+            // enter idling or jumping state
             if (myMotor.IsGrounded())
             {
-                SetState(States.Idling, null);
+                SetState((prematureJump ? States.Jumping : States.Idling), null);
                 yield break;
             }
 
             // enter attacking state
-            if (GetAttackingInput() != PlayerAttackManager.AttacksTypes.None)
+            if (GetAttackingInput() != PlayerAttackManager.AttackTypes.None)
             {
-                Dictionary<string, object> info = new Dictionary<string, object>();
-                info.Add("attack", GetAttackingInput());
+                var info = new Dictionary<string, object> {{"attack", GetAttackingInput()}};
                 SetState(States.Attacking, info);
                 yield break;
             }
@@ -348,6 +345,13 @@ public class Player : Character
                 Log("EXTRA JUMP!!!!!!!!!!!!!!!!!!!!!!!!!");
                 SetState(States.Jumping, null);
                 yield break;
+            }
+
+            // get premature jumping input
+            if (!prematureJump && GetJumpingInput())
+            {
+                prematureJump = true;
+                InvokeAction(() => { prematureJump = false; }, prematureJumpTime);
             }
 
             // fast fall
@@ -376,7 +380,7 @@ public class Player : Character
     private void AttackingEnter(Dictionary<string, object> info)
     {
         // attack
-        if (attackManager.Activate((PlayerAttackManager.AttacksTypes)info["attack"]))
+        if (attackManager.Activate((PlayerAttackManager.AttackTypes)info["attack"]))
         {
             currentStateJob = new Job(AttackingUpdate());
         }
@@ -416,7 +420,7 @@ public class Player : Character
     /// </summary>
     /// <param name="held">Does the button need to be held.</param>
     /// <returns>True, if the jump button has been pressed/held.</returns>
-    private bool GetJumpingInput(bool held = true)
+    private bool GetJumpingInput(bool held = false)
     {
         if (held)
         {
@@ -481,7 +485,7 @@ public class Player : Character
     /// Detect attack input.
     /// </summary>
     /// <returns>Returns corresponding attack type.</returns>
-    private PlayerAttackManager.AttacksTypes GetAttackingInput()
+    private PlayerAttackManager.AttackTypes GetAttackingInput()
     {
         if (keyboard)
         {
@@ -490,38 +494,38 @@ public class Player : Character
             {
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
-                    return PlayerAttackManager.AttacksTypes.MagicLeft;
+                    return PlayerAttackManager.AttackTypes.SuperLeft;
                 }
                 if (Input.GetKeyDown(KeyCode.UpArrow))
                 {
-                    return PlayerAttackManager.AttacksTypes.MagicUp;
+                    return PlayerAttackManager.AttackTypes.SuperHeavy;
                 }
                 if (Input.GetKeyDown(KeyCode.RightArrow))
                 {
-                    return PlayerAttackManager.AttacksTypes.MagicRight;
+                    return PlayerAttackManager.AttackTypes.SuperStun;
                 }
                 if (Input.GetKeyDown(KeyCode.DownArrow))
                 {
-                    return PlayerAttackManager.AttacksTypes.MagicDown;
+                    return PlayerAttackManager.AttackTypes.SuperJump;
                 }
             }
 
             // left
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                return PlayerAttackManager.AttacksTypes.Left;
+                return PlayerAttackManager.AttackTypes.Light;
             }
 
             // up
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                return PlayerAttackManager.AttacksTypes.Up;
+                return PlayerAttackManager.AttackTypes.Heavy;
             }
 
             // right
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                return PlayerAttackManager.AttacksTypes.Right;
+                return PlayerAttackManager.AttackTypes.Stun;
             }
         }
         else
@@ -531,42 +535,42 @@ public class Player : Character
             {
                 if (Input.GetButtonDown("X_" + playerInfo.playerNumber))
                 {
-                    return PlayerAttackManager.AttacksTypes.MagicLeft;
+                    return PlayerAttackManager.AttackTypes.SuperLeft;
                 }
                 if (Input.GetButtonDown("Y_" + playerInfo.playerNumber))
                 {
-                    return PlayerAttackManager.AttacksTypes.MagicUp;
+                    return PlayerAttackManager.AttackTypes.SuperHeavy;
                 }
                 if (Input.GetButtonDown("B_" + playerInfo.playerNumber))
                 {
-                    return PlayerAttackManager.AttacksTypes.MagicRight;
+                    return PlayerAttackManager.AttackTypes.SuperStun;
                 }
                 if (Input.GetButtonDown("A_" + playerInfo.playerNumber))
                 {
-                    return PlayerAttackManager.AttacksTypes.MagicDown;
+                    return PlayerAttackManager.AttackTypes.SuperJump;
                 }
             }
 
             // left
             if (Input.GetButtonDown("X_" + playerInfo.playerNumber))
             {
-                return PlayerAttackManager.AttacksTypes.Left;
+                return PlayerAttackManager.AttackTypes.Light;
             }
 
             // up
             if (Input.GetButtonDown("Y_" + playerInfo.playerNumber))
             {
-                return PlayerAttackManager.AttacksTypes.Up;
+                return PlayerAttackManager.AttackTypes.Heavy;
             }
 
             // right
             if (Input.GetButtonDown("B_" + playerInfo.playerNumber))
             {
-                return PlayerAttackManager.AttacksTypes.Right;
+                return PlayerAttackManager.AttackTypes.Stun;
             }
         }
 
-        return PlayerAttackManager.AttacksTypes.None;
+        return PlayerAttackManager.AttackTypes.None;
     } // end GetAttackingInput
 
     #endregion
@@ -574,7 +578,7 @@ public class Player : Character
     #region Movement Methods
 
     /// <summary>
-    /// Set the CharacterMotor velocity if allow.
+    /// Set the CharacterMotor Velocity if allow.
     /// </summary>
     /// <param name="moveVector">Move vector not multiplied by deltaTime.</param>
     private void SetVelocity(Vector3 moveVector)
@@ -599,7 +603,7 @@ public class Player : Character
             //moveVector.x = 0f;
         }
 
-        myMotor.velocity = moveVector;
+        myMotor.Velocity = moveVector;
     } // end SetVelocity
 
     #endregion

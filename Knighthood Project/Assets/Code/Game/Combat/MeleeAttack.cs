@@ -2,10 +2,9 @@
 // 9.1.2013
 
 using UnityEngine;
-using System.Collections;
 
 /// <summary>
-/// AttacksTypes that only use the basic hitbox prefab.
+/// AttackTypes that only use the basic hitbox prefab.
 /// </summary>
 public class MeleeAttack : Attack
 {

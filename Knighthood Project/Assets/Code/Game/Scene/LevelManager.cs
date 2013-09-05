@@ -2,7 +2,6 @@
 // 8.18.2013
 
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System;
 
@@ -14,7 +13,7 @@ public class LevelManager : Singleton<LevelManager>
   #region Player Fields
 
   protected List<string> playerUsernames = new List<string>();
-  public List<Transform> playerTransforms { get; private set; }
+  public List<Transform> PlayerTransforms { get; private set; }
 
   #endregion
 
@@ -71,7 +70,7 @@ public class LevelManager : Singleton<LevelManager>
   /// </summary>
   protected void CreatePlayers()
   {
-    playerTransforms = new List<Transform>();
+    PlayerTransforms = new List<Transform>();
 
     Transform playerParent = (new GameObject().transform);
     playerParent.name = "Players";
@@ -80,7 +79,7 @@ public class LevelManager : Singleton<LevelManager>
     {
       GameObject player = (GameObject)Instantiate(GameResources.Instance.Player_Prefabs[i], new Vector3(-17f + 2f * i, 0.5f, 0f), Quaternion.Euler(0f, 90f, 0f));
       playerUsernames.Add(GameData.Instance.playerUsernames[i]);
-      playerTransforms.Add(player.transform);
+      PlayerTransforms.Add(player.transform);
       player.GetSafeComponent<Player>().Initialize(GameData.Instance.playerUsernames[i], i);
       player.transform.parent = playerParent;
     }

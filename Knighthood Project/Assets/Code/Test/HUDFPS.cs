@@ -19,7 +19,7 @@ public class HUDFPS : MonoBehaviour
 
   private float accum = 0; // FPS accumulated over the interval
   private int frames = 0; // Frames drawn over the interval
-  private float timeleft; // Left waitTime for current interval
+  private float timeleft; // Light waitTime for current interval
   private GUIText myGUIText;
 
   void Start()

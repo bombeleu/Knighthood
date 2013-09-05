@@ -2,7 +2,6 @@
 // 8.17.2013
 
 using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// Base class for all singletons.

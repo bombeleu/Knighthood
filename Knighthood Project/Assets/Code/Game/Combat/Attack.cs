@@ -2,12 +2,10 @@
 // 9.1.2013
 
 using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// Base class for all attacks.
 /// </summary>
-[ExecuteInEditMode()]
 public abstract class Attack : BaseMono
 {
     #region Protected Fields
@@ -19,7 +17,7 @@ public abstract class Attack : BaseMono
 
     #region Public Fields
 
-    public PlayerAttacks.Attacks attack;
+    public PlayerAttackManager.AttackTypes attack;
     public HitInfo hitInfo;
     public float hitboxTime;
     public Vector2 offset;
@@ -35,8 +33,8 @@ public abstract class Attack : BaseMono
     private void Awake()
     {
         // get references
-        myTransform = transform;
-        character = GetComponent<Character>();
+        myTransform = transform.parent;
+        character = myTransform.GetComponent<Character>();
     } // end Start
 
     #endregion

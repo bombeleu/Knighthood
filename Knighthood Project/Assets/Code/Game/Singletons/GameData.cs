@@ -3,7 +3,6 @@
 
 using UnityEngine;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -23,8 +22,8 @@ public class GameData : Singleton<GameData>
 
     #region Loading Fields
 
-    public string previousScene { get; private set; }
-    public string nextScene { get; private set; }
+    public string PreviousScene { get; private set; }
+    public string NextScene { get; private set; }
 
     #endregion
 
@@ -57,7 +56,7 @@ public class GameData : Singleton<GameData>
             }
             else
             {
-                playerUsernames.Add("Player " + (playerUsernames.Count+1).ToString());
+                playerUsernames.Add("Player " + (playerUsernames.Count+1));
             }
         }
 
@@ -83,8 +82,8 @@ public class GameData : Singleton<GameData>
     /// <param name="load">Should the Loading Screen be loaded first?</param>
     public void LoadScene(string nextScene, bool load = false)
     {
-        previousScene = Application.loadedLevelName;
-        this.nextScene = nextScene;
+        PreviousScene = Application.loadedLevelName;
+        this.NextScene = nextScene;
 
         Application.LoadLevel(load ? "Loading Screen" : nextScene);
     } // end LoadScene
@@ -116,16 +115,6 @@ public class GameData : Singleton<GameData>
         allUsernames.Add(newUsername);
         PlayerPrefs.SetString("All Usernames", string.Join("|", allUsernames.ToArray()));
     } // end AddUsername
-
-    #endregion
-
-    #region SignIn Methods
-
-    private int GetSignInInput()
-    {
-
-        return -1;
-    } // end GetSignInInput
 
     #endregion
 

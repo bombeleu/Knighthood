@@ -65,7 +65,7 @@ public class LevelCamera : Singleton<LevelCamera>
     bool moveLeft = false, moveRight = false;
     float minX = 0f, maxX = 0f;
 
-    foreach (Transform player in LevelManager.Instance.playerTransforms)
+    foreach (Transform player in LevelManager.Instance.PlayerTransforms)
     {
       float screenXPercent = myCamera.WorldToScreenPoint(player.position).x / Screen.width;
 

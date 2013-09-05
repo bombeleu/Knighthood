@@ -13,7 +13,7 @@ public class PlayerAttackManagerEditor : Editor
     {
         SerializedObject player = new SerializedObject(target);
         SerializedProperty attacks = player.FindProperty("attacks");
-        string[] attackTypes = Enum.GetNames(typeof(PlayerAttackManager.AttacksTypes));
+        string[] attackTypes = Enum.GetNames(typeof(PlayerAttackManager.AttackTypes));
         player.Update();
 
         for (int i = 0; i < attackTypes.Length-1; i++)

@@ -29,7 +29,7 @@ public class PlayerAttacksEditor : Editor
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(0), new GUIContent("Light Normal"));
             EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(1), new GUIContent("Light Side"));
-            EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(2), new GUIContent("Light Up"));
+            EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(2), new GUIContent("Light Heavy"));
             EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(3), new GUIContent("Light Down"));
             EditorGUI.indentLevel--;
         }
@@ -39,7 +39,7 @@ public class PlayerAttacksEditor : Editor
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(4), new GUIContent("Heavy Normal"));
             EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(5), new GUIContent("Heavy Side"));
-            EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(6), new GUIContent("Heavy Up"));
+            EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(6), new GUIContent("Heavy Heavy"));
             EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(7), new GUIContent("Heavy Down"));
         }
         rangedToggle = EditorGUILayout.Foldout(rangedToggle, "Ranged Attacks");
@@ -48,16 +48,16 @@ public class PlayerAttacksEditor : Editor
             EditorGUI.indentLevel++;
             EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(8), new GUIContent("Ranged Normal"));
             EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(9), new GUIContent("Ranged Side"));
-            EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(10), new GUIContent("Ranged Up"));
+            EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(10), new GUIContent("Ranged Heavy"));
             EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(11), new GUIContent("Ranged Down"));
         }
         magicToggle = EditorGUILayout.Foldout(magicToggle, "Magic Attacks");
         if (magicToggle)
         {
             EditorGUI.indentLevel++;
-            EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(12), new GUIContent("Magic Left"));
-            EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(13), new GUIContent("Magic Up"));
-            EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(14), new GUIContent("Magic Right"));
+            EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(12), new GUIContent("Magic Light"));
+            EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(13), new GUIContent("Magic Heavy"));
+            EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(14), new GUIContent("Magic Stun"));
             EditorGUILayout.PropertyField(player.FindProperty("attackSystems").GetArrayElementAtIndex(15), new GUIContent("Magic Down"));
         }
 
