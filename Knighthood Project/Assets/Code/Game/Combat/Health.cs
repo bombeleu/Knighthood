@@ -78,7 +78,6 @@ public class Health : BaseMono
     {
         if (invincible) return;
         if (hitID == lastHitID) return;
-        Log("hit by: " + hitID);
         lastHitID = hitID;
 
         ChangeHealth(-hitInfo.damage);

@@ -12,13 +12,15 @@ public class MagicAttack : Attack
     public int magicRequired;
     private ObjectRecycler AttackPrefabPool;
     private GameObject currentAttack;
+    public bool parent = true;
+    public Vector3 shootVector;
 
 
     #region MonoBehaviour Overrides
 
     private void Start()
     {
-        AttackPrefabPool = new ObjectRecycler(AttackPrefab, myTransform);
+        AttackPrefabPool = parent ? new ObjectRecycler(AttackPrefab, myTransform) : new ObjectRecycler(AttackPrefab);
     }
 
     #endregion
@@ -43,10 +45,17 @@ public class MagicAttack : Attack
     private void Attack()
     {
         currentAttack = AttackPrefabPool.nextFree;
-        currentAttack.transform.localPosition = new Vector3(0f, offset.y, offset.x);
+        currentAttack.transform.position = myTransform.position + new Vector3(0f, offset.y, offset.x);
         currentAttack.transform.rotation = myTransform.rotation;
 
-        currentAttack.GetComponent<Hitbox>().Initialize(character, hitInfo, hitboxTime, hitNumber);
+        if (shootVector != Vector3.zero)
+        {
+            currentAttack.GetComponent<Hitbox>().Initialize(character, hitInfo, hitboxTime, hitNumber, myTransform.TransformDirection(shootVector));
+        }
+        else
+        {
+            currentAttack.GetComponent<Hitbox>().Initialize(character, hitInfo, hitboxTime, hitNumber);
+        }
 
         InvokeMethod("EndAttack", attackTime + cooldown);
     }

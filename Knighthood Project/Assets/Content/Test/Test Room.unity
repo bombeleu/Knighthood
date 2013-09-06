@@ -216,17 +216,6 @@ MonoBehaviour:
   playerUsernames:
   - yeagz7
   allUsernames: []
-  shortcutObjects:
-  - {fileID: 100000, guid: bcf3c8837549784408f986a3d284cda3, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &413647908
 MonoBehaviour:
   m_ObjectHideFlags: 0

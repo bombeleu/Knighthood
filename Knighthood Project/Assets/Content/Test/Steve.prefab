@@ -69,6 +69,7 @@ GameObject:
   - 114: {fileID: 11400012}
   - 114: {fileID: 11400016}
   - 114: {fileID: 11400014}
+  - 114: {fileID: 11400020}
   m_Layer: 8
   m_Name: _AttackManager
   m_TagString: Untagged
@@ -280,7 +281,7 @@ MonoBehaviour:
   - {fileID: 11400012}
   - {fileID: 11400016}
   - {fileID: 11400014}
-  - {fileID: 0}
+  - {fileID: 11400020}
   - {fileID: 0}
   - {fileID: 0}
 --- !u!114 &11400010
@@ -347,6 +348,8 @@ MonoBehaviour:
   hitNumber: 3
   AttackPrefab: {fileID: 100000, guid: 88cf96551ecc8b04989d4fd1190a523d, type: 2}
   magicRequired: 10
+  parent: 1
+  shootVector: {x: 0, y: 0, z: 0}
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -383,6 +386,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
+--- !u!114 &11400020
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f004a12be8ec07f42bb3a8b3456d3dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  attack: 4
+  hitInfo:
+    damage: 5
+    effect: 5
+    knockBack: {x: 0, y: 0, z: 0}
+  hitboxTime: 2
+  offset: {x: 1, y: 1}
+  windup: 0
+  attackTime: .200000003
+  cooldown: 0
+  hitNumber: 3
+  AttackPrefab: {fileID: 100000, guid: 2b86ba59824606d43afc341e9fc1ea92, type: 2}
+  magicRequired: 10
+  parent: 0
+  shootVector: {x: 0, y: 0, z: 10}
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

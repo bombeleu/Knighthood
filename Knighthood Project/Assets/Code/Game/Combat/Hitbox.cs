@@ -55,6 +55,7 @@ public class Hitbox : BaseMono
     /// <param name="sender">Character who sent the attack.</param>
     /// <param name="hitInfo">HitInfo to pass along to the reciever's Health.</param>
     /// <param name="time">How long the hitbox should last.</param>
+    /// <para name="hitNumber">How many hits to perform. Usually 1.</para>
     public void Initialize(Character sender, HitInfo hitInfo, float time, int hitNumber)
     {
         this.sender = sender;
@@ -68,7 +69,23 @@ public class Hitbox : BaseMono
         }
 
         InvokeMethod("End", time);
-    } // end Initialize
+    }
+
+
+    /// <summary>
+    /// Create a new hitbox with new data.
+    /// </summary>
+    /// <param name="sender">Character who sent the attack.</param>
+    /// <param name="hitInfo">HitInfo to pass along to the reciever's Health.</param>
+    /// <param name="time">How long the hitbox should last.</param>
+    /// <para name="hitNumber">How many hits to perform. Usually 1.</para>
+    /// <para name="hitNumber">How many hits to perform. Usually 1.</para>
+    public void Initialize(Character sender, HitInfo hitInfo, float time, int hitNumber, Vector3 shootVector)
+    {
+        //StartCoroutine(Move(shootVector));
+        Job moveJob = new Job(Move(shootVector), time);
+        Initialize(sender, hitInfo, time, hitNumber);
+    }
 
 
     /// <summary>
@@ -77,7 +94,7 @@ public class Hitbox : BaseMono
     public void End()
     {
         gameObject.SetActive(false);
-    } // end End
+    }
 
     #endregion
 
@@ -102,12 +119,20 @@ public class Hitbox : BaseMono
         if (hitNumber <= 1) yield break;
 
         float buffer = time/hitNumber;
-        Log(buffer);
         for (int i = 1; i < hitNumber; i++)
         {
             yield return WaitForTime(buffer);
             SetHitID();
-            Log("ID: " + hitID + " : " + Time.timeSinceLevelLoad);
+        }
+    }
+
+
+    private IEnumerator Move(Vector3 initialVector)
+    {
+        while (true)
+        {
+            myTransform.position += initialVector*GameTime.deltaTime;
+            yield return null;
         }
     }
 
