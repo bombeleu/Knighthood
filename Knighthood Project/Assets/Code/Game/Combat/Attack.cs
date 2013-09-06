@@ -1,6 +1,7 @@
 ﻿// Steve Yeager
 // 9.1.2013
 
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -24,6 +25,7 @@ public abstract class Attack : BaseMono
     public float windup;
     public float attackTime;
     public float cooldown;
+    public int hitNumber = 1;
 
     #endregion
 

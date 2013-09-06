@@ -9,7 +9,7 @@ using UnityEngine;
 public class MeleeAttack : Attack
 {
     public Vector2 size;
-    public GameObject currentHitbox;
+    private GameObject currentHitbox;
 
 
     public override bool Activate()
@@ -30,7 +30,7 @@ public class MeleeAttack : Attack
         currentHitbox.transform.localPosition = new Vector3(0f, offset.y, offset.x);
         currentHitbox.transform.rotation = myTransform.rotation;
 
-        currentHitbox.GetComponent<Hitbox>().Initialize(character, hitInfo, hitboxTime);
+        currentHitbox.GetComponent<Hitbox>().Initialize(character, hitInfo, hitboxTime, hitNumber);
 
         InvokeMethod("EndAttack", attackTime + cooldown);
     } // end Attack

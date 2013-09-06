@@ -14,6 +14,7 @@ GameObject:
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400000}
   - 114: {fileID: 11400010}
+  - 114: {fileID: 11400018}
   m_Layer: 8
   m_Name: Steve
   m_TagString: Player
@@ -66,6 +67,8 @@ GameObject:
   - 114: {fileID: 11400008}
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400012}
+  - 114: {fileID: 11400016}
+  - 114: {fileID: 11400014}
   m_Layer: 8
   m_Name: _AttackManager
   m_TagString: Untagged
@@ -209,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086fdd72e7824a0479a940111cc43c35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
+  log: 0
   moveSpeed: 15
   gravity: 75
   terminalVelocity: 40
@@ -246,8 +249,8 @@ MonoBehaviour:
   windup: 0
   attackTime: .200000003
   cooldown: 0
+  hitNumber: 1
   size: {x: 1, y: 1}
-  currentHitbox: {fileID: 100000, guid: 73c37bd95eaf42d4597e295bd2852f0e, type: 2}
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -275,8 +278,8 @@ MonoBehaviour:
   attacks:
   - {fileID: 11400004}
   - {fileID: 11400012}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400016}
+  - {fileID: 11400014}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -317,8 +320,69 @@ MonoBehaviour:
   windup: 0
   attackTime: .5
   cooldown: 0
+  hitNumber: 1
   size: {x: 2, y: 2}
-  currentHitbox: {fileID: 100000, guid: 73c37bd95eaf42d4597e295bd2852f0e, type: 2}
+--- !u!114 &11400014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f004a12be8ec07f42bb3a8b3456d3dc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  attack: 3
+  hitInfo:
+    damage: 5
+    effect: 5
+    knockBack: {x: 0, y: 0, z: 0}
+  hitboxTime: 1
+  offset: {x: 0, y: 1}
+  windup: 0
+  attackTime: 1
+  cooldown: 0
+  hitNumber: 3
+  AttackPrefab: {fileID: 100000, guid: 88cf96551ecc8b04989d4fd1190a523d, type: 2}
+  magicRequired: 10
+--- !u!114 &11400016
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 328ce5297eb5f1e419122c1a90804979, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  attack: 2
+  hitInfo:
+    damage: 2
+    effect: 0
+    knockBack: {x: 0, y: 0, z: 0}
+  hitboxTime: .5
+  offset: {x: 1, y: 1}
+  windup: 0
+  attackTime: .5
+  cooldown: 0
+  hitNumber: 1
+  size: {x: 3, y: 1}
+--- !u!114 &11400018
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bdf6eddffcb3b544ab59d93825d8fd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

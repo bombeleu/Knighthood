@@ -31,7 +31,7 @@ public class Player : Character
 
     #region Player Fields
 
-    private PlayerInfo playerInfo;
+    public PlayerInfo playerInfo { get; private set; }
     public bool keyboard = false;
     public float attackDeadZone = 0.7f;
     public float magicModifierDeadZone = 0.8f;
@@ -137,6 +137,14 @@ public class Player : Character
     {
         while (true)
         {
+            if (CanFallThrough())
+            {
+                myTransform.position += Vector3.down * 0.5f;
+                SetState(States.Falling, null);
+                yield break;
+            }
+
+
             // enter attacking state
             if (GetAttackingInput() != PlayerAttackManager.AttackTypes.None)
             {
@@ -572,6 +580,22 @@ public class Player : Character
 
         return PlayerAttackManager.AttackTypes.None;
     } // end GetAttackingInput
+
+
+    private bool CanFallThrough()
+    {
+        float inputY = GetMovingInput().y;
+
+        if (inputY >= 0) return false;
+
+        RaycastHit rayInfo;
+        if (Physics.Raycast(myTransform.position + Vector3.up * 0.1f, Vector3.down, out rayInfo, 0.2f, 1 << LayerMask.NameToLayer("Terrain")))
+        {
+            return rayInfo.transform.tag == "Translucent";
+        }
+
+        return false;
+    } // end CanFallThrough
 
     #endregion
 

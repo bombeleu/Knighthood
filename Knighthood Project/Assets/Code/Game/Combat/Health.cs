@@ -78,10 +78,10 @@ public class Health : BaseMono
     {
         if (invincible) return;
         if (hitID == lastHitID) return;
-
+        Log("hit by: " + hitID);
         lastHitID = hitID;
 
-        ChangeHealth(hitInfo.damage);
+        ChangeHealth(-hitInfo.damage);
         GameResources.Instance.DamageIndicator_Pool.nextFree.GetComponent<DamageIndicator>().Initiate(transform, hitInfo.damage);
 
         if (HitEvent != null)

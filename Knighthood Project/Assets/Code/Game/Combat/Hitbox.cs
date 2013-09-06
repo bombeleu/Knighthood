@@ -17,7 +17,7 @@ public class Hitbox : BaseMono
 
     #region Combat Fields
 
-    private static int hitIDs;
+    private static int HitIDs = 1;
     private int hitID;
     private Character sender;
     public HitInfo hitInfo { get; private set; }
@@ -55,13 +55,17 @@ public class Hitbox : BaseMono
     /// <param name="sender">Character who sent the attack.</param>
     /// <param name="hitInfo">HitInfo to pass along to the reciever's Health.</param>
     /// <param name="time">How long the hitbox should last.</param>
-    public void Initialize(Character sender, HitInfo hitInfo, float time)
+    public void Initialize(Character sender, HitInfo hitInfo, float time, int hitNumber)
     {
         this.sender = sender;
         this.hitInfo = hitInfo;
 
         gameObject.tag = sender.gameObject.tag;
-        hitID = ++hitIDs;
+        SetHitID();
+        if (hitNumber > 1)
+        {
+            StartCoroutine(MultiHit(time, hitNumber));
+        }
 
         InvokeMethod("End", time);
     } // end Initialize
@@ -74,6 +78,38 @@ public class Hitbox : BaseMono
     {
         gameObject.SetActive(false);
     } // end End
+
+    #endregion
+
+    #region Private Methods
+
+    /// <summary>
+    /// Increase HitIDs total and assign hitID to next value;
+    /// </summary>
+    private void SetHitID()
+    {
+        hitID = ++HitIDs;
+    }
+
+
+    /// <summary>
+    /// Increase the hitID to allow for subsequent hits to the same Health component.
+    /// </summary>
+    /// <param name="time">How long the hitbox will last.</param>
+    /// <param name="hitNumber">How many hits to perform.</param>
+    private IEnumerator MultiHit(float time, float hitNumber)
+    {
+        if (hitNumber <= 1) yield break;
+
+        float buffer = time/hitNumber;
+        Log(buffer);
+        for (int i = 1; i < hitNumber; i++)
+        {
+            yield return WaitForTime(buffer);
+            SetHitID();
+            Log("ID: " + hitID + " : " + Time.timeSinceLevelLoad);
+        }
+    }
 
     #endregion
 
