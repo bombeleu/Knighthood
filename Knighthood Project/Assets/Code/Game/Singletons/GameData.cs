@@ -33,7 +33,8 @@ public class GameData : Singleton<GameData>
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-    } // end Start
+        
+    } // end Awake
 
 
     private void Update()
@@ -56,7 +57,7 @@ public class GameData : Singleton<GameData>
             }
             else
             {
-                playerUsernames.Add("Player " + (playerUsernames.Count+1));
+                playerUsernames.Add("Player " + (playerUsernames.Count + 1));
             }
         }
 
