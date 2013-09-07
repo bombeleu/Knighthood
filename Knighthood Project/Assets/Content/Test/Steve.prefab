@@ -240,6 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
+  attackName: 
   attack: 0
   hitInfo:
     damage: 1
@@ -311,6 +312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
+  attackName: 
   attack: 1
   hitInfo:
     damage: 2
@@ -335,6 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
+  attackName: IceShield
   attack: 3
   hitInfo:
     damage: 5
@@ -350,6 +353,7 @@ MonoBehaviour:
   magicRequired: 10
   parent: 1
   shootVector: {x: 0, y: 0, z: 0}
+  oneHit: 0
 --- !u!114 &11400016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -362,6 +366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
+  attackName: 
   attack: 2
   hitInfo:
     damage: 2
@@ -398,9 +403,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
+  attackName: Icicle Blast
   attack: 4
   hitInfo:
-    damage: 5
+    damage: 1
     effect: 5
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: 2
@@ -409,10 +415,11 @@ MonoBehaviour:
   attackTime: .200000003
   cooldown: 0
   hitNumber: 3
-  AttackPrefab: {fileID: 100000, guid: 2b86ba59824606d43afc341e9fc1ea92, type: 2}
-  magicRequired: 10
+  AttackPrefab: {fileID: 100000, guid: 14610f11a1edb1a4eb1a2d32a745568e, type: 2}
+  magicRequired: 2
   parent: 0
-  shootVector: {x: 0, y: 0, z: 10}
+  shootVector: {x: 0, y: 0, z: 20}
+  oneHit: 1
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
