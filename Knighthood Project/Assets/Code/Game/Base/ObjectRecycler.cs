@@ -1,76 +1,76 @@
 // Steve Yeager
 // 8.18.2013
 
+using System;
 using UnityEngine;
 using System.Collections.Generic;
-using System;
 
 /// <summary>
 /// Holds references to already instantiate objects.
 /// </summary>
 public class ObjectRecycler
 {
-  private readonly GameObject prefab;
-  private List<GameObject> objects = new List<GameObject>();
-  private readonly Transform parent;
+    private readonly GameObject prefab;
+    private List<GameObject> objects = new List<GameObject>();
+    private readonly Transform parent;
 
 
-  /// <summary>
-  /// Constructor.
-  /// </summary>
-  /// <param name="prefab">Type of gameobject to create.</param>
-  /// <param name="parent">Should the objects be parented to a pool?</param>
-  /// <param name="premade">Does the pool have some objects already created? Must have non-null parent.</param>
-  public ObjectRecycler(GameObject prefab, Transform parent = null, bool premade = false)
-  {
-    this.prefab = prefab;
-    this.parent = parent;
-
-    if (premade)
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="prefab">Type of gameobject to create.</param>
+    /// <param name="parent">Should the objects be parented to a pool?</param>
+    /// <param name="premade">Does the pool have some objects already created? Must have non-null parent.</param>
+    public ObjectRecycler(GameObject prefab, Transform parent = null, bool premade = false)
     {
-      for (int i = 0; i < parent.childCount; i++)
-      {
-        objects.Add(parent.GetChild(i).gameObject);
-      }
-    }
-  } // end ObjectRecycler
+        this.prefab = prefab;
+        this.parent = parent;
 
-
-  /// <summary>Return first inactive object.</summary>
-  public GameObject nextFree
-  {
-    get
-    {
-      // found inactive object
-      foreach (GameObject gameObject in objects)
-      {
-        if (!gameObject.activeInHierarchy)
+        if (premade)
         {
-          gameObject.SetActive(true);
-          return gameObject;
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                objects.Add(parent.GetChild(i).gameObject);
+            }
         }
-      }
-
-      // must create a new object
-      GameObject newObject = (GameObject)MonoBehaviour.Instantiate(prefab);
-      objects.Add(newObject);
-      newObject.transform.parent = parent;
-      return newObject;
     }
-  } // end nextFree
 
 
-  /// <summary>
-  /// Destroy all objects in pool and clear list.
-  /// </summary>
-  public void Clear()
-  {
-    foreach (GameObject go in objects)
+    /// <summary>Return first inactive object.</summary>
+    public GameObject nextFree
     {
-      MonoBehaviour.Destroy(go);
+        get
+        {
+            // found inactive object
+            foreach (GameObject gameObject in objects)
+            {
+                if (!gameObject.activeInHierarchy)
+                {
+                    gameObject.SetActive(true);
+                    return gameObject;
+                }
+            }
+
+            // must create a new object
+            GameObject newObject = (GameObject)MonoBehaviour.Instantiate(prefab);
+            objects.Add(newObject);
+            newObject.transform.parent = parent;
+            return newObject;
+        }
     }
 
-    objects.Clear();
-  } // end Clear
 
-} // end ObjectRecycler class
+    /// <summary>
+    /// Destroy all objects in pool and clear list.
+    /// </summary>
+    public void Clear()
+    {
+        foreach (GameObject go in objects)
+        {
+            MonoBehaviour.Destroy(go);
+        }
+
+        objects.Clear();
+    }
+
+}
