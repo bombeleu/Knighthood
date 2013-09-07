@@ -14,6 +14,7 @@ public class MagicAttack : Attack
     private GameObject currentAttack;
     public bool parent = true;
     public Vector3 shootVector;
+    public bool oneHit;
 
 
     #region MonoBehaviour Overrides
@@ -29,9 +30,8 @@ public class MagicAttack : Attack
 
     public override bool Activate()
     {
-        if (magicRequired <= character.GetComponent<Magic>().currentMagic)
+        if (character.GetComponent<Magic>().CastMagic(magicRequired))
         {
-            character.GetComponent<Magic>().currentMagic -= magicRequired;
             Attack();
             return true;
         }
@@ -47,14 +47,15 @@ public class MagicAttack : Attack
         currentAttack = AttackPrefabPool.nextFree;
         currentAttack.transform.position = myTransform.position + new Vector3(0f, offset.y, offset.x);
         currentAttack.transform.rotation = myTransform.rotation;
+        currentAttack.transform.Align();
 
         if (shootVector != Vector3.zero)
         {
-            currentAttack.GetComponent<Hitbox>().Initialize(character, hitInfo, hitboxTime, hitNumber, myTransform.TransformDirection(shootVector));
+            currentAttack.GetComponent<Hitbox>().Initialize(character, hitInfo, hitboxTime, hitNumber, myTransform.TransformDirection(shootVector), oneHit);
         }
         else
         {
-            currentAttack.GetComponent<Hitbox>().Initialize(character, hitInfo, hitboxTime, hitNumber);
+            currentAttack.GetComponent<Hitbox>().Initialize(character, hitInfo, hitboxTime, hitNumber, oneHit);
         }
 
         InvokeMethod("EndAttack", attackTime + cooldown);
