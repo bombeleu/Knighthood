@@ -69,6 +69,15 @@ public class Player : Character
     } // end Start
 
 
+    private void Update()
+    {
+        if (Input.GetButtonDown("Back_" + playerInfo.playerNumber) || Input.GetKeyDown(KeyCode.Return))
+        {
+            GameData.Instance.ReloadScene();
+        }
+    }
+
+
     //private void OnDrawGizmos()
     //{
     //  Gizmos.DrawSphere(myTransform.position + Vector3.up + myTransform.forward * Mathf.Abs(Velocity.x * GameTime.deltaTime), 0.5f);
