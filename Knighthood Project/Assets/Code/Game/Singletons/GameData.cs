@@ -27,13 +27,19 @@ public class GameData : Singleton<GameData>
 
     #endregion
 
+    #region Events
+
+    /// <summary>When a new scene is being loaded.</summary>
+    public static EventHandler<LoadSceneEventArgs> LoadSceneEvent;
+
+    #endregion
+
 
     #region MonoBehaviour Overrides
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        
     } // end Awake
 
 
@@ -86,8 +92,27 @@ public class GameData : Singleton<GameData>
         PreviousScene = Application.loadedLevelName;
         this.NextScene = nextScene;
 
+        if (LoadSceneEvent != null)
+        {
+            LoadSceneEvent(this, new LoadSceneEventArgs(PreviousScene, NextScene));
+        }
+
         Application.LoadLevel(load ? "Loading Screen" : nextScene);
     } // end LoadScene
+
+
+    /// <summary>
+    /// Reloads the current scene without the Loading Screen.
+    /// </summary>
+    public void ReloadScene()
+    {
+        if (LoadSceneEvent != null)
+        {
+            LoadSceneEvent(this, new LoadSceneEventArgs(PreviousScene, NextScene));
+        }
+
+        Application.LoadLevel(Application.loadedLevel);
+    }
 
     #endregion
 
@@ -119,4 +144,6 @@ public class GameData : Singleton<GameData>
 
     #endregion
 
-} // end GameData class
+}
+
+// end GameData class

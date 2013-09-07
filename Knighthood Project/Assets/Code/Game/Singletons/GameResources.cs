@@ -1,46 +1,69 @@
 ﻿// Steve Yeager
 // 8.18.2013
 
-using UnityEngine;
 using System;
-using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// Singleton to hold references to widely used objects.
 /// </summary>
 public class GameResources : Singleton<GameResources>
 {
-  #region Player Fields
+    #region Player Fields
 
-  public GameObject[] Player_Prefabs;
+    public GameObject[] Player_Prefabs;
 
-  #endregion
+    #endregion
 
-  #region GUI
+    #region GUI
 
-  public GameObject DamageIndicator_Prefab;
-  public ObjectRecycler DamageIndicator_Pool;
-  public GameObject Hitbox_Prefab;
-  public ObjectRecycler Hitbox_Pool;
+    public GameObject DamageIndicator_Prefab;
+    public ObjectRecycler DamageIndicator_Pool;
+    public GameObject Hitbox_Prefab;
+    public ObjectRecycler Hitbox_Pool;
 
-  #endregion
+    #endregion
 
-  #region Doc Fields
+    #region Doc Fields
 
-  public TextAsset NPCStats;
+    public TextAsset NPCStats;
 
-  #endregion
+    #endregion
 
-  #region MonoBehaviour Overrides
 
-  private void Awake()
-  {
-    DontDestroyOnLoad(gameObject);
+    #region MonoBehaviour Overrides
 
-    DamageIndicator_Pool = new ObjectRecycler(DamageIndicator_Prefab);
-    Hitbox_Pool = new ObjectRecycler(Hitbox_Prefab);
-  } // end Start
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
 
-  #endregion
+        DamageIndicator_Pool = new ObjectRecycler(DamageIndicator_Prefab);
+        Hitbox_Pool = new ObjectRecycler(Hitbox_Prefab);
+    } // end Awake
+
+
+    private void Start()
+    {
+        // set events
+        GameData.LoadSceneEvent += LoadSceneHandler;
+    }
+
+    #endregion
+
+    #region Event Handlers
+
+    private void LoadSceneHandler(object sender, LoadSceneEventArgs loadSceneEventArgs)
+    {
+        if (DamageIndicator_Pool != null)
+        {
+            DamageIndicator_Pool.Clear();
+        }
+        if (Hitbox_Pool != null)
+        {
+            Hitbox_Pool.Clear();
+        }
+    }
+
+    #endregion
 
 } // end GameResources class
