@@ -18,6 +18,7 @@ public abstract class Attack : BaseMono
 
     #region Public Fields
 
+    public string attackName;
     public PlayerAttackManager.AttackTypes attack;
     public HitInfo hitInfo;
     public float hitboxTime;
