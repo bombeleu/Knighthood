@@ -6,7 +6,7 @@ using System.Collections;
 using System.Xml;
 
 /// <summary>
-/// Holds all stat info for a character.
+/// Holds all stat info for a myCharacter.
 /// </summary>
 public class StatManager
 {

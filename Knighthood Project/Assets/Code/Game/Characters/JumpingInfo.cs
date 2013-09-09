@@ -6,14 +6,14 @@ using System.Collections;
 using System;
 
 /// <summary>
-/// Class to hold all info needed for the character jumping state.
+/// Class to hold all info needed for the myCharacter jumping state.
 /// </summary>
 [Serializable]
 public class JumpingInfo
 {
-  /// <summary>How fast the character moves upward.</summary>
+  /// <summary>How fast the myCharacter moves upward.</summary>
   public float jumpSpeed;
-  /// <summary>How long the character can jump.</summary>
+  /// <summary>How long the myCharacter can jump.</summary>
   public float climbTime;
 
 } // end JumpingInfo class

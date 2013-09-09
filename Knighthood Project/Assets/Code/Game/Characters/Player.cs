@@ -14,7 +14,9 @@ public class Player : Character
 {
     #region References
 
-    private PlayerAttackManager attackManager;
+    //private PlayerAttackManager attackManager;
+    private AttackManager attackManager;
+    private Material myMaterial;
 
     #endregion
 
@@ -36,6 +38,24 @@ public class Player : Character
     public float attackDeadZone = 0.7f;
     public float magicModifierDeadZone = 0.8f;
     public float moveBuffer = 0.1f;
+    private enum AttackTypes
+    {
+        None = -1,
+        Light = 0,
+        Heavy = 1,
+        Stun = 2,
+        SuperLight = 3,
+        SuperHeavy = 4,
+        SuperStun = 5,
+        SuperJump = 6
+    };
+
+    #endregion
+
+    #region Animation Fields
+
+    public string[] animationNames;
+    public Texture[] animationTex;
 
     #endregion
 
@@ -46,27 +66,30 @@ public class Player : Character
     {
         base.Awake();
 
+        // get references
+        myMaterial = myTransform.FindChild("Body").renderer.materials[0];
+
         // create states
         CreateState(States.Spawning, SpawningEnter, info => {});
         CreateState(States.Idling, IdlingEnter, IdlingExit);
         CreateState(States.Jumping, JumpingEnter, info => {});
-        CreateState(States.Moving, info => { currentStateJob = new Job(MovingUpdate()); }, MovingExit);
+        CreateState(States.Moving, MovingEnter, MovingExit);
         CreateState(States.Falling, FallingEnter, info => {});
         CreateState(States.Attacking, AttackingEnter, info => {});
         initialState = States.Spawning;
 
         // combat
-        attackManager = GetComponentInChildren<PlayerAttackManager>();
+        attackManager = GetComponent<AttackManager>();
 
         // test
         //log = false;
-    } // end Awake
+    }
 
 
     private void Start()
     {
         UnityEditor.Selection.objects = new UnityEngine.Object[1] { gameObject };
-    } // end Start
+    }
 
 
     private void Update()
@@ -75,6 +98,12 @@ public class Player : Character
         {
             GameData.Instance.ReloadScene();
         }
+    }
+
+
+    private void FixedUpdate()
+    {
+        Debug.Log(myRigidbody.velocity);
     }
 
 
@@ -98,7 +127,7 @@ public class Player : Character
         name = username;
 
         StartInitialState(null);
-    } // end Initialize
+    }
 
     #endregion
 
@@ -107,7 +136,7 @@ public class Player : Character
     private void SpawningEnter(Dictionary<string, object> info)
     {
         currentStateJob = new Job(SpawningUpdate());
-    } // end SpawningEnter
+    }
 
 
     private IEnumerator SpawningUpdate()
@@ -115,7 +144,7 @@ public class Player : Character
         yield return WaitForTime(spawnTime);
 
         SetState(States.Idling, null);
-    } // end SpawningUpdate
+    }
 
 
     private void IdlingEnter(Dictionary<string, object> info)
@@ -134,12 +163,15 @@ public class Player : Character
             }
         }
 
+        // attackAnimation
+        myMaterial.mainTexture = animationTex[Array.IndexOf(animationNames, "Idling")];
+
         // reset values
         velocity = Vector3.zero;
         SetVelocity(velocity);
 
         currentStateJob = new Job(IdlingUpdate());
-    } // end IdlingEnter
+    }
 
 
     private IEnumerator IdlingUpdate()
@@ -155,9 +187,10 @@ public class Player : Character
 
 
             // enter attacking state
-            if (GetAttackingInput() != PlayerAttackManager.AttackTypes.None)
+            AttackTypes attack = GetAttackingInput();
+            if (attack != AttackTypes.None)
             {
-                var info = new Dictionary<string, object> {{"attack", GetAttackingInput()}};
+                var info = new Dictionary<string, object> {{"attack", attack}};
                 SetState(States.Attacking, info);
                 yield break;
             }
@@ -185,12 +218,12 @@ public class Player : Character
 
             yield return null;
         }
-    } // end IdlingUpdate
+    }
 
 
     private void IdlingExit(Dictionary<string, object> info)
     {
-    } // end IdlingExit
+    }
 
 
     private IEnumerator MovingUpdate()
@@ -201,10 +234,10 @@ public class Player : Character
         while (true)
         {
             // enter attacking state
-            if (GetAttackingInput() != PlayerAttackManager.AttackTypes.None)
+            AttackTypes attack = GetAttackingInput();
+            if (attack != AttackTypes.None)
             {
-                Dictionary<string, object> info = new Dictionary<string, object>();
-                info.Add("attack", GetAttackingInput());
+                var info = new Dictionary<string, object> { { "attack", attack } };
                 SetState(States.Attacking, info);
                 yield break;
             }
@@ -242,17 +275,29 @@ public class Player : Character
 
             yield return null;
         }
-    } // end MovingUpdate
+    }
+
+
+    private void MovingEnter(Dictionary<string, object> info)
+    {
+        // attackAnimation
+        myMaterial.mainTexture = animationTex[Array.IndexOf(animationNames, "Moving")];
+    
+        currentStateJob = new Job(MovingUpdate());
+    }
 
 
     private void MovingExit(Dictionary<string, object> info)
     {
         velocity.y = 0f;
-    } // end MovingExit
+    }
 
 
     private void JumpingEnter(Dictionary<string, object> info)
     {
+        // attackAnimation
+        myMaterial.mainTexture = animationTex[Array.IndexOf(animationNames, "Jumping")];
+
         currentStateJob = new Job(JumpingUpdate(), false);
         currentStateJob.CreateChildJob(Climb(), jumpingInfo.climbTime);
         currentStateJob.CreateChildJob(Float());
@@ -264,14 +309,14 @@ public class Player : Character
                                                 SetState(States.Falling, info);
                                             };
         currentStateJob.Start();
-    } // end JumpingEnter
+    }
 
 
     private IEnumerator JumpingUpdate()
     {
         // play the substates Climb and Float
         yield return null;
-    } // end JumpingUpdate
+    }
 
 
     private IEnumerator Climb()
@@ -281,9 +326,10 @@ public class Player : Character
         while (GetJumpingInput(true))
         {
             // enter attacking state
-            if (GetAttackingInput() != PlayerAttackManager.AttackTypes.None)
+            AttackTypes attack = GetAttackingInput();
+            if (attack != AttackTypes.None)
             {
-                var info = new Dictionary<string, object> {{"attack", GetAttackingInput()}};
+                var info = new Dictionary<string, object> { { "attack", attack } };
                 SetState(States.Attacking, info);
                 yield break;
             }
@@ -293,7 +339,7 @@ public class Player : Character
             SetVelocity(velocity);
             yield return null;
         }
-    } // end Climb
+    }
 
 
     private IEnumerator Float()
@@ -301,9 +347,10 @@ public class Player : Character
         while (velocity.y > 0.1f)
         {
             // enter attacking state
-            if (GetAttackingInput() != PlayerAttackManager.AttackTypes.None)
+            AttackTypes attack = GetAttackingInput();
+            if (attack != AttackTypes.None)
             {
-                var info = new Dictionary<string, object> {{"attack", GetAttackingInput()}};
+                var info = new Dictionary<string, object> { { "attack", attack } };
                 SetState(States.Attacking, info);
                 yield break;
             }
@@ -314,7 +361,7 @@ public class Player : Character
             SetVelocity(velocity);
             yield return null;
         }
-    } // end Float
+    }
 
 
     private void FallingEnter(Dictionary<string, object> info)
@@ -326,6 +373,9 @@ public class Player : Character
             return;
         }
 
+        // attackAnimation
+        myMaterial.mainTexture = animationTex[Array.IndexOf(animationNames, "Falling")];
+
         // give extra jump waitTime
         if (info != null && info.ContainsKey("extraJump"))
         {
@@ -334,7 +384,7 @@ public class Player : Character
         }
 
         currentStateJob = new Job(FallingUpdate());
-    } // end FallingEnter
+    }
 
 
     private IEnumerator FallingUpdate()
@@ -349,9 +399,10 @@ public class Player : Character
             }
 
             // enter attacking state
-            if (GetAttackingInput() != PlayerAttackManager.AttackTypes.None)
+            AttackTypes attack = GetAttackingInput();
+            if (attack != AttackTypes.None)
             {
-                var info = new Dictionary<string, object> {{"attack", GetAttackingInput()}};
+                var info = new Dictionary<string, object> { { "attack", attack } };
                 SetState(States.Attacking, info);
                 yield break;
             }
@@ -359,7 +410,6 @@ public class Player : Character
             // enter jumping state
             if (canExtraJump && GetJumpingInput())
             {
-                Log("EXTRA JUMP!!!!!!!!!!!!!!!!!!!!!!!!!");
                 SetState(States.Jumping, null);
                 yield break;
             }
@@ -374,7 +424,6 @@ public class Player : Character
             // fast fall
             if (GetMovingInput().y < -0.9f)
             {
-                Log("Fast falling");
                 velocity.y -= fastFallSpeed * GameTime.deltaTime;
             }
 
@@ -391,14 +440,16 @@ public class Player : Character
             yield return null;
         }
 
-    } // end Falling Update
+    }
 
 
     private void AttackingEnter(Dictionary<string, object> info)
     {
         // attack
-        if (attackManager.Activate((PlayerAttackManager.AttackTypes)info["attack"]))
+        Texture attackAnimation = attackManager.Activate(info["attack"].ToString());
+        if (attackAnimation != null)
         {
+            myMaterial.mainTexture = attackAnimation;
             currentStateJob = new Job(AttackingUpdate());
         }
         // return to previous state
@@ -406,7 +457,7 @@ public class Player : Character
         {
             SetState((States)info["previous state"], null);
         }
-    } // end AttackingEnter
+    }
 
 
     private IEnumerator AttackingUpdate()
@@ -420,13 +471,13 @@ public class Player : Character
             }
             else
             {
-                velocity.x = 0f;
+                velocity = Vector2.zero;
                 SetVelocity(velocity);
             }
 
             yield return null;
         }
-    } // end AttackingUpdate
+    }
 
     #endregion
 
@@ -490,10 +541,12 @@ public class Player : Character
         if (x > 0)
         {
             myTransform.rotation = Quaternion.Euler(0f, 90f, 0f);
+            myTransform.Align();
         }
         else if (x < 0)
         {
             myTransform.rotation = Quaternion.Euler(0f, 270f, 0f);
+            myTransform.Align();
         }
     } // end SetRotation
 
@@ -502,7 +555,7 @@ public class Player : Character
     /// Detect attack input.
     /// </summary>
     /// <returns>Returns corresponding attack type.</returns>
-    private PlayerAttackManager.AttackTypes GetAttackingInput()
+    private AttackTypes GetAttackingInput()
     {
         if (keyboard)
         {
@@ -511,38 +564,38 @@ public class Player : Character
             {
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
-                    return PlayerAttackManager.AttackTypes.SuperLeft;
+                    return AttackTypes.SuperLight;
                 }
                 if (Input.GetKeyDown(KeyCode.UpArrow))
                 {
-                    return PlayerAttackManager.AttackTypes.SuperHeavy;
+                    return AttackTypes.SuperHeavy;
                 }
                 if (Input.GetKeyDown(KeyCode.RightArrow))
                 {
-                    return PlayerAttackManager.AttackTypes.SuperStun;
+                    return AttackTypes.SuperStun;
                 }
                 if (Input.GetKeyDown(KeyCode.DownArrow))
                 {
-                    return PlayerAttackManager.AttackTypes.SuperJump;
+                    return AttackTypes.SuperJump;
                 }
             }
 
             // left
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                return PlayerAttackManager.AttackTypes.Light;
+                return AttackTypes.Light;
             }
 
             // up
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                return PlayerAttackManager.AttackTypes.Heavy;
+                return AttackTypes.Heavy;
             }
 
             // right
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                return PlayerAttackManager.AttackTypes.Stun;
+                return AttackTypes.Stun;
             }
         }
         else
@@ -552,42 +605,42 @@ public class Player : Character
             {
                 if (Input.GetButtonDown("X_" + playerInfo.playerNumber))
                 {
-                    return PlayerAttackManager.AttackTypes.SuperLeft;
+                    return AttackTypes.SuperLight;
                 }
                 if (Input.GetButtonDown("Y_" + playerInfo.playerNumber))
                 {
-                    return PlayerAttackManager.AttackTypes.SuperHeavy;
+                    return AttackTypes.SuperHeavy;
                 }
                 if (Input.GetButtonDown("B_" + playerInfo.playerNumber))
                 {
-                    return PlayerAttackManager.AttackTypes.SuperStun;
+                    return AttackTypes.SuperStun;
                 }
                 if (Input.GetButtonDown("A_" + playerInfo.playerNumber))
                 {
-                    return PlayerAttackManager.AttackTypes.SuperJump;
+                    return AttackTypes.SuperJump;
                 }
             }
 
             // left
             if (Input.GetButtonDown("X_" + playerInfo.playerNumber))
             {
-                return PlayerAttackManager.AttackTypes.Light;
+                return AttackTypes.Light;
             }
 
             // up
             if (Input.GetButtonDown("Y_" + playerInfo.playerNumber))
             {
-                return PlayerAttackManager.AttackTypes.Heavy;
+                return AttackTypes.Heavy;
             }
 
             // right
             if (Input.GetButtonDown("B_" + playerInfo.playerNumber))
             {
-                return PlayerAttackManager.AttackTypes.Stun;
+                return AttackTypes.Stun;
             }
         }
 
-        return PlayerAttackManager.AttackTypes.None;
+        return AttackTypes.None;
     } // end GetAttackingInput
 
 
@@ -640,5 +693,4 @@ public class Player : Character
     } // end SetVelocity
 
     #endregion
-
-} // end Player class
+}

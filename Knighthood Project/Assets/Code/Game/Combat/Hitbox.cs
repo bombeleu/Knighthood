@@ -21,7 +21,7 @@ public class Hitbox : BaseMono
     private int hitID;
     private Character sender;
     public HitInfo hitInfo { get; private set; }
-    private bool oneHit;
+    private bool oneShot;
     private Job moveJob;
 
     #endregion
@@ -40,21 +40,28 @@ public class Hitbox : BaseMono
     {
         if (other.tag == tag) return;
 
+        // hit opponent
         Health opponentHealth = other.GetComponent<Health>();
         if (opponentHealth != null)
         {
             opponentHealth.RecieveHit(sender, hitID, hitInfo);
-            if (oneHit)
+            if (oneShot)
             {
                 gameObject.SetActive(false);
             }
+        }
+
+        // hit terrain
+        if (oneShot && other .gameObject.layer == LayerMask.NameToLayer("Terrain"))
+        {
+            gameObject.SetActive(false);
         }
     }
 
 
     private void OnDisable()
     {
-        moveJob.Kill();
+        if (moveJob != null) moveJob.Kill();
     }
 
     #endregion
@@ -68,12 +75,12 @@ public class Hitbox : BaseMono
     /// <param name="hitInfo">HitInfo to pass along to the reciever's Health.</param>
     /// <param name="time">How long the hitbox should last.</param>
     /// <param name="hitNumber">How many hits to perform. Usually 1.</param>
-    /// <param name="oneHit">Does the hitbox get destroyed after landing one hit?</param>
-    public void Initialize(Character sender, HitInfo hitInfo, float time, int hitNumber, bool oneHit = false)
+    /// <param name="oneShot">Does the hitbox get destroyed after landing one hit?</param>
+    public void Initialize(Character sender, HitInfo hitInfo, float time, int hitNumber, bool oneShot = false)
     {
         this.sender = sender;
         this.hitInfo = hitInfo;
-        this.oneHit = oneHit;
+        this.oneShot = oneShot;
 
         gameObject.tag = sender.gameObject.tag;
         SetHitID();
@@ -94,11 +101,11 @@ public class Hitbox : BaseMono
     /// <param name="time">How long the hitbox should last.</param>
     /// <param name="hitNumber">How many hits to perform. Usually 1.</param>
     /// <param name="shootVector">Move vector for hitbox.</param>
-    /// <param name="oneHit">Does the hitbox get destroyed after landing one hit?</param>
-    public void Initialize(Character sender, HitInfo hitInfo, float time, int hitNumber, Vector3 shootVector, bool oneHit = false)
+    /// <param name="oneShot">Does the hitbox get destroyed after landing one hit?</param>
+    public void Initialize(Character sender, HitInfo hitInfo, float time, int hitNumber, Vector3 shootVector, bool oneShot = false)
     {
         moveJob = new Job(Move(shootVector), time);
-        Initialize(sender, hitInfo, time, hitNumber, oneHit);
+        Initialize(sender, hitInfo, time, hitNumber, oneShot);
     }
 
 

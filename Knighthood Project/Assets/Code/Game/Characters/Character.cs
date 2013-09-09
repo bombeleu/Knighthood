@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System;
 
 /// <summary>
-/// Base class for any character.
+/// Base class for any myCharacter.
 /// </summary>
 [RequireComponent(typeof(Health))]
 public class Character : BaseMono

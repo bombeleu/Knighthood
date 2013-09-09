@@ -52,7 +52,7 @@ public class CharacterMotor : BaseMono
     #region Movement Methods
 
     /// <summary>
-    /// If the character is close enough to the ground to be considered on it. Snaps to ground.
+    /// If the myCharacter is close enough to the ground to be considered on it. Snaps to ground.
     /// </summary>
     /// <returns>True, if on ground.</returns>
     public bool IsGrounded()

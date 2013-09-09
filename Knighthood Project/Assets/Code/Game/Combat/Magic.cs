@@ -1,7 +1,6 @@
 ﻿// Steve Yeager
 // 8.25.2013
 
-using UnityEngine;
 using System.Collections;
 
 /// <summary>
@@ -9,57 +8,51 @@ using System.Collections;
 /// </summary>
 public class Magic : BaseMono
 {
-  public int maxMagic;
-  public int currentMagic;
-  public float regenInterval;
+    public int maxMagic;
+    public int currentMagic;
+    public float regenInterval;
 
 
-  public void Initialize()
-  {
-    currentMagic = maxMagic;
-  } // end Initialize
-
-
-  public void Initialize(StatManager stats)
-  {
-    maxMagic = stats.magicMax;
-    currentMagic = maxMagic;
-  } // end Initialize
-
-
-  /// <summary>
-  /// 
-  /// </summary>
-  /// <param name="amount"></param>
-  /// <returns></returns>
-  public bool CastMagic(int amount)
-  {
-    if (amount > currentMagic)
+    public void Initialize()
     {
-      return false;
+        currentMagic = maxMagic;
     }
-    else
+
+
+    public void Initialize(StatManager stats)
     {
-      currentMagic -= amount;
-      StartCoroutine("RegenerateMagic");
-      return true;
+        maxMagic = stats.magicMax;
+        currentMagic = maxMagic;
     }
-  } // end CastMagic
 
 
-  /// <summary>
-  /// 
-  /// </summary>
-  /// <returns></returns>
-  private IEnumerator RegenerateMagic()
-  {
-    WaitForSeconds interval = new WaitForSeconds(regenInterval);
-
-    while (currentMagic < maxMagic)
+    /// <summary>
+    /// Use magic. Start magic regen.
+    /// </summary>
+    /// <param name="amount">Amount of magic needed.</param>
+    /// <returns>True, if had enough magic.</returns>
+    public bool CastMagic(int amount)
     {
-      yield return interval;
-      currentMagic++;
-    }
-  } // end RegenerateMagic
+        if (amount > currentMagic) return false;
 
-} // end Magic class
+        currentMagic -= amount;
+        StopCoroutine("RegenerateMagic");
+        StartCoroutine("RegenerateMagic");
+        return true;
+    }
+
+
+    /// <summary>
+    /// Regenerates magic overtime.
+    /// </summary>
+    private IEnumerator RegenerateMagic()
+    {
+        while (currentMagic < maxMagic)
+        {
+            yield return WaitForTime(regenInterval);
+            currentMagic++;
+        }
+        currentMagic = maxMagic;
+    }
+
+}
