@@ -67,8 +67,8 @@ public class CharacterMotor : BaseMono
             return true;
         }
         return false;
-    } // end IsGrounded
+    }
 
     #endregion
 
-} // end CharacterMotor class
+}

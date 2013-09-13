@@ -1,6 +1,7 @@
 ﻿// Steve Yeager
 // 8.18.2013
 
+using System.Runtime.InteropServices;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
@@ -114,6 +115,19 @@ public class Character : BaseMono
 
     #region Public Methods
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="attackTexture"></param>
+    public void Attack(Texture attackTexture)
+    {
+        SetState(States.Attacking, new Dictionary<string, object>{{"attackTexture", attackTexture}});
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     public void EndAttack()
     {
         SetState(States.Idling, null);

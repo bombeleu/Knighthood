@@ -26,14 +26,7 @@ public class GenericAttack : Attack
 
     #region Base Fields
 
-    public string attackType;
-    public string attackName;
     public Texture attackAnimation;
-
-    // attack
-    public float windup;
-    public float attackTime;
-    public float cooldown;
 
     // hitbox
     public GameObject Attack_Prefab;
@@ -98,10 +91,22 @@ public class GenericAttack : Attack
 
     #endregion
 
-    #region Public Methods
+    #region Attack Overrides
+
+    public override bool CanActivate()
+    {
+        if (magic)
+        {
+            return canActivate && myMagic.EnoughMagic(magicRequired);
+        }
+
+        return canActivate;
+    }
 
     public override Texture Activate()
     {
+        if (!canActivate) return null;
+
         if (magic && !myMagic.CastMagic(magicRequired))
         {
             return null;
@@ -117,7 +122,8 @@ public class GenericAttack : Attack
 
     private IEnumerator Attack()
     {
-        yield return WaitForTime(windup);
+        canActivate = false;
+        yield return WaitForTime(windUp);
 
         if (melee)
         {
@@ -132,8 +138,11 @@ public class GenericAttack : Attack
             StandardAttack();
         }
         
-        yield return WaitForTime(attackTime + cooldown);
-        myCharacter.EndAttack();
+        yield return WaitForTime(attackTime + windDown);
+        manager.EndAttack();
+
+        yield return WaitForTime(cooldown);
+        canActivate = true;
     }
 
 
@@ -168,5 +177,4 @@ public class GenericAttack : Attack
     }
 
     #endregion
-
 }

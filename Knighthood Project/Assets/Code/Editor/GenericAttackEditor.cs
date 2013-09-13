@@ -1,19 +1,14 @@
 ﻿// Steve Yeager
 // 9.7.2013
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// 
 /// </summary>
 [CustomEditor(typeof(GenericAttack))]
-public class GenericAttackEditor : Editor
+public class GenericAttackEditor : AttackEditor
 {
     #region Reference Fields
 
@@ -27,11 +22,10 @@ public class GenericAttackEditor : Editor
 
     private SerializedProperty
         showTooltips,
-        attackType,
-        attackName,
         attackAnimation,
-        windup,
+        windUp,
         attackTime,
+        windDown,
         cooldown,
         Attack_Prefab,
         hitInfo,
@@ -63,20 +57,21 @@ public class GenericAttackEditor : Editor
 
     #endregion
 
-    private MonoScript[] scripts;
+
     #region Editor Overrides
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
+        
         myObject = new SerializedObject(target);
         myAttack = (GenericAttack)target;
 
         showTooltips = myObject.FindProperty("showTooltips");
-        attackType = myObject.FindProperty("attackType");
-        attackName = myObject.FindProperty("attackName");
         attackAnimation = myObject.FindProperty("attackAnimation");
-        windup = myObject.FindProperty("windup");
+        windUp = myObject.FindProperty("windUp");
         attackTime = myObject.FindProperty("attackTime");
+        windDown = myObject.FindProperty("windDown");
         cooldown = myObject.FindProperty("cooldown");
         Attack_Prefab = myObject.FindProperty("Attack_Prefab");
         hitInfo = myObject.FindProperty("hitInfo");
@@ -103,44 +98,18 @@ public class GenericAttackEditor : Editor
     public override void OnInspectorGUI()
     {
         myObject.Update();
-        titlebarToggle = EditorGUILayout.InspectorTitlebar(titlebarToggle, target);
-        if (!titlebarToggle) return;
 
         #region Base
 
         showTooltips.boolValue = EditorGUILayout.Toggle("Show Tooltips", showTooltips.boolValue);
         
-        EditorGUILayout.LabelField("Base", EditorStyles.boldLabel);
-        EditorGUI.indentLevel++;
-
-        EditorGUILayout.BeginHorizontal();
-        {
-            EditorGUILayout.LabelField("Attack Type", GUILayout.MinWidth(0));
-            EditorGUILayout.LabelField("Attack Name", GUILayout.MinWidth(0));
-        }
-        EditorGUILayout.EndHorizontal();
-        EditorGUILayout.BeginHorizontal();
-        {
-            EditorGUILayout.LabelField(attackType.stringValue, GUILayout.MinWidth(0));
-            EditorGUILayout.LabelField(attackName.stringValue, GUILayout.MinWidth(0));
-        }
-        EditorGUILayout.EndHorizontal();
-
-
-        EditorGUILayout.BeginVertical();
-        {
-            //foreach (var script in scripts)
-            //{
-            //    EditorGUILayout.LabelField(script.name);
-            //}
-        }
-        EditorGUILayout.EndVertical();
-
+        base.OnInspectorGUI();
 
         PropertyField(attackAnimation, "Animation", "Sprite animation to play while attacking.");
-        PropertyField(windup, "Windup", "Time in seconds before hitbox is created.");
+        PropertyField(windUp, "Wind Up Time", "Time in seconds before hitbox is created.");
         PropertyField(attackTime, "Attack Time", "Time in seconds performing the attack takes.");
-        PropertyField(cooldown, "Cool Down", "Time in seconds after the attack is completed before it can be activated again.");
+        PropertyField(windDown, "Wind Down Time", "Time in seconds after the attack stops but the animation is still playing.");
+        PropertyField(cooldown, "Cool Down Time", "Time in seconds after the attack is completed before it can be activated again.");
         GUI.enabled = !melee.boolValue;
         PropertyField(Attack_Prefab, "Attack Prefab", "Time in seconds after the attack is completed before it can be activated again.");
         GUI.enabled = true;
@@ -224,26 +193,4 @@ public class GenericAttackEditor : Editor
     }
 
     #endregion
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    private Type[] LoadAttackScripts()
-    {
-        string[] scriptNames = Directory.GetFiles("Assets/Code/Game/Characters", "*.cs", SearchOption.AllDirectories);
-        List<Type> types = new List<Type>();
-        foreach (var script in scriptNames)
-        {
-            MonoScript mono = (MonoScript) AssetDatabase.LoadAssetAtPath(script, typeof (MonoScript));
-            if (mono.GetClass() != null && mono.GetClass().IsSubclassOf(typeof (Character)))
-            {
-                types.Add(mono.GetType());
-                Debug.Log(script);
-            }
-        }
-        return types.ToArray();
-    }
-
 }

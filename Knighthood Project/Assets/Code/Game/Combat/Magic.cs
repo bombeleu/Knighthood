@@ -43,6 +43,17 @@ public class Magic : BaseMono
 
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="amount"></param>
+    /// <returns></returns>
+    public bool EnoughMagic(int amount)
+    {
+        return amount <= currentMagic;
+    }
+
+
+    /// <summary>
     /// Regenerates magic overtime.
     /// </summary>
     private IEnumerator RegenerateMagic()

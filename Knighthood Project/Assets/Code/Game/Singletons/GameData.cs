@@ -40,6 +40,7 @@ public class GameData : Singleton<GameData>
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        Application.targetFrameRate = 60;
     } // end Awake
 
 

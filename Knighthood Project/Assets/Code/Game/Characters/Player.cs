@@ -14,7 +14,7 @@ public class Player : Character
 {
     #region References
 
-    //private PlayerAttackManager attackManager;
+    private ComboManager comboManager;
     private AttackManager attackManager;
     private Material myMaterial;
 
@@ -80,9 +80,9 @@ public class Player : Character
 
         // combat
         attackManager = GetComponent<AttackManager>();
-
-        // test
-        //log = false;
+        attackManager.Initialize(this);
+        comboManager = GetComponent<ComboManager>();
+        comboManager.Initialize(this);
     }
 
 
@@ -99,18 +99,6 @@ public class Player : Character
             GameData.Instance.ReloadScene();
         }
     }
-
-
-    private void FixedUpdate()
-    {
-        Debug.Log(myRigidbody.velocity);
-    }
-
-
-    //private void OnDrawGizmos()
-    //{
-    //  Gizmos.DrawSphere(myTransform.position + Vector3.up + myTransform.forward * Mathf.Abs(Velocity.x * GameTime.deltaTime), 0.5f);
-    //} // end OnDrawGizmos
 
     #endregion
 
@@ -190,8 +178,7 @@ public class Player : Character
             AttackTypes attack = GetAttackingInput();
             if (attack != AttackTypes.None)
             {
-                var info = new Dictionary<string, object> {{"attack", attack}};
-                SetState(States.Attacking, info);
+                CalculateAttack(attack, new Dictionary<string, object>());
                 yield break;
             }
 
@@ -237,8 +224,7 @@ public class Player : Character
             AttackTypes attack = GetAttackingInput();
             if (attack != AttackTypes.None)
             {
-                var info = new Dictionary<string, object> { { "attack", attack } };
-                SetState(States.Attacking, info);
+                CalculateAttack(attack, new Dictionary<string, object>());
                 yield break;
             }
 
@@ -329,8 +315,7 @@ public class Player : Character
             AttackTypes attack = GetAttackingInput();
             if (attack != AttackTypes.None)
             {
-                var info = new Dictionary<string, object> { { "attack", attack } };
-                SetState(States.Attacking, info);
+                CalculateAttack(attack, new Dictionary<string, object>());
                 yield break;
             }
 
@@ -350,8 +335,7 @@ public class Player : Character
             AttackTypes attack = GetAttackingInput();
             if (attack != AttackTypes.None)
             {
-                var info = new Dictionary<string, object> { { "attack", attack } };
-                SetState(States.Attacking, info);
+                CalculateAttack(attack, new Dictionary<string, object>());
                 yield break;
             }
 
@@ -402,8 +386,7 @@ public class Player : Character
             AttackTypes attack = GetAttackingInput();
             if (attack != AttackTypes.None)
             {
-                var info = new Dictionary<string, object> { { "attack", attack } };
-                SetState(States.Attacking, info);
+                CalculateAttack(attack, new Dictionary<string, object>());
                 yield break;
             }
 
@@ -445,18 +428,10 @@ public class Player : Character
 
     private void AttackingEnter(Dictionary<string, object> info)
     {
-        // attack
-        Texture attackAnimation = attackManager.Activate(info["attack"].ToString());
-        if (attackAnimation != null)
-        {
-            myMaterial.mainTexture = attackAnimation;
-            currentStateJob = new Job(AttackingUpdate());
-        }
-        // return to previous state
-        else
-        {
-            SetState((States)info["previous state"], null);
-        }
+        Texture attackTexture = (Texture)info["attackTexture"];
+
+        myMaterial.mainTexture = attackTexture;
+        currentStateJob = new Job(AttackingUpdate());
     }
 
 
@@ -464,6 +439,8 @@ public class Player : Character
     {
         while (true)
         {
+            GetAttackingInput();
+
             if (!myMotor.IsGrounded())
             {
                 velocity.y -= gravity * GameTime.deltaTime;
@@ -559,84 +536,80 @@ public class Player : Character
     {
         if (keyboard)
         {
-            // magic
+            // super
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                if (Input.GetKeyDown(KeyCode.LeftArrow) && attackManager.CanActivate(AttackTypes.SuperLight.ToString()))
                 {
                     return AttackTypes.SuperLight;
                 }
-                if (Input.GetKeyDown(KeyCode.UpArrow))
+                if (Input.GetKeyDown(KeyCode.UpArrow) && attackManager.CanActivate(AttackTypes.SuperHeavy.ToString()))
                 {
                     return AttackTypes.SuperHeavy;
                 }
-                if (Input.GetKeyDown(KeyCode.RightArrow))
+                if (Input.GetKeyDown(KeyCode.RightArrow) && attackManager.CanActivate(AttackTypes.SuperStun.ToString()))
                 {
                     return AttackTypes.SuperStun;
                 }
-                if (Input.GetKeyDown(KeyCode.DownArrow))
+                if (Input.GetKeyDown(KeyCode.DownArrow) && attackManager.CanActivate(AttackTypes.SuperJump.ToString()))
                 {
                     return AttackTypes.SuperJump;
                 }
             }
-
-            // left
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            // normal
+            else
             {
-                return AttackTypes.Light;
-            }
-
-            // up
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                return AttackTypes.Heavy;
-            }
-
-            // right
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                return AttackTypes.Stun;
+                if (Input.GetKeyDown(KeyCode.LeftArrow) && comboManager.CanActivate(AttackTypes.Light.ToString()))
+                {
+                    return AttackTypes.Light;
+                }
+                if (Input.GetKeyDown(KeyCode.UpArrow) && comboManager.CanActivate(AttackTypes.Heavy.ToString()))
+                {
+                    return AttackTypes.Heavy;
+                }
+                if (Input.GetKeyDown(KeyCode.RightArrow) && comboManager.CanActivate(AttackTypes.Stun.ToString()))
+                {
+                    return AttackTypes.Stun;
+                }
             }
         }
         else
         {
-            // magic
+            // super
             if (Input.GetAxis("TriggersR_" + playerInfo.playerNumber) >= magicModifierDeadZone)
             {
-                if (Input.GetButtonDown("X_" + playerInfo.playerNumber))
+                if (Input.GetButtonDown("X_" + playerInfo.playerNumber) && attackManager.CanActivate(AttackTypes.SuperLight.ToString()))
                 {
                     return AttackTypes.SuperLight;
                 }
-                if (Input.GetButtonDown("Y_" + playerInfo.playerNumber))
+                if (Input.GetButtonDown("Y_" + playerInfo.playerNumber) && attackManager.CanActivate(AttackTypes.SuperHeavy.ToString()))
                 {
                     return AttackTypes.SuperHeavy;
                 }
-                if (Input.GetButtonDown("B_" + playerInfo.playerNumber))
+                if (Input.GetButtonDown("B_" + playerInfo.playerNumber) && attackManager.CanActivate(AttackTypes.SuperStun.ToString()))
                 {
                     return AttackTypes.SuperStun;
                 }
-                if (Input.GetButtonDown("A_" + playerInfo.playerNumber))
+                if (Input.GetButtonDown("A_" + playerInfo.playerNumber) && attackManager.CanActivate(AttackTypes.SuperJump.ToString()))
                 {
                     return AttackTypes.SuperJump;
                 }
             }
-
-            // left
-            if (Input.GetButtonDown("X_" + playerInfo.playerNumber))
+            // normal
+            else
             {
-                return AttackTypes.Light;
-            }
-
-            // up
-            if (Input.GetButtonDown("Y_" + playerInfo.playerNumber))
-            {
-                return AttackTypes.Heavy;
-            }
-
-            // right
-            if (Input.GetButtonDown("B_" + playerInfo.playerNumber))
-            {
-                return AttackTypes.Stun;
+                if (Input.GetButtonDown("X_" + playerInfo.playerNumber) && comboManager.CanActivate(AttackTypes.Light.ToString()))
+                {
+                    return AttackTypes.Light;
+                }
+                if (Input.GetButtonDown("Y_" + playerInfo.playerNumber) && comboManager.CanActivate(AttackTypes.Heavy.ToString()))
+                {
+                    return AttackTypes.Heavy;
+                }
+                if (Input.GetButtonDown("B_" + playerInfo.playerNumber) && comboManager.CanActivate(AttackTypes.Stun.ToString()))
+                {
+                    return AttackTypes.Stun;
+                }
             }
         }
 
@@ -661,6 +634,34 @@ public class Player : Character
 
     #endregion
 
+    #region Combat Methods
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="attack"></param>
+    /// <param name="info"></param>
+    private void CalculateAttack(AttackTypes attack, Dictionary<string, object> info)
+    {
+        if (attack == AttackTypes.None) return;
+
+        Texture attackTexture;
+
+        if ((int) attack < 3)
+        {
+            attackTexture = comboManager.Activate(attack.ToString());
+        }
+        else
+        {
+            attackTexture = attackManager.Activate(attack.ToString());
+        }
+
+        info.Add("attackTexture", attackTexture);
+        SetState(States.Attacking, info);
+    }
+
+    #endregion
+
     #region Movement Methods
 
     /// <summary>
@@ -680,13 +681,6 @@ public class Player : Character
         else if (GetMovingInput().x < 0 && screenX <= LevelCamera.Instance.boundaryHorizontalOuter)
         {
             moveVector.x = 0f;
-        }
-
-        // blocked
-        RaycastHit rayInfo;
-        if (Physics.SphereCast(myTransform.position + Vector3.up, 0.5f, myTransform.forward, out rayInfo, Mathf.Abs(moveVector.x * GameTime.deltaTime), 1 << LayerMask.NameToLayer("Terrain")))
-        {
-            //moveVector.x = 0f;
         }
 
         myMotor.Velocity = moveVector;

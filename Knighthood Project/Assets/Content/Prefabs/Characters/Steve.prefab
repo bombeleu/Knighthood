@@ -20,6 +20,7 @@ GameObject:
   - 114: {fileID: 11400012}
   - 114: {fileID: 11400014}
   - 114: {fileID: 11400016}
+  - 114: {fileID: 11400020}
   m_Layer: 8
   m_Name: Steve
   m_TagString: Player
@@ -132,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 0
-  moveSpeed: 15
+  moveSpeed: 13
   gravity: 75
   terminalVelocity: 40
   jumpingInfo:
@@ -168,22 +169,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
-  genericAttacks:
+  attacks:
   - {fileID: 11400008}
-  - {fileID: 11400012}
-  - {fileID: 11400014}
-  - {fileID: 11400016}
-  genericAttackTypes:
+  inputs:
   - SuperLight
-  - SuperHeavy
-  - Light
-  - Heavy
-  attackNames:
-  - Icicle Blast
-  - Ice Shield
-  - Punch
-  - Crush
-  open: 00000001
+  open: 00
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -208,20 +198,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
-  showTooltips: 0
-  attackType: SuperLight
+  attackInput: SuperLight
   attackName: Icicle Blast
-  attackAnimation: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
-  windup: 0
+  windUp: 0
   attackTime: .200000003
-  cooldown: 0
+  windDown: 0
+  cooldown: .100000001
+  showTooltips: 0
+  attackAnimation: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
   Attack_Prefab: {fileID: 100000, guid: 14610f11a1edb1a4eb1a2d32a745568e, type: 2}
   hitInfo:
-    damage: 2
-    effect: 5
+    damage: 0
+    effect: 0
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: 3
-  offset: {x: 2, y: 1}
+  offset: {x: 1, y: 1}
   parented: 0
   hitNumber: 1
   oneShot: 1
@@ -249,46 +240,31 @@ MonoBehaviour:
   log: 1
   maxMagic: 100
   currentMagic: 100
-  regenInterval: .100000001
+  regenInterval: .200000003
 --- !u!114 &11400012
 MonoBehaviour:
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
+  m_Script: {fileID: 11500000, guid: e4a3eeaa761be3840aca907df05bfcf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
-  showTooltips: 0
-  attackType: SuperHeavy
-  attackName: Ice Shield
-  attackAnimation: {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
-  windup: .100000001
-  attackTime: 1
-  cooldown: 0
-  Attack_Prefab: {fileID: 100000, guid: 88cf96551ecc8b04989d4fd1190a523d, type: 2}
-  hitInfo:
-    damage: 3
-    effect: 5
-    knockBack: {x: 0, y: 0, z: 0}
-  hitboxTime: 1
-  offset: {x: 0, y: 2}
-  parented: 1
-  hitNumber: 5
-  oneShot: 0
-  melee: 0
-  meleeSize: {x: 0, y: 0}
-  magic: 1
-  magicRequired: 50
-  projectile: 0
-  projectileVector: {x: 0, y: 0}
-  projectileSpeed: 0
-  move: 0
-  endVector: {x: 0, y: 0, z: 0}
-  moveTime: 0
+  attacks:
+  - {fileID: 11400014}
+  - {fileID: 11400020}
+  - {fileID: 11400016}
+  inputs:
+  - Light
+  - Heavy
+  open: 000000
+  comboStrings:
+  - 0
+  - 1
+  - 01
 --- !u!114 &11400014
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -301,25 +277,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
-  showTooltips: 0
-  attackType: Light
-  attackName: Punch
-  attackAnimation: {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
-  windup: 0
-  attackTime: .300000012
+  attackInput: 0
+  attackName: 
+  windUp: 0
+  attackTime: .200000003
+  windDown: 0
   cooldown: 0
+  showTooltips: 0
+  attackAnimation: {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
   Attack_Prefab: {fileID: 0}
   hitInfo:
-    damage: 7
+    damage: 0
     effect: 0
     knockBack: {x: 0, y: 0, z: 0}
-  hitboxTime: .300000012
-  offset: {x: 2, y: 1.29999995}
+  hitboxTime: .200000003
+  offset: {x: 1, y: 1}
   parented: 0
   hitNumber: 1
   oneShot: 0
   melee: 1
-  meleeSize: {x: 2.5, y: 2}
+  meleeSize: {x: 2, y: 1.5}
   magic: 0
   magicRequired: 0
   projectile: 0
@@ -330,7 +307,7 @@ MonoBehaviour:
   moveTime: 0
 --- !u!114 &11400016
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
@@ -340,27 +317,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
-  showTooltips: 0
-  attackType: Heavy
-  attackName: Crush
-  attackAnimation: {fileID: 2800000, guid: fdb604bebe40ac34cbebb2a72e1b622e, type: 3}
-  windup: .200000003
-  attackTime: .699999988
+  attackInput: 01
+  attackName: 
+  windUp: 0
+  attackTime: .400000006
+  windDown: 0
   cooldown: 0
+  showTooltips: 0
+  attackAnimation: {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
   Attack_Prefab: {fileID: 0}
   hitInfo:
-    damage: 15
-    effect: 4
+    damage: 0
+    effect: 0
     knockBack: {x: 0, y: 0, z: 0}
-  hitboxTime: .699999988
-  offset: {x: 2, y: 2}
+  hitboxTime: .400000006
+  offset: {x: 0, y: 2}
   parented: 0
-  hitNumber: 3
+  hitNumber: 1
   oneShot: 0
   melee: 1
-  meleeSize: {x: 3, y: 3}
-  magic: 1
-  magicRequired: 5
+  meleeSize: {x: 6, y: 4}
+  magic: 0
+  magicRequired: 0
   projectile: 0
   projectileVector: {x: 0, y: 0}
   projectileSpeed: 0
@@ -379,6 +357,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
+--- !u!114 &11400020
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  attackInput: 1
+  attackName: 
+  windUp: 0
+  attackTime: .5
+  windDown: 0
+  cooldown: 0
+  showTooltips: 0
+  attackAnimation: {fileID: 2800000, guid: fdb604bebe40ac34cbebb2a72e1b622e, type: 3}
+  Attack_Prefab: {fileID: 0}
+  hitInfo:
+    damage: 0
+    effect: 0
+    knockBack: {x: 0, y: 0, z: 0}
+  hitboxTime: .5
+  offset: {x: 2, y: 2}
+  parented: 0
+  hitNumber: 1
+  oneShot: 0
+  melee: 1
+  meleeSize: {x: 3, y: 3}
+  magic: 0
+  magicRequired: 0
+  projectile: 0
+  projectileVector: {x: 0, y: 0}
+  projectileSpeed: 0
+  move: 0
+  endVector: {x: 0, y: 0, z: 0}
+  moveTime: 0
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
