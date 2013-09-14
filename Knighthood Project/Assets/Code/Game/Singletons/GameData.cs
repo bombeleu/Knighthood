@@ -49,7 +49,7 @@ public class GameData : Singleton<GameData>
         // player disconnect
         if (playerUsernames.Count > Input.GetJoystickNames().Length)
         {
-            Log("Player disconnected");
+            //Log("Player disconnected");
         }
 
         // new player
