@@ -12,6 +12,7 @@ public class Magic : BaseMono
     public int maxMagic;
     public int currentMagic;
     public float regenInterval;
+    private bool regenerating;
 
 
     public void Initialize()
@@ -35,7 +36,7 @@ public class Magic : BaseMono
     public bool CastMagic(int amount)
     {
         if (amount > currentMagic) return false;
-
+        Debug.Log("Cast");
         currentMagic -= amount;
         StopCoroutine("RegenerateMagic");
         StartCoroutine("RegenerateMagic");
@@ -59,8 +60,11 @@ public class Magic : BaseMono
     /// </summary>
     private IEnumerator RegenerateMagic()
     {
+        if (regenerating) yield break;
+        regenerating = true;
         while (currentMagic < maxMagic)
         {
+            
             yield return WaitForTime(regenInterval);
             currentMagic++;
         }
