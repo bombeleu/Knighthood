@@ -1,7 +1,6 @@
 ﻿// Steve Yeager
 // 8.18.2013
 
-using System.Runtime.InteropServices;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
@@ -43,7 +42,7 @@ public class Character : BaseMono
 
     #region Stat Fields
 
-    public StatManager StatManager { get; protected set; }
+    public StatManager StatManager;// { get; protected set; }
 
     #endregion
 
@@ -56,7 +55,7 @@ public class Character : BaseMono
         myMotor = GetSafeComponent<CharacterMotor>();
         myTransform = transform;
         myRigidbody = rigidbody;
-    } // end Start
+    }
 
     #endregion
 
@@ -72,7 +71,7 @@ public class Character : BaseMono
     {
         enterMethods.Add(stateName, enterMethod);
         exitMethods.Add(stateName, exitMethod);
-    } // end CreateState
+    }
 
 
     /// <summary>
@@ -90,7 +89,6 @@ public class Character : BaseMono
         info.Add("previous state", currentState);
 
         // exit state
-        //Log(name + " Exiting: " + currentState);
         exitMethods[currentState](info);
         currentStateJob.Kill();
 
@@ -98,7 +96,7 @@ public class Character : BaseMono
         Log(name + " Entering: " + stateName + " - " + Time.timeSinceLevelLoad);
         currentState = stateName;
         enterMethods[currentState](info);
-    } // end SetState
+    }
 
 
     /// <summary>
@@ -109,7 +107,7 @@ public class Character : BaseMono
     {
         currentState = initialState;
         enterMethods[initialState](info);
-    } // end StartInitialState
+    }
 
     #endregion
 
@@ -131,8 +129,8 @@ public class Character : BaseMono
     public void EndAttack()
     {
         SetState(States.Idling, null);
-    } // end EndAttack
+    }
 
     #endregion
 
-} // end Character class
+}

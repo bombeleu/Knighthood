@@ -10,12 +10,6 @@ using UnityEngine;
 [CustomEditor(typeof(GenericAttack))]
 public class GenericAttackEditor : AttackEditor
 {
-    #region Reference Fields
-
-    private GenericAttack myAttack;
-
-    #endregion
-
     #region Serialized Fields
 
     private SerializedObject myObject;
@@ -65,7 +59,6 @@ public class GenericAttackEditor : AttackEditor
         base.OnEnable();
         
         myObject = new SerializedObject(target);
-        myAttack = (GenericAttack)target;
 
         showTooltips = myObject.FindProperty("showTooltips");
         attackAnimation = myObject.FindProperty("attackAnimation");

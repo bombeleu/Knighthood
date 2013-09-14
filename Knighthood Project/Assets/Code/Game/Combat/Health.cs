@@ -14,7 +14,7 @@ public class Health : BaseMono
 
     public int maxHealth;
     public int currentHealth { get; protected set; }
-    public bool invincible { get; private set; }
+    public bool invincible;// { get; private set; }
     private int lastHitID;
 
     #endregion

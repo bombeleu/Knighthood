@@ -21,6 +21,7 @@ GameObject:
   - 114: {fileID: 11400014}
   - 114: {fileID: 11400016}
   - 114: {fileID: 11400020}
+  - 114: {fileID: 11400022}
   m_Layer: 8
   m_Name: Steve
   m_TagString: Player
@@ -121,6 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   log: 1
   maxHealth: 100
+  invincible: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -139,6 +141,14 @@ MonoBehaviour:
   jumpingInfo:
     jumpSpeed: 21
     climbTime: .300000012
+  StatManager:
+    health: 0
+    physicalAttack: 1
+    physicalDefense: 1
+    magicAttack: 1
+    magicDefense: 1
+    magicMax: 0
+    attackSpeed: 0
   spawnTime: 0
   fastFallSpeed: 50
   extraJumpTime: .0199999996
@@ -173,7 +183,7 @@ MonoBehaviour:
   - {fileID: 11400008}
   inputs:
   - SuperLight
-  open: 00
+  open: 01
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -188,7 +198,7 @@ MonoBehaviour:
   log: 1
 --- !u!114 &11400008
 MonoBehaviour:
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
@@ -208,8 +218,8 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
   Attack_Prefab: {fileID: 100000, guid: 14610f11a1edb1a4eb1a2d32a745568e, type: 2}
   hitInfo:
-    damage: 0
-    effect: 0
+    baseDamage: 5
+    effect: 5
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: 3
   offset: {x: 1, y: 1}
@@ -287,7 +297,7 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
   Attack_Prefab: {fileID: 0}
   hitInfo:
-    damage: 0
+    baseDamage: 1
     effect: 0
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: .200000003
@@ -327,7 +337,7 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
   Attack_Prefab: {fileID: 0}
   hitInfo:
-    damage: 0
+    baseDamage: 3
     effect: 0
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: .400000006
@@ -379,7 +389,7 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: fdb604bebe40ac34cbebb2a72e1b622e, type: 3}
   Attack_Prefab: {fileID: 0}
   hitInfo:
-    damage: 0
+    baseDamage: 2
     effect: 0
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: .5
@@ -397,6 +407,28 @@ MonoBehaviour:
   move: 0
   endVector: {x: 0, y: 0, z: 0}
   moveTime: 0
+--- !u!114 &11400022
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4263ceec91e754b988ed201f7d6f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  textures:
+  - {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
+  - {fileID: 2800000, guid: cb4e16837103d614eb9de021cfceffb9, type: 3}
+  - {fileID: 2800000, guid: fdb604bebe40ac34cbebb2a72e1b622e, type: 3}
+  - {fileID: 2800000, guid: b76e982ed2fb82f4b8d0cb0a5cfacda1, type: 3}
+  healthRestore: 50
+  magicRestore: 50
+  combatIncrease: 25
+  increaseTime: 30
+  tauntTime: 2
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

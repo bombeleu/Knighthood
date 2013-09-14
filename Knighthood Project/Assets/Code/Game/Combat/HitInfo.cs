@@ -2,7 +2,6 @@
 // 8.18.2013
 
 using UnityEngine;
-using System.Collections;
 using System;
 
 /// <summary>
@@ -12,7 +11,8 @@ using System;
 public class HitInfo
 {
     /// <summary>Base damage before stats are factored in.</summary>
-    public int damage;
+    public int baseDamage;
+    public int damage { get; private set; }
     public enum Effects { None, Fire, Lightning, Acid, Earth, Ice }
     public Effects effect;
     public Vector3 knockBack;
@@ -27,13 +27,13 @@ public class HitInfo
     {
         if (effect == Effects.None)
         {
-            damage *= statManager.physicalAttack;
+            damage = baseDamage * statManager.physicalAttack;
         }
         else
         {
-            damage *= statManager.magicAttack;
+            damage = baseDamage * statManager.magicAttack;
         }
-    } // end FactorAttackStats
+    }
 
 
     /// <summary>
@@ -44,12 +44,12 @@ public class HitInfo
     {
         if (effect == Effects.None)
         {
-            damage /= statManager.physicalAttack;
+            damage = Mathf.CeilToInt(damage/statManager.physicalDefense);
         }
         else
         {
-            damage /= statManager.magicAttack;
+            damage = Mathf.CeilToInt(damage/statManager.magicDefense);
         }
-    } // end FactorDefendStats
+    }
 
-} // end HitInfo class
+}

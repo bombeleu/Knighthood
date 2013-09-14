@@ -52,7 +52,7 @@ public class Hitbox : BaseMono
         }
 
         // hit terrain
-        if (oneShot && other .gameObject.layer == LayerMask.NameToLayer("Terrain"))
+        if (oneShot && other.gameObject.layer == LayerMask.NameToLayer("Terrain"))
         {
             gameObject.SetActive(false);
         }
@@ -88,6 +88,9 @@ public class Hitbox : BaseMono
         {
             StartCoroutine(MultiHit(time, hitNumber));
         }
+
+        // physical/magic attack
+        hitInfo.FactorAttackStats(sender.StatManager);
 
         InvokeMethod("End", time);
     }
@@ -139,7 +142,7 @@ public class Hitbox : BaseMono
     {
         if (hitNumber <= 1) yield break;
 
-        float buffer = time/hitNumber;
+        float buffer = time / hitNumber;
         for (int i = 1; i < hitNumber; i++)
         {
             yield return WaitForTime(buffer);
@@ -156,11 +159,11 @@ public class Hitbox : BaseMono
     {
         while (true)
         {
-            myTransform.position += initialVector*GameTime.deltaTime;
+            myTransform.position += initialVector * GameTime.deltaTime;
             yield return null;
         }
     }
 
     #endregion
 
-} // end Hitbox class
+}

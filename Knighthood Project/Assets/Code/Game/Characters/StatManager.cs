@@ -1,42 +1,90 @@
 ﻿// Steve Yeager
 // 8.22.2013
 
-using UnityEngine;
-using System.Collections;
+using System;
 using System.Xml;
 
 /// <summary>
 /// Holds all stat info for a myCharacter.
 /// </summary>
+[Serializable]
 public class StatManager
 {
-  #region Stat Fields
+    #region Stat Fields
 
-  public readonly int health;
-  public readonly int physicalAttack;
-  public readonly int physicalDefense;
-  public readonly int magicAttack;
-  public readonly int magicDefense;
-  public readonly int magicMax;
-  public readonly int attackSpeed;
-
-  #endregion
-
-
-  #region Data Methods
-
-  //
-  public void LoadNPC(string name)
-  {
-    XmlDocument statSheet = new XmlDocument();
-    statSheet.LoadXml(GameResources.Instance.NPCStats.text);
-    XmlNode root = statSheet.SelectSingleNode("/Enemies/Enemy/"+name);
-    foreach (XmlNode stat in root)
+    public enum Stats
     {
-      Debugger.Log(stat.Name + ": " + stat.InnerXml);
-    }
-  } // end LoadNPC
+        Health,
+        PhysicalAttack,
+        PhysicalDefense,
+        MagicAttack,
+        MagicDefense,
+        MagicMax,
+        AttackSpeed
+    };
 
-  #endregion
+    public int health;// { get; private set; }
+    public int physicalAttack = 1;// { get; private set; }
+    public int physicalDefense = 1;// { get; private set; }
+    public int magicAttack = 1;// { get; private set; }
+    public int magicDefense = 1;// { get; private set; }
+    public int magicMax;// { get; private set; }
+    public int attackSpeed;// { get; private set; }
+
+    #endregion
+
+
+    #region Public Methods
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    public void LoadNPC(string name)
+    {
+        XmlDocument statSheet = new XmlDocument();
+        statSheet.LoadXml(GameResources.Instance.NPCStats.text);
+        XmlNode root = statSheet.SelectSingleNode("/Enemies/Enemy/" + name);
+        foreach (XmlNode stat in root)
+        {
+            Debugger.Log(stat.Name + ": " + stat.InnerXml);
+        }
+    }
+
+
+    /// <summary>
+    /// Can change a stat but it will not be saved.
+    /// </summary>
+    /// <param name="stat">Stat to change.</param>
+    /// <param name="amount">Amount to change stat by.</param>
+    public void TempChangeStat(Stats stat, int amount)
+    {
+        switch (stat)
+        {
+            case Stats.Health:
+                health += amount;
+                break;
+            case Stats.PhysicalAttack:
+                physicalAttack += amount;
+                break;
+            case Stats.PhysicalDefense:
+                physicalDefense += amount;
+                break;
+            case Stats.MagicAttack:
+                magicAttack += amount;
+                break;
+            case Stats.MagicDefense:
+                magicDefense += amount;
+                break;
+            case Stats.MagicMax:
+                magicMax += amount;
+                break;
+            case Stats.AttackSpeed:
+                attackSpeed += amount;
+                break;
+        }
+    }
+
+    #endregion
 
 } // end StatManager class

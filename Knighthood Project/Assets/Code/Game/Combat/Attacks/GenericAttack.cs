@@ -159,9 +159,9 @@ public class GenericAttack : Attack
 
     private void ProjectileAttack()
     {
-        currentAttack = (GameObject) Instantiate(Attack_Prefab,
-                                                 myTransform.position + myTransform.forward * offset.x + myTransform.up * offset.y,
-                                                 myTransform.rotation); 
+        currentAttack = Attack_Pool.nextFree;
+        currentAttack.transform.position = myTransform.position + new Vector3(0f, offset.y, offset.x);
+        currentAttack.transform.rotation = myTransform.rotation;
         currentAttack.transform.Align();
         currentAttack.GetComponent<Hitbox>().Initialize(myCharacter, hitInfo, hitboxTime, hitNumber, myTransform.forward*projectileSpeed, oneShot);
     }

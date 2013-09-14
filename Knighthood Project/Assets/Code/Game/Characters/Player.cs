@@ -1,6 +1,7 @@
 ﻿// Steve Yeager
 // 8.18.2013
 
+using System.Reflection.Emit;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ public class Player : Character
 
     private ComboManager comboManager;
     private AttackManager attackManager;
+    private TauntManager tauntManager;
     private Material myMaterial;
 
     #endregion
@@ -83,6 +85,7 @@ public class Player : Character
         attackManager.Initialize(this);
         comboManager = GetComponent<ComboManager>();
         comboManager.Initialize(this);
+        tauntManager = GetComponent<TauntManager>();
     }
 
 
@@ -173,7 +176,6 @@ public class Player : Character
                 yield break;
             }
 
-
             // enter attacking state
             AttackTypes attack = GetAttackingInput();
             if (attack != AttackTypes.None)
@@ -200,6 +202,14 @@ public class Player : Character
             if (!myMotor.IsGrounded())
             {
                 SetState(States.Falling, null);
+                yield break;
+            }
+
+            // taunt
+            Texture tauntTexture = GetTauntingInput();
+            if (tauntTexture != null)
+            {
+                SetState(States.Attacking, new Dictionary<string, object>{{"attackTexture", tauntTexture}});
                 yield break;
             }
 
@@ -241,6 +251,14 @@ public class Player : Character
             if (moveVector.x == 0f)
             {
                 SetState(States.Idling, null);
+                yield break;
+            }
+
+            // taunt
+            Texture tauntTexture = GetTauntingInput();
+            if (tauntTexture != null)
+            {
+                SetState(States.Attacking, new Dictionary<string, object> { { "attackTexture", tauntTexture } });
                 yield break;
             }
 
@@ -489,7 +507,7 @@ public class Player : Character
                 return Input.GetButtonDown("A_" + playerInfo.playerNumber) && Input.GetAxis("TriggersR_" + playerInfo.playerNumber) < magicModifierDeadZone;
             }
         }
-    } // end GetJumpingInput
+    }
 
 
     /// <summary>
@@ -506,7 +524,7 @@ public class Player : Character
         {
             return new Vector3(Input.GetAxis("L_XAxis_" + playerInfo.playerNumber), Input.GetAxis("L_YAxis_" + playerInfo.playerNumber), 0f);
         }
-    } // end GetMovingInput
+    }
 
 
     /// <summary>
@@ -525,7 +543,7 @@ public class Player : Character
             myTransform.rotation = Quaternion.Euler(0f, 270f, 0f);
             myTransform.Align();
         }
-    } // end SetRotation
+    }
 
 
     /// <summary>
@@ -614,9 +632,13 @@ public class Player : Character
         }
 
         return AttackTypes.None;
-    } // end GetAttackingInput
+    }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     private bool CanFallThrough()
     {
         float inputY = GetMovingInput().y;
@@ -630,7 +652,60 @@ public class Player : Character
         }
 
         return false;
-    } // end CanFallThrough
+    }
+
+
+    /// <summary>
+    /// Detect player input that registers taunting.
+    /// </summary>
+    /// <returns>Correct texture if taunting or null if not.</returns>
+    private Texture GetTauntingInput()
+    {
+        if (keyboard)
+        {
+            if (!Input.GetKey(KeyCode.LeftControl)) return null;
+
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                return tauntManager.Activate(0);
+            }
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                return tauntManager.Activate(1);
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                return tauntManager.Activate(2);
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                return tauntManager.Activate(3);
+            }
+        }
+        else
+        {
+            float xInput = Input.GetAxis("DPad_XAxis_" + playerInfo.playerNumber);
+            if (xInput <= -0.2f)
+            {
+                return tauntManager.Activate(0);
+            }
+            if (xInput >= 0.2f)
+            {
+                return tauntManager.Activate(2);
+            }
+            float yInput = Input.GetAxis("DPad_YAxis_" + playerInfo.playerNumber);
+            if (yInput <= -0.2f)
+            {
+                return tauntManager.Activate(3);
+            }
+            if (yInput >= 0.2f)
+            {
+                return tauntManager.Activate(1);
+            }
+        }
+
+        return null;
+    }
 
     #endregion
 

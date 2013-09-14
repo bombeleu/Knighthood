@@ -9,30 +9,37 @@ using System.Collections;
 /// </summary>
 public class CharacterHealth : Health
 {
-  private StatManager statManager;
-
-  /// <summary>
-  /// 
-  /// </summary>
-  /// <param name="statManager"></param>
-  public void Initialize(StatManager stats)
-  {
-    maxHealth = stats.health;
-    currentHealth = maxHealth;
-    this.statManager = stats;
-  } // end Initialize
+    private StatManager statManager;
 
 
-  /// <summary>
-  /// 
-  /// </summary>
-  /// <param name="sender"></param>
-  /// <param name="hitID"></param>
-  /// <param name="hitInfo"></param>
-  public override void RecieveHit(object sender, int hitID, HitInfo hitInfo)
-  {
-    hitInfo.FactorDefendStats(statManager);
-    base.RecieveHit(sender, hitID, hitInfo);
-  } // end RecieveHit
+    private void Awake()
+    {
+        statManager = GetSafeComponent<Character>().StatManager;
+    }
 
-} // end CharacterHealth class
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="statManager"></param>
+    public void Initialize(StatManager stats)
+    {
+        maxHealth = stats.health;
+        currentHealth = maxHealth;
+        this.statManager = stats;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="hitID"></param>
+    /// <param name="hitInfo"></param>
+    public override void RecieveHit(object sender, int hitID, HitInfo hitInfo)
+    {
+        hitInfo.FactorDefendStats(statManager);
+        base.RecieveHit(sender, hitID, hitInfo);
+    }
+
+}

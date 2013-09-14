@@ -65,7 +65,6 @@ public class ComboManagerEditor : Editor
     public override void OnInspectorGUI()
     {
         managerSerialized.Update();
-        //base.OnInspectorGUI();
 
         #region Inputs
 
@@ -130,14 +129,37 @@ public class ComboManagerEditor : Editor
             // delete all
             if (GUILayout.Button("--", GUILayout.Width(ButtonSize)) && attacks.arraySize > 0)
             {
-                while (attacks.arraySize > 0)
-                {
-                    Delete(0);
-                }
-                return;
+                confirmDeleteAll = true;
             }
         }
         EditorGUILayout.EndHorizontal();
+
+        #endregion
+
+        #region Delete All
+
+        if (confirmDeleteAll)
+        {
+            EditorGUILayout.BeginHorizontal();
+            {
+                // confirm delete all
+                if (GUILayout.Button("Delete All"))
+                {
+                    while (attacks.arraySize > 0)
+                    {
+                        Delete(0);
+                    }
+                    return;
+                }
+
+                // cancel
+                if (GUILayout.Button("Cancel"))
+                {
+                    confirmDeleteAll = false;
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+        }
 
         #endregion
 

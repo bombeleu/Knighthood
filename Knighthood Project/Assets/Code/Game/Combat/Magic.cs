@@ -2,6 +2,7 @@
 // 8.25.2013
 
 using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// 
@@ -64,6 +65,16 @@ public class Magic : BaseMono
             currentMagic++;
         }
         currentMagic = maxMagic;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="amount"></param>
+    public void ChangeMagic(int amount)
+    {
+        currentMagic = Mathf.Clamp(currentMagic + amount, 0, maxMagic);
     }
 
 }
