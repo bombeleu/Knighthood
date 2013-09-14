@@ -554,6 +554,8 @@ public class Player : Character
     {
         if (keyboard)
         {
+            if (Input.GetKey(KeyCode.LeftControl)) return AttackTypes.None;
+            
             // super
             if (Input.GetKey(KeyCode.LeftShift))
             {
