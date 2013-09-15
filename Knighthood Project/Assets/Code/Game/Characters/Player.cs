@@ -26,6 +26,8 @@ public class Player : Character
 
     public float spawnTime;
     public float fastFallSpeed;
+    private bool fallingThrough;
+    private const float fallingThroughTime = 0.2f;
     public float extraJumpTime;
     private bool canExtraJump = false;
     private bool prematureJump;
@@ -169,10 +171,10 @@ public class Player : Character
     {
         while (true)
         {
+            // fall through
             if (CanFallThrough())
             {
-                myTransform.position += Vector3.down * 0.5f;
-                SetState(States.Falling, null);
+                SetState(States.Falling, new Dictionary<string, object>{{"fallingThrough", true}});
                 yield break;
             }
 
@@ -242,6 +244,13 @@ public class Player : Character
             if (GetJumpingInput())
             {
                 SetState(States.Jumping, null);
+                yield break;
+            }
+
+            // fall through
+            if (CanFallThrough())
+            {
+                SetState(States.Falling, new Dictionary<string, object> { { "fallingThrough", true } });
                 yield break;
             }
 
@@ -369,10 +378,18 @@ public class Player : Character
     private void FallingEnter(Dictionary<string, object> info)
     {
         // make sure falling
-        if (myMotor.IsGrounded())
+        if (info.ContainsKey("fallingThrough"))
         {
-            SetState((GetMovingInput().x == 0f ? States.Idling : States.Moving), null);
-            return;
+            fallingThrough = true;
+            InvokeAction(() => fallingThrough = false, fallingThroughTime);
+        }
+        else
+        {
+            if (myMotor.IsGrounded())
+            {
+                SetState((GetMovingInput().x == 0f ? States.Idling : States.Moving), new Dictionary<string, object>());
+                return;
+            }
         }
 
         // attackAnimation
@@ -394,9 +411,9 @@ public class Player : Character
         while (true)
         {
             // enter idling or jumping state
-            if (myMotor.IsGrounded())
+            if (!fallingThrough && myMotor.IsGrounded())
             {
-                SetState((prematureJump ? States.Jumping : States.Idling), null);
+                SetState((prematureJump ? States.Jumping : States.Idling), new Dictionary<string, object>());
                 yield break;
             }
 
@@ -411,7 +428,7 @@ public class Player : Character
             // enter jumping state
             if (canExtraJump && GetJumpingInput())
             {
-                SetState(States.Jumping, null);
+                SetState(States.Jumping, new Dictionary<string, object>());
                 yield break;
             }
 

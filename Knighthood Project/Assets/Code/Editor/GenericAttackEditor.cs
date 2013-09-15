@@ -25,7 +25,6 @@ public class GenericAttackEditor : AttackEditor
         hitInfo,
         hitboxTime,
         offset,
-        parented,
         hitNumber,
         oneShot;
 
@@ -42,12 +41,6 @@ public class GenericAttackEditor : AttackEditor
         projectileVector,
         projectileSpeed;
         
-
-    #endregion
-
-    #region Toggle Fields
-
-    private bool titlebarToggle;
 
     #endregion
 
@@ -70,7 +63,6 @@ public class GenericAttackEditor : AttackEditor
         hitInfo = myObject.FindProperty("hitInfo");
         hitboxTime = myObject.FindProperty("hitboxTime");
         offset = myObject.FindProperty("offset");
-        parented = myObject.FindProperty("parented");
         hitNumber = myObject.FindProperty("hitNumber");
         oneShot = myObject.FindProperty("oneShot");
 
@@ -83,8 +75,6 @@ public class GenericAttackEditor : AttackEditor
         projectile = myObject.FindProperty("projectile");
         projectileVector = myObject.FindProperty("projectileVector");
         projectileSpeed = myObject.FindProperty("projectileSpeed");
-
-        titlebarToggle = true;
     }
 
 
@@ -109,9 +99,6 @@ public class GenericAttackEditor : AttackEditor
         PropertyField(hitInfo, "Hit Info", "Time in seconds after the attack is completed before it can be activated again.", true);
         PropertyField(hitboxTime, "Hitbox Duration", "Time in seconds after the attack is completed before it can be activated again.");
         DrawVector(offset, "Hitbox Offset", "Hitbox local offset from character when created.");
-        //GUI.enabled = !projectile.boolValue;
-        //PropertyField(parented, "Parented", "Is the hitbox parented to the character's transform?");
-        //GUI.enabled = true;
         PropertyField(hitNumber, "Hit Number", "How many hits the hitbox can land. Usaully 1.");
         PropertyField(oneShot, "One Shot", "Should the hitbox disappear after landing one hit?");
 
@@ -162,7 +149,6 @@ public class GenericAttackEditor : AttackEditor
 
         #endregion
 
-        //base.OnInspectorGUI();
         myObject.ApplyModifiedProperties();
     }
 

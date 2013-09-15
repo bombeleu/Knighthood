@@ -17,6 +17,7 @@ public class GameData : Singleton<GameData>
 
     public List<string> playerUsernames;// { get; private set; }
     public List<string> allUsernames; // { get; private set; }
+    public List<int> playerCharacters; 
 
     #endregion
 
@@ -27,10 +28,17 @@ public class GameData : Singleton<GameData>
 
     #endregion
 
+    #region Pause Fields
+
+    public bool paused { get; private set; }
+
+    #endregion
+
     #region Events
 
     /// <summary>When a new scene is being loaded.</summary>
     public static EventHandler<LoadSceneEventArgs> LoadSceneEvent;
+    public EventHandler<PauseEventArgs> PauseEvent;
 
     #endregion
 
@@ -41,7 +49,7 @@ public class GameData : Singleton<GameData>
     {
         DontDestroyOnLoad(gameObject);
         Application.targetFrameRate = 60;
-    } // end Awake
+    }
 
 
     private void Update()
@@ -77,7 +85,7 @@ public class GameData : Singleton<GameData>
             MethodInfo method = type.GetMethod("Clear");
             method.Invoke(new object(), null);
         }
-    } // end Update
+    }
 
     #endregion
 
@@ -145,6 +153,20 @@ public class GameData : Singleton<GameData>
 
     #endregion
 
-}
+    #region Pause Methods
 
-// end GameData class
+    /// <summary>
+    /// Toggle pause.
+    /// </summary>
+    /// <param name="player">Player that paused the game.</param>
+    public void TogglePause(int player)
+    {
+        paused = !paused;
+        if (PauseEvent != null)
+        {
+            PauseEvent(this, new PauseEventArgs(paused, player));
+        }
+    }
+
+    #endregion
+}

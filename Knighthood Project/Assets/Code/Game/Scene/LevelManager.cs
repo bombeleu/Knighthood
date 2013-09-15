@@ -10,81 +10,54 @@ using System;
 /// </summary>
 public class LevelManager : Singleton<LevelManager>
 {
-  #region Player Fields
+    #region Player Fields
 
-  protected List<string> playerUsernames = new List<string>();
-  public List<Transform> PlayerTransforms { get; private set; }
+    protected List<string> playerUsernames = new List<string>();
+    public List<Transform> PlayerTransforms { get; private set; }
 
-  #endregion
+    #endregion
 
-  #region Camera Fields
+    #region Camera Fields
 
-  new public Camera camera { get; private set; }
+    public new Camera camera { get; private set; }
 
-  #endregion
-
-  #region Pause Fields
-
-  public bool paused { get; private set; }
-
-  #endregion
-
-  #region Events
-
-  public EventHandler<PauseEventArgs> PauseEvent;
-
-  #endregion
+    #endregion
 
 
-  #region MonoBehaviour Overrides
+    #region MonoBehaviour Overrides
 
-  protected virtual void Awake()
-  {
-    // get references
-    camera = Camera.main;
-  } // end Start
-
-  #endregion
-
-  #region Pause Methods
-
-  /// <summary>
-  /// Toggle pause.
-  /// </summary>
-  /// <param name="player">Player that paused the game.</param>
-  public void TogglePause(int player)
-  {
-    paused = !paused;
-    if (PauseEvent != null)
+    protected virtual void Awake()
     {
-      PauseEvent(this, new PauseEventArgs(paused, player));
-    }
-  } // end TogglePause
+        // get references
+        camera = Camera.main;
+    } // end Start
 
-  #endregion
+    #endregion
 
-  #region Spawn Methods
+    #region Spawn Methods
 
-  /// <summary>
-  /// Create the players at the beginning of the level.
-  /// </summary>
-  protected void CreatePlayers()
-  {
-    PlayerTransforms = new List<Transform>();
-
-    Transform playerParent = (new GameObject().transform);
-    playerParent.name = "Players";
-
-    for (int i = 0; i < GameData.Instance.playerUsernames.Count; i++)
+    /// <summary>
+    /// Create the players at the beginning of the level.
+    /// </summary>
+    protected void CreatePlayers()
     {
-      GameObject player = (GameObject)Instantiate(GameResources.Instance.Player_Prefabs[i], new Vector3(-17f + 2f * i, 0.5f, 0f), Quaternion.Euler(0f, 90f, 0f));
-      playerUsernames.Add(GameData.Instance.playerUsernames[i]);
-      PlayerTransforms.Add(player.transform);
-      player.GetSafeComponent<Player>().Initialize(GameData.Instance.playerUsernames[i], i);
-      player.transform.parent = playerParent;
-    }
-  } // end CreatePlayers
+        Log("creating");
+        PlayerTransforms = new List<Transform>();
 
-  #endregion
+        Transform playerParent = (new GameObject().transform);
+        playerParent.name = "Players";
 
-} // end LevelManger class
+        for (int i = 0; i < GameData.Instance.playerUsernames.Count; i++)
+        {
+            GameObject player = (GameObject)Instantiate(GameResources.Instance.Player_Prefabs[GameData.Instance.playerCharacters[i]],
+                                                        new Vector3(-17f + 2f * i, 0.5f, 0f),
+                                                        Quaternion.Euler(0f, 90f, 0f));
+            playerUsernames.Add(GameData.Instance.playerUsernames[i]);
+            PlayerTransforms.Add(player.transform);
+            player.GetSafeComponent<Player>().Initialize(GameData.Instance.playerUsernames[i], i);
+            player.transform.parent = playerParent;
+        }
+    } // end CreatePlayers
+
+    #endregion
+}

@@ -8,12 +8,13 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 400000}
+  - 114: {fileID: 11400006}
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400000}
   m_Layer: 0
   m_Name: __GameMaster
-  m_TagString: Untagged
+  m_TagString: GameMaster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55,18 +56,9 @@ MonoBehaviour:
   log: 1
   playerUsernames:
   - yeagz7
-  allUsernames: []
-  shortcutObjects:
-  - {fileID: 100000, guid: bcf3c8837549784408f986a3d284cda3, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  allUsernames:
+  - 
+  playerCharacters: 
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -81,10 +73,25 @@ MonoBehaviour:
   log: 1
   Player_Prefabs:
   - {fileID: 100000, guid: bcf3c8837549784408f986a3d284cda3, type: 2}
+  - {fileID: 100000, guid: f09cb0ec2b19a9a4881ddad1d72e1784, type: 2}
+  - {fileID: 100000, guid: 05ee5b991521d94438b50050832a102a, type: 2}
+  - {fileID: 100000, guid: 0f2117e1ea91e7b4fa8f69540d2be539, type: 2}
   DamageIndicator_Prefab: {fileID: 100000, guid: b67f3764dbb6a734d9800090eebdf538,
     type: 2}
   Hitbox_Prefab: {fileID: 100000, guid: 73c37bd95eaf42d4597e295bd2852f0e, type: 2}
   NPCStats: {fileID: 4900000, guid: 9867934e021c513429e5a3a6f4814e2c, type: 3}
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07bdb6a2abf3b2a47aeaae9520464e05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

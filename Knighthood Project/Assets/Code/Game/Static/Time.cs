@@ -8,12 +8,11 @@ using UnityEngine;
 /// </summary>
 public static class GameTime
 {
-  public static float deltaTime
-  {
-    get
+    public static float deltaTime
     {
-      return (LevelManager.Instance.paused ? 0f : UnityEngine.Time.deltaTime);
+        get
+        {
+            return (GameData.Instance.paused ? 0f : Time.deltaTime);
+        }
     }
-  }
-
-} // end GameTime class
+}

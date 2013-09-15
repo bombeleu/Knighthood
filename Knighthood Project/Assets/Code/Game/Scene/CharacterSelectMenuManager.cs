@@ -9,6 +9,27 @@ using System.Collections;
 /// </summary>
 public class CharacterSelectMenuManager : BaseMono
 {
-	
-	
-} // end CharacterSelectMenuManager class
+    #region MonoBehaviour Overrides
+
+    private void OnGUI()
+    {
+        GUILayout.BeginArea(new Rect(Screen.width/4, Screen.height/3, Screen.width/2, Screen.height/3));
+        {
+            GUILayout.BeginHorizontal();
+            {
+                for (int i = 0; i < GameResources.Instance.Player_Prefabs.Length; i++)
+                {
+                    if (GUILayout.Button(GameResources.Instance.Player_Prefabs[i].name, GUILayout.Height(Screen.height/3)))
+                    {
+                        GameData.Instance.playerCharacters.Add(i);
+                        GameData.Instance.LoadScene("Level Select Menu", true);
+                    }
+                }
+            }
+            GUILayout.EndHorizontal();
+        }
+        GUILayout.EndArea();
+    }
+
+    #endregion
+}
