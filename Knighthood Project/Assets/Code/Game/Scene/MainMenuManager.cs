@@ -11,12 +11,6 @@ public class MainMenuManager : BaseMono
 {
     #region MonoBehaviour Overrides
 
-    private void Update()
-    {
-
-    } // end Update
-
-
     private void OnGUI()
     {
         GUILayout.BeginArea(new Rect(Screen.width/2-100, Screen.height/3, 200, Screen.height/3));
@@ -47,8 +41,7 @@ public class MainMenuManager : BaseMono
             }
         }
         GUILayout.EndArea();
-    } // end OnGUI
+    }
 
     #endregion
-
-} // end MainMenuManager class
+}

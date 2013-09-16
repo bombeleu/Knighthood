@@ -5,19 +5,30 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// 
+/// Manager for activating player taunts.
 /// </summary>
 public class TauntManager : BaseMono
 {
-    private Character myCharacter;
+    #region Public Fields
+
     public Texture[] textures = new Texture[4];
-    private bool[] used = new bool[4];
     public int healthRestore;
     public int magicRestore;
     public int combatIncrease;
     public float increaseTime;
     public float tauntTime;
 
+    #endregion
+
+    #region Private Fields
+
+    private Character myCharacter;
+    private readonly bool[] used = new bool[4];
+
+    #endregion
+
+
+    #region MonoBehaviour Overrides
 
     private void Awake()
     {
@@ -25,12 +36,15 @@ public class TauntManager : BaseMono
         myCharacter = GetComponent<Character>();
     }
 
+    #endregion
+
+    #region Public Methods
 
     /// <summary>
-    /// 
+    /// Activate corresponding taunt.
     /// </summary>
-    /// <param name="taunt"></param>
-    /// <returns></returns>
+    /// <param name="taunt">Index of taunt to activate. 0-3.</param>
+    /// <returns>Texture of the corresponding taunt. Null if none activated.</returns>
     public Texture Activate(int taunt)
     {
         if (!used[taunt])
@@ -66,7 +80,13 @@ public class TauntManager : BaseMono
         return textures[taunt];
     }
 
+    #endregion
 
+    #region Private Methods
+
+    /// <summary>
+    /// Returns defense stats back to normal after set time.
+    /// </summary>
     private IEnumerator DefenseIncrease()
     {
         yield return WaitForTime(increaseTime);
@@ -75,6 +95,9 @@ public class TauntManager : BaseMono
     }
 
 
+    /// <summary>
+    /// Returns attack stats back to normal after set time.
+    /// </summary>
     private IEnumerator AttackIncrease()
     {
         yield return WaitForTime(increaseTime);
@@ -83,9 +106,14 @@ public class TauntManager : BaseMono
     }
 
 
+    /// <summary>
+    /// Tells the character when the taunt is over.
+    /// </summary>
     private IEnumerator Taunt()
     {
         yield return WaitForTime(tauntTime);
         myCharacter.EndAttack();
     }
+
+    #endregion
 }

@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// 
+/// Attack that can be created using public variables in the inspector.
 /// </summary>
 public class GenericAttack : Attack
 {
@@ -27,8 +27,6 @@ public class GenericAttack : Attack
     #region Base Fields
 
     public Texture attackAnimation;
-
-    // hitbox
     public GameObject Attack_Prefab;
     private ObjectRecycler Attack_Pool;
     private GameObject currentAttack;
@@ -120,6 +118,10 @@ public class GenericAttack : Attack
 
     #region Private Methods
 
+    /// <summary>
+    /// Run through all attacking stages.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator Attack()
     {
         canActivate = false;
@@ -137,7 +139,7 @@ public class GenericAttack : Attack
         {
             StandardAttack();
         }
-        
+
         yield return WaitForTime(attackTime + windDown);
         manager.EndAttack();
 
@@ -163,7 +165,7 @@ public class GenericAttack : Attack
         currentAttack.transform.position = myTransform.position + new Vector3(0f, offset.y, offset.x);
         currentAttack.transform.rotation = myTransform.rotation;
         currentAttack.transform.Align();
-        currentAttack.GetComponent<Hitbox>().Initialize(myCharacter, hitInfo, hitboxTime, hitNumber, myTransform.forward*projectileSpeed, oneShot);
+        currentAttack.GetComponent<Hitbox>().Initialize(myCharacter, hitInfo, hitboxTime, hitNumber, myTransform.forward * projectileSpeed, oneShot);
     }
 
 

@@ -8,21 +8,20 @@ using System;
 /// </summary>
 public class PauseEventArgs : EventArgs
 {
-  /// <summary>Is the game paused?</summary>
-  public readonly bool paused;
-  /// <summary>Player that paused/unpaused the game.</summary>
-  public readonly int playerNumber;
+    /// <summary>Is the game paused?</summary>
+    public readonly bool paused;
+    /// <summary>Player that paused/unpaused the game.</summary>
+    public readonly int playerNumber;
 
 
-  /// <summary>
-  /// Constructor.
-  /// </summary>
-  /// <param name="paused">Is the game paused?</param>
-  /// <param name="playerNumber">Player that paused/unpaused the game.</param>
-  public PauseEventArgs(bool paused, int playerNumber)
-  {
-    this.paused = paused;
-    this.playerNumber = playerNumber;
-  } // end PauseEventArgs
-
-} // end PauseEventArgs class
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    /// <param name="paused">Is the game paused?</param>
+    /// <param name="playerNumber">Player that paused/unpaused the game.</param>
+    public PauseEventArgs(bool paused, int playerNumber)
+    {
+        this.paused = paused;
+        this.playerNumber = playerNumber;
+    }
+}

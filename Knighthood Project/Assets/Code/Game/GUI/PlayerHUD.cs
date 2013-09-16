@@ -8,10 +8,14 @@ using UnityEngine;
 /// </summary>
 public class PlayerHUD : BaseMono
 {
+    #region Private Fields
+
     private Player player;
     private Health health;
     private Magic magic;
     private StatManager statManager;
+
+    #endregion
 
 
     #region MonoBehaviour Overrides
@@ -55,5 +59,4 @@ public class PlayerHUD : BaseMono
     }
 
     #endregion
-
 }

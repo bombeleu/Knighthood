@@ -2,22 +2,24 @@
 // 9.1.2013
 
 using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// Manager for the second splash screen.
 /// </summary>
 public class SplashGameManager : BaseMono
 {
+    #region Public Fields
+
     public float time;
 
+    #endregion
 
     #region MonoBehaviour Overrides
 
     private void Awake()
     {
         InvokeAction(() => Application.LoadLevel("Main Menu"), time);
-    } // end Start
+    }
 
 
     private void Update()
@@ -34,8 +36,8 @@ public class SplashGameManager : BaseMono
                 Application.LoadLevel("Main Menu");
             }
         }
-    } // end Update
+    }
 
     #endregion
 
-} // end SplashGameManager class
+}

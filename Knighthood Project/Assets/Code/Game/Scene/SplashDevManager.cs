@@ -2,14 +2,17 @@
 // 9.1.2013
 
 using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// Manager for the first splash screen.
 /// </summary>
 public class SplashDevManager : BaseMono
 {
+    #region Public Fields
+
     public float time;
+
+    #endregion
 
 
     #region MonoBehaviour Overrides
@@ -17,7 +20,7 @@ public class SplashDevManager : BaseMono
     private void Awake()
     {
         InvokeAction(() => Application.LoadLevel("Splash Game"), time);
-    } // end Start
+    }
 
 
     private void Update()
@@ -34,8 +37,7 @@ public class SplashDevManager : BaseMono
                 Application.LoadLevel("Splash Game");
             }
         }
-    } // end Update
+    }
 
     #endregion
-
-} // end SplashDevManager class
+}

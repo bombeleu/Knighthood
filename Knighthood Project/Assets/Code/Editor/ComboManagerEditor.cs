@@ -9,7 +9,7 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// 
+/// Editor for ComboManager.
 /// </summary>
 [CustomEditor(typeof(ComboManager))]
 public class ComboManagerEditor : Editor
@@ -215,10 +215,6 @@ public class ComboManagerEditor : Editor
 
     #region Private Methods
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="index"></param>
     private void Delete(int index)
     {
         DestroyImmediate(manager.attacks[index], true);
@@ -233,11 +229,6 @@ public class ComboManagerEditor : Editor
     }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="attack"></param>
-    /// <param name="index"></param>
     private void AddAttack(Type attack, int index = -1)
     {
         if (index == -1)
@@ -258,10 +249,6 @@ public class ComboManagerEditor : Editor
     }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     private static Type[] LoadAttackScripts()
     {
         string[] scriptNames = Directory.GetFiles(ScriptPath, "*.cs", SearchOption.AllDirectories);
@@ -278,11 +265,6 @@ public class ComboManagerEditor : Editor
     }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
     private bool DrawAttack(int index)
     {
         EditorGUILayout.BeginHorizontal();

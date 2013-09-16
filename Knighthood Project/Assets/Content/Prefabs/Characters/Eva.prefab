@@ -122,6 +122,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   log: 1
   maxHealth: 100
+  currentHealth: 0
   invincible: 0
 --- !u!114 &11400002
 MonoBehaviour:
@@ -138,9 +139,8 @@ MonoBehaviour:
   moveSpeed: 13
   gravity: 75
   terminalVelocity: 40
-  jumpingInfo:
-    jumpSpeed: 21
-    climbTime: .300000012
+  jumpSpeed: 21
+  climbTime: .300000012
   StatManager:
     health: 0
     physicalAttack: 1
@@ -153,7 +153,7 @@ MonoBehaviour:
   fastFallSpeed: 50
   extraJumpTime: .0199999996
   prematureJumpTime: .100000001
-  keyboard: 0
+  keyboard: 1
   attackDeadZone: .699999988
   magicModifierDeadZone: .800000012
   moveBuffer: 0

@@ -9,18 +9,23 @@ using System.Collections;
 /// </summary>
 public class Hitbox : BaseMono
 {
-    #region References
+    #region Reference Fields
 
     protected Transform myTransform;
 
     #endregion
 
-    #region Combat Fields
+    #region Public Fields
+
+    public HitInfo hitInfo { get; private set; }
+
+    #endregion
+
+    #region Private Fields
 
     private static int HitIDs = 1;
     private int hitID;
     private Character sender;
-    public HitInfo hitInfo { get; private set; }
     private bool oneShot;
     private Job moveJob;
 
@@ -165,5 +170,4 @@ public class Hitbox : BaseMono
     }
 
     #endregion
-
 }

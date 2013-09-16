@@ -3,7 +3,6 @@
 
 using UnityEngine;
 using System.Collections.Generic;
-using System;
 
 /// <summary>
 /// Base level manager singleton.
@@ -30,7 +29,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         // get references
         camera = Camera.main;
-    } // end Start
+    }
 
     #endregion
 
@@ -57,7 +56,7 @@ public class LevelManager : Singleton<LevelManager>
             player.GetSafeComponent<Player>().Initialize(GameData.Instance.playerUsernames[i], i);
             player.transform.parent = playerParent;
         }
-    } // end CreatePlayers
+    }
 
     #endregion
 }

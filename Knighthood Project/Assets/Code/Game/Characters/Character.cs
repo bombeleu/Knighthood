@@ -36,7 +36,10 @@ public class Character : BaseMono
     protected Vector3 velocity;
     public float gravity;
     public float terminalVelocity;
-    public JumpingInfo jumpingInfo;
+    /// <summary>How fast the myCharacter moves upward.</summary>
+    public float jumpSpeed = 21;
+    /// <summary>How long the myCharacter can jump.</summary>
+    public float climbTime = 0.3f;
 
     #endregion
 
@@ -52,7 +55,7 @@ public class Character : BaseMono
     protected virtual void Awake()
     {
         // get references
-        myMotor = GetSafeComponent<CharacterMotor>();
+        myMotor = GetComponent<CharacterMotor>();
         myTransform = transform;
         myRigidbody = rigidbody;
     }
@@ -114,17 +117,17 @@ public class Character : BaseMono
     #region Public Methods
 
     /// <summary>
-    /// 
+    /// Change the character to Attacking state.
     /// </summary>
-    /// <param name="attackTexture"></param>
+    /// <param name="attackTexture">Texture corresponding to the attack being performed.</param>
     public void Attack(Texture attackTexture)
     {
-        SetState(States.Attacking, new Dictionary<string, object>{{"attackTexture", attackTexture}});
+        SetState(States.Attacking, new Dictionary<string, object> { { "attackTexture", attackTexture } });
     }
 
 
     /// <summary>
-    /// 
+    /// End the current attack state. Set to Idle.
     /// </summary>
     public void EndAttack()
     {
@@ -132,5 +135,4 @@ public class Character : BaseMono
     }
 
     #endregion
-
 }

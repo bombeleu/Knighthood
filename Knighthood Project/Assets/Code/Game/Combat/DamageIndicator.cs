@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Collections;
 
 /// <summary>
-/// 
+/// Text that appears above an object that just recieved damage/health indicating the amount.
 /// </summary>
 [RequireComponent(typeof(TextMesh))]
 public class DamageIndicator : BaseMono
@@ -24,9 +24,9 @@ public class DamageIndicator : BaseMono
     /// <summary>How fast to move upwards.</summary>
     public float speed;
     /// <summary>How far above the parent's origion to start.</summary>
-    private const float startHeight = 1.5f;
+    private const float StartHeight = 1.5f;
     //
-    private float currentHeight = 0f;
+    private float currentHeight;
 
     #endregion
 
@@ -37,18 +37,11 @@ public class DamageIndicator : BaseMono
     {
         // get references
         myTransform = transform;
-    } // end Start
-
-
-    private void Update()
-    {
-        currentHeight += speed * Time.deltaTime;
-        myTransform.position = parent.position + Vector3.up * (startHeight + currentHeight);
-    } // end Update
+    }
 
     #endregion
 
-    #region Indicator Methods
+    #region Public Methods
 
     /// <summary>
     /// Set position, text, and color.
@@ -57,7 +50,7 @@ public class DamageIndicator : BaseMono
     /// <param name="damage">Damage for text.</param>
     public void Initiate(Transform parent, int damage)
     {
-        myTransform.position = parent.position + Vector3.up * startHeight;
+        myTransform.position = parent.position + Vector3.up * StartHeight;
         this.parent = parent;
         currentHeight = 0f;
 
@@ -71,16 +64,35 @@ public class DamageIndicator : BaseMono
             GetComponent<TextMesh>().color = Color.red;
         }
 
-        StartCoroutine(KillTimer());
-    } // end Activate
-
-
-    private IEnumerator KillTimer()
-    {
-        yield return WaitForTime(time);
-        gameObject.SetActive(false);
-    } // end KillTimer
+        InvokeMethod("Kill", time);
+        StartCoroutine("Float");
+    }
 
     #endregion
 
-} // end DamageIndicator class
+    #region Private Methods
+
+    /// <summary>
+    /// Disable the indicator.
+    /// </summary>
+    private void Kill()
+    {
+        StopCoroutine("Float");
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Move up.
+    /// </summary>
+    private IEnumerator Float()
+    {
+        while (true)
+        {
+            currentHeight += speed*Time.deltaTime;
+            myTransform.position = parent.position + Vector3.up*(StartHeight + currentHeight);
+            yield return null;
+        }
+    }
+
+    #endregion
+}

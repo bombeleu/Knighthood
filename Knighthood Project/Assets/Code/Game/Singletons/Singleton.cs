@@ -9,28 +9,28 @@ using UnityEngine;
 /// <typeparam name="T">Inherited class.</typeparam>
 public class Singleton<T> : BaseMono where T : MonoBehaviour
 {
-  protected static T instance;
+    protected static T instance;
 
 
-  public static T Instance
-  {
-    get
+    public static T Instance
     {
-      if (instance == null)
-      {
-        instance = (T)FindObjectOfType(typeof(T));
-
-        if (instance == null)
+        get
         {
-          Debugger.Log("Creating " + typeof(T) + " singleton");
-          GameObject i = new GameObject(typeof(T).ToString());
-          i.AddComponent<T>();
-          instance = i.GetComponent<T>();
+            if (instance == null)
+            {
+                instance = (T)FindObjectOfType(typeof(T));
+
+                if (instance == null)
+                {
+                    Debugger.Log("Creating " + typeof(T) + " singleton");
+                    GameObject i = new GameObject(typeof(T).ToString());
+                    i.AddComponent<T>();
+                    instance = i.GetComponent<T>();
+                }
+            }
+
+            return instance;
         }
-      }
-
-      return instance;
     }
-  }
 
-} // end Singleton class
+}

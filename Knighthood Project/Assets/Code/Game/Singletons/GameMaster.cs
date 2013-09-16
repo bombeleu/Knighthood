@@ -4,7 +4,7 @@
 using UnityEngine;
 
 /// <summary>
-/// 
+/// Makes sure there is only ever one GameMaster.
 /// </summary>
 public class GameMaster : BaseMono
 {
@@ -15,5 +15,4 @@ public class GameMaster : BaseMono
             Destroy(gameObject);
         }
     }
-	
 }

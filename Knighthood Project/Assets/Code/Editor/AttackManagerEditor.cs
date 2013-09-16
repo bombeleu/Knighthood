@@ -9,7 +9,7 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// 
+/// Editor for AttackManager.
 /// </summary>
 [CustomEditor(typeof(AttackManager))]
 public class AttackManagerEditor : Editor
@@ -162,193 +162,10 @@ public class AttackManagerEditor : Editor
         managerSerialized.ApplyModifiedProperties();
     }
 
-
-    //public override void OnInspectorGUI()
-    //{
-    //    managerSerialized.Update();
-    //    //base.OnInspectorGUI();
-
-    //    #region titles
-
-    //    EditorGUILayout.BeginHorizontal();
-    //    {
-    //        EditorGUILayout.LabelField("Attack Input", GUILayout.MinWidth(0));
-    //        EditorGUILayout.LabelField("Attack Name", GUILayout.MinWidth(0));
-
-    //        // close all
-    //        if (GUILayout.Button(new GUIContent(@"\", "Close All"), GUILayout.Width(30)))
-    //        {
-    //            for (int i = 0; i < open.arraySize; i++)
-    //            {
-    //                open.GetArrayElementAtIndex(i).boolValue = false;
-    //            }
-    //        }
-
-    //        // delete all
-    //        if (GUILayout.Button(new GUIContent("--", "Delete All"), GUILayout.Width(30)))
-    //        {
-    //            confirmDeleteAll = true;
-    //        }
-    //    }
-    //    EditorGUILayout.EndHorizontal();
-
-    //    // confirm delete all
-    //    if (confirmDeleteAll)
-    //    {
-    //        EditorGUILayout.BeginHorizontal();
-    //        {
-    //            if (GUILayout.Button("Delete All"))
-    //            {
-    //                while (attacks.arraySize > 0)
-    //                {
-    //                    Delete(0);
-    //                }
-    //                confirmDeleteAll = false;
-    //                return;
-    //            }
-
-    //            if (GUILayout.Button("Cancel"))
-    //            {
-    //                confirmDeleteAll = false;
-    //            }
-    //        }
-    //        EditorGUILayout.EndHorizontal();
-    //    }
-
-    //    #endregion
-
-    //    #region all attacks
-
-    //    EditorGUILayout.BeginVertical();
-    //    for (int i = 0; i < attacks.arraySize; i++)
-    //    {
-    //        bool altInput = altInputs.GetArrayElementAtIndex(i).boolValue;
-
-    //        // attack info
-    //        EditorGUILayout.BeginHorizontal();
-    //        {
-    //            EditorGUILayout.PropertyField(genericAttackTypes.GetArrayElementAtIndex(i), GUIContent.none, GUILayout.MinWidth(0));
-    //            manager.attacks[i].attackInput = manager.attackInputs[i];
-
-    //            // not changable if another input for a combo
-    //            if (altInput)
-    //            {
-    //                EditorGUILayout.LabelField(attackNames.GetArrayElementAtIndex(i).stringValue, GUILayout.MinWidth(0));
-    //            }
-    //            else
-    //            {
-    //                EditorGUILayout.PropertyField(attackNames.GetArrayElementAtIndex(i), GUIContent.none, GUILayout.MinWidth(0));
-    //                manager.attacks[i].attackName = manager.attackNames[i];
-    //            }
-
-    //            // add input to combo
-    //            if (manager.attacks[i].GetType() == typeof(ComboAttack) && !altInput)
-    //            {
-    //                if (GUILayout.Button(new GUIContent("+", "Add input"), GUILayout.Width(30)))
-    //                {
-    //                    AddInput(i + 1);
-    //                    return;
-    //                }
-    //            }
-    //            else
-    //            {
-    //                GUILayout.Button("", GUILayout.Width(30));
-    //            }
-
-    //            // open/close attack
-    //            if (altInput)
-    //            {
-    //                GUILayout.Button("", GUILayout.Width(30));
-    //            }
-    //            else
-    //            {
-    //                if (GUILayout.Button(new GUIContent(open.GetArrayElementAtIndex(i).boolValue ? "|" : "O", open.GetArrayElementAtIndex(i).boolValue ? "Close" : "Open"), GUILayout.Width(30)))
-    //                {
-    //                    open.GetArrayElementAtIndex(i).boolValue = !open.GetArrayElementAtIndex(i).boolValue;
-    //                }
-    //            }
-
-    //            // delete attack
-    //            if (GUILayout.Button(new GUIContent("-", "Delete"), GUILayout.Width(30)))
-    //            {
-    //                if (altInput)
-    //                {
-    //                    Delete(i);
-    //                    return;
-    //                }
-    //                else
-    //                {
-    //                    confirmDelete = i;   
-    //                }
-    //            }
-    //        }
-    //        EditorGUILayout.EndHorizontal();
-
-    //        // confirm delete
-    //        if (confirmDelete == i)
-    //        {
-    //            EditorGUILayout.BeginHorizontal();
-    //            {
-    //                if (GUILayout.Button("Delete"))
-    //                {
-    //                    Delete(i);
-    //                    return;
-    //                }
-
-    //                if (GUILayout.Button("Cancel"))
-    //                {
-    //                    confirmDelete = -1;
-    //                }
-    //            }
-    //            EditorGUILayout.EndHorizontal();
-    //        }
-
-    //        // hide/show attack
-    //        if (!altInput)
-    //        {
-    //            manager.attacks[i].hideFlags = (open.GetArrayElementAtIndex(i).boolValue ? HideFlags.None : HideFlags.HideInInspector);
-    //        }
-    //    }
-    //    EditorGUILayout.EndVertical();
-
-    //    // confirm add
-    //    if (confirmAdd)
-    //    {
-    //        foreach (var type in attackScripts)
-    //        {
-    //            if (GUILayout.Button(Regex.Replace(type.Name, "(\\B[A-Z])", " $1")))
-    //            {
-    //                AddAttack(type);
-    //            }
-    //        }
-
-    //        if (GUILayout.Button("Cancel"))
-    //        {
-    //            confirmAdd = false;
-    //        }
-    //    }
-    //    // add new attack
-    //    else
-    //    {
-    //        if (GUILayout.Button("Add New Attack"))
-    //        {
-    //            confirmAdd = true;
-    //        }
-    //    }
-
-    //    #endregion
-
-    //    managerSerialized.ApplyModifiedProperties();
-    //}
-
     #endregion
 
     #region Private Methods
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="index"></param>
     private void Delete(int index)
     {
         DestroyImmediate(manager.attacks[index], true);
@@ -363,11 +180,6 @@ public class AttackManagerEditor : Editor
     }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="attack"></param>
-    /// <param name="index"></param>
     private void AddAttack(Type attack, int index = -1)
     {
         if (index == -1)
@@ -388,10 +200,6 @@ public class AttackManagerEditor : Editor
     }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     private static Type[] LoadAttackScripts()
     {
         string[] scriptNames = Directory.GetFiles(ScriptPath, "*.cs", SearchOption.AllDirectories);
@@ -408,11 +216,6 @@ public class AttackManagerEditor : Editor
     }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
     private bool DrawAttack(int index)
     {
         EditorGUILayout.BeginHorizontal();

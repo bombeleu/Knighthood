@@ -23,6 +23,5 @@ public class HitEventArgs : EventArgs
   {
     this.hitInfo = hitInfo;
     this.dead = dead;
-  } // end HitEventArgs
-
-} // end HitEventArgs class
+  }
+}

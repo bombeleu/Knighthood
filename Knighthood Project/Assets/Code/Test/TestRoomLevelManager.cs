@@ -9,36 +9,22 @@ using System.Collections;
 /// </summary>
 public class TestRoomLevelManager : LevelManager
 {
-  #region Test Fields
+    #region Test Fields
 
-  public float fireballSpawnMin;
-  public float fireballSpawnMax;
+    public float fireballSpawnMin;
+    public float fireballSpawnMax;
 
-  #endregion
+    #endregion
 
 
-  #region MonoBehaviour Overrides
+    #region MonoBehaviour Overrides
 
-  protected override void Awake()
-  {
-    base.Awake();
-
-    CreatePlayers();
-  } // end Start
-
-  #endregion
-
-  #region Test Methods
-
-  private IEnumerator Fireballs()
-  {
-    while (true)
+    protected override void Awake()
     {
+        base.Awake();
 
-      yield return new WaitForSeconds(Random.Range(fireballSpawnMin, fireballSpawnMax));
+        CreatePlayers();
     }
-  } // end Fireballs
 
-  #endregion
-
-} // end TestRoomLevelManager class
+    #endregion
+}

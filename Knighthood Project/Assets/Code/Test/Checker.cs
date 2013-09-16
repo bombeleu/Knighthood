@@ -2,16 +2,15 @@
 // 8.7.2013
 
 using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// Tile texture over object.
 /// </summary>
+[ExecuteInEditMode]
 public class Checker : MonoBehaviour
 {
-  void Update()
+  void OnEnable()
   {
     renderer.material.mainTextureScale = new Vector2(transform.lossyScale.x/2, transform.lossyScale.y/2);
-  } // end Start
-
-} // end Checker class
+  }
+}

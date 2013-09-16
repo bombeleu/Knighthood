@@ -12,5 +12,4 @@ public static class TransformExtension
     {
         transform.localScale = new Vector3(Vector3.Dot(transform.forward, Vector3.right) * Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
     }
-
 }

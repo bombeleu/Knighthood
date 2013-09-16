@@ -1,9 +1,6 @@
 ﻿// Steve Yeager
 // 8.18.2013
 
-using UnityEngine;
-using System.Collections;
-
 /// <summary>
 /// Holds user player info.
 /// </summary>
@@ -27,6 +24,5 @@ public struct PlayerInfo
     this.username = username;
     this.zeroNumber = zeroNumber;
     playerNumber = zeroNumber + 1;
-  } // end PlayerInfo
-
-} // end PlayerInfo struct
+  }
+}

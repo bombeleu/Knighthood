@@ -3,7 +3,6 @@
 
 using UnityEngine;
 using System;
-using System.Collections;
 
 /// <summary>
 /// Health component for objects that can recieve hits and die.
@@ -13,7 +12,7 @@ public class Health : BaseMono
     #region Health Fields
 
     public int maxHealth;
-    public int currentHealth { get; protected set; }
+    public int currentHealth;// { get; protected set; }
     public bool invincible;// { get; private set; }
     private int lastHitID;
 
@@ -21,6 +20,7 @@ public class Health : BaseMono
 
     #region Events
 
+    /// <summary>Triggered when the owner recieves a hit and not invincible.</summary>
     public EventHandler<HitEventArgs> HitEvent;
 
     #endregion
@@ -31,7 +31,7 @@ public class Health : BaseMono
     private void Awake()
     {
         Initialize();
-    } // end Start
+    }
 
     #endregion
 
@@ -43,7 +43,7 @@ public class Health : BaseMono
     public void Initialize()
     {
         currentHealth = maxHealth;
-    } // end Initialize
+    }
 
 
     /// <summary>
@@ -53,7 +53,7 @@ public class Health : BaseMono
     public void ChangeHealth(int amount)
     {
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-    } // end ChangeHealth
+    }
 
 
     /// <summary>
@@ -63,7 +63,7 @@ public class Health : BaseMono
     public void ToggleInvincible(bool invincible)
     {
         this.invincible = invincible;
-    } // end ToggleInvincible
+    }
 
     #endregion
 
@@ -87,8 +87,7 @@ public class Health : BaseMono
         {
             HitEvent(sender, new HitEventArgs(hitInfo, currentHealth == 0));
         }
-    } // end RecieveHit
+    }
 
     #endregion
-
-} // end Health class
+}

@@ -7,22 +7,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 
+/// Manger for all combos for a character.
 /// </summary>
 public class ComboManager : CombatManager
 {
+    #region Public Fields
+
     public string[] comboStrings = new string[0];
+
+    #endregion
+
+    #region Private Fields
+
     private string currentComboString = "";
-    Queue<int> comboQueue = new Queue<int>();
+    private Queue<int> comboQueue = new Queue<int>();
     private bool attacking;
 
+    #endregion
 
+
+    #region CombatManager Overrides
 
     public override bool CanActivate(string attackInput)
     {
         if (attacking)
         {
-            
+
             int attackIndex = Array.IndexOf(inputs, attackInput);
             if (Array.IndexOf(comboStrings, currentComboString + attackIndex) != -1)
             {
@@ -66,7 +76,14 @@ public class ComboManager : CombatManager
         }
     }
 
+    #endregion
 
+    #region Private Methods
+
+    /// <summary>
+    /// Timer for setting toggling the queue open status.
+    /// </summary>
+    /// <param name="openTime">Attack time of an attack.</param>
     private IEnumerator OpenQueue(float openTime)
     {
         attacking = true;
@@ -75,6 +92,9 @@ public class ComboManager : CombatManager
     }
 
 
+    /// <summary>
+    /// Starts the next attack if one is queued up.
+    /// </summary>
     private void ActivateComboNext()
     {
         currentComboString += comboQueue.Dequeue();
@@ -84,6 +104,11 @@ public class ComboManager : CombatManager
     }
 
 
+    /// <summary>
+    /// Get the index of the next possible attack.
+    /// </summary>
+    /// <param name="attackInput">Name of input.</param>
+    /// <returns>Index of the attack corresponding with the next combo.</returns>
     private int GetAttackIndexFromInput(string attackInput)
     {
         int inputIndex = Array.IndexOf(inputs, attackInput);
@@ -94,8 +119,15 @@ public class ComboManager : CombatManager
     }
 
 
+    /// <summary>
+    /// Get index of attack.
+    /// </summary>
+    /// <param name="comboString">Combo string for attack.</param>
+    /// <returns>Index of the corresponding attack.</returns>
     private int GetAttackIndexFromComboString(string comboString)
     {
         return Array.IndexOf(comboStrings, comboString);
     }
+
+    #endregion
 }

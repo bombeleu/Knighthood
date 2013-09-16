@@ -1,11 +1,9 @@
 ﻿// Steve Yeager
 // 8.18.2013
 
-using System.Reflection.Emit;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System;
 
 /// <summary>
@@ -13,7 +11,7 @@ using System;
 /// </summary>
 public class Player : Character
 {
-    #region References
+    #region Reference Fields
 
     private ComboManager comboManager;
     private AttackManager attackManager;
@@ -99,6 +97,7 @@ public class Player : Character
 
     private void Update()
     {
+        // temp reload scene
         if (Input.GetButtonDown("Back_" + playerInfo.playerNumber) || Input.GetKeyDown(KeyCode.Return))
         {
             GameData.Instance.ReloadScene();
@@ -107,7 +106,7 @@ public class Player : Character
 
     #endregion
 
-    #region Create Methods
+    #region Public Methods
 
     /// <summary>
     /// Set player info.
@@ -312,7 +311,7 @@ public class Player : Character
         myMaterial.mainTexture = animationTex[Array.IndexOf(animationNames, "Jumping")];
 
         currentStateJob = new Job(JumpingUpdate(), false);
-        currentStateJob.CreateChildJob(Climb(), jumpingInfo.climbTime);
+        currentStateJob.CreateChildJob(Climb(), climbTime);
         currentStateJob.CreateChildJob(Float());
 
         currentStateJob.JobCompleteEvent += (killed) =>
@@ -334,7 +333,7 @@ public class Player : Character
 
     private IEnumerator Climb()
     {
-        velocity.y = jumpingInfo.jumpSpeed;
+        velocity.y = jumpSpeed;
 
         while (GetJumpingInput(true))
         {
@@ -655,9 +654,9 @@ public class Player : Character
 
 
     /// <summary>
-    /// 
+    /// Can the player fall through the platform?
     /// </summary>
-    /// <returns></returns>
+    /// <returns>True, if player is pressing down and the platform is Translucent.</returns>
     private bool CanFallThrough()
     {
         float inputY = GetMovingInput().y;
@@ -731,10 +730,10 @@ public class Player : Character
     #region Combat Methods
 
     /// <summary>
-    /// 
+    /// Activate either combo or attack manager and set state to Attacking.
     /// </summary>
-    /// <param name="attack"></param>
-    /// <param name="info"></param>
+    /// <param name="attack">Attack performed.</param>
+    /// <param name="info">Info to pass to the attacking state.</param>
     private void CalculateAttack(AttackTypes attack, Dictionary<string, object> info)
     {
         if (attack == AttackTypes.None) return;
@@ -778,7 +777,7 @@ public class Player : Character
         }
 
         myMotor.Velocity = moveVector;
-    } // end SetVelocity
+    }
 
     #endregion
 }

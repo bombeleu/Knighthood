@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// 
+/// Editor for GenericAttack.
 /// </summary>
 [CustomEditor(typeof(GenericAttack))]
 public class GenericAttackEditor : AttackEditor

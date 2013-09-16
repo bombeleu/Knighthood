@@ -17,6 +17,7 @@ public class BaseMono : MonoBehaviour
 
     #endregion
 
+
     #region Component Methods
 
     /// <summary>
@@ -27,7 +28,7 @@ public class BaseMono : MonoBehaviour
     public I GetInterfaceComponent<I>() where I : class
     {
         return GetComponent(typeof(I)) as I;
-    } // end GetInterfaceComponent
+    }
 
 
     /// <summary>
@@ -50,7 +51,7 @@ public class BaseMono : MonoBehaviour
         }
 
         return list;
-    } // end FindObjectsOfInterface
+    }
 
 
     /// <summary>
@@ -61,7 +62,7 @@ public class BaseMono : MonoBehaviour
     public T GetSafeComponent<T>() where T : class
     {
         return gameObject.GetSafeComponent<T>();
-    } // end GetSafeComponent
+    }
 
     #endregion
 
@@ -70,7 +71,7 @@ public class BaseMono : MonoBehaviour
     protected void Log(object message)
     {
         if (log) Debugger.Log(message, this);
-    } // end Log
+    }
 
     #endregion
 
@@ -84,14 +85,14 @@ public class BaseMono : MonoBehaviour
     public void InvokeAction(Action action, float time)
     {
         StartCoroutine(InvokedAction(action, time));
-    } // end InvokeAction
+    }
 
 
     private IEnumerator InvokedAction(Action action, float time)
     {
         yield return WaitForTime(time);
         action.Invoke();
-    } // end InvokedAction
+    }
 
 
     /// <summary>
@@ -102,14 +103,19 @@ public class BaseMono : MonoBehaviour
     public void InvokeMethod(string method, float time)
     {
         StartCoroutine(InvokedMethod(method, time));
-    } // end InvokeMethod
+    }
 
 
+    /// <summary>
+    /// Wait for time then invoke method.
+    /// </summary>
+    /// <param name="method">Name of method to be called.</param>
+    /// <param name="time">Time to wait before calling method.</param>
     private IEnumerator InvokedMethod(string method, float time)
     {
         yield return WaitForTime(time);
         Invoke(method, 0f);
-    } // end InvokedMethod
+    }
 
     #endregion
 
@@ -122,7 +128,7 @@ public class BaseMono : MonoBehaviour
     public Coroutine WaitForTime(float waitTime)
     {
         return StartCoroutine(Wait(waitTime));
-    } // end WaitForTime
+    }
 
 
     /// <summary>
@@ -137,8 +143,7 @@ public class BaseMono : MonoBehaviour
             timer += GameTime.deltaTime;
             yield return null;
         }
-    } // end Wait
+    }
 
     #endregion
-
-} // end BaseMono class
+}

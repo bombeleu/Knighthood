@@ -37,9 +37,10 @@ public class StatManager
     #region Public Methods
 
     /// <summary>
-    /// 
+    /// Load NPC stats.
     /// </summary>
-    /// <param name="name"></param>
+    /// <param name="name">Name of the NPC</param>
+    [Obsolete]
     public void LoadNPC(string name)
     {
         XmlDocument statSheet = new XmlDocument();
@@ -86,5 +87,4 @@ public class StatManager
     }
 
     #endregion
-
-} // end StatManager class
+}

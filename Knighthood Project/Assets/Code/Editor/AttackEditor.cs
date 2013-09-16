@@ -3,20 +3,25 @@
 
 using UnityEditor;
 using UnityEngine;
-using System.Collections;
 
 /// <summary>
-/// 
+/// Editor class for Attack.
 /// </summary>
 [CustomEditor(typeof(Attack))]
 public class AttackEditor : Editor
 {
+    #region Private Fields
+
     private SerializedObject myObject;
 
     private SerializedProperty
         attackInput,
         attackName;
 
+    #endregion
+
+
+    #region Editor Overrides
 
     protected virtual void OnEnable()
     {
@@ -41,4 +46,6 @@ public class AttackEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
     }
+
+    #endregion
 }

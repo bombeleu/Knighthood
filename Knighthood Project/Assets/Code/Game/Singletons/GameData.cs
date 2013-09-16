@@ -24,7 +24,7 @@ public class GameData : Singleton<GameData>
     #region Loading Fields
 
     public string PreviousScene { get; private set; }
-    public string NextScene { get; private set; }
+    public string nextScene { get; private set; }
 
     #endregion
 
@@ -99,15 +99,15 @@ public class GameData : Singleton<GameData>
     public void LoadScene(string nextScene, bool load = false)
     {
         PreviousScene = Application.loadedLevelName;
-        this.NextScene = nextScene;
+        this.nextScene = nextScene;
 
         if (LoadSceneEvent != null)
         {
-            LoadSceneEvent(this, new LoadSceneEventArgs(PreviousScene, NextScene));
+            LoadSceneEvent(this, new LoadSceneEventArgs(PreviousScene, this.nextScene));
         }
 
         Application.LoadLevel(load ? "Loading Screen" : nextScene);
-    } // end LoadScene
+    }
 
 
     /// <summary>
@@ -117,7 +117,7 @@ public class GameData : Singleton<GameData>
     {
         if (LoadSceneEvent != null)
         {
-            LoadSceneEvent(this, new LoadSceneEventArgs(PreviousScene, NextScene));
+            LoadSceneEvent(this, new LoadSceneEventArgs(PreviousScene, nextScene));
         }
 
         Application.LoadLevel(Application.loadedLevel);
@@ -133,7 +133,7 @@ public class GameData : Singleton<GameData>
     private void LoadAllUsernames()
     {
         allUsernames = PlayerPrefs.GetString("All Usernames").Split('|').ToList();
-    } // end LoadAllUsernames
+    }
 
 
     /// <summary>
@@ -149,7 +149,7 @@ public class GameData : Singleton<GameData>
 
         allUsernames.Add(newUsername);
         PlayerPrefs.SetString("All Usernames", string.Join("|", allUsernames.ToArray()));
-    } // end AddUsername
+    }
 
     #endregion
 

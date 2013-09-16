@@ -39,7 +39,7 @@ public abstract class Attack : BaseMono
     #region Public Methods
 
     /// <summary>
-    /// 
+    /// Get attack ready for combat for specific character.
     /// </summary>
     /// <param name="manager"></param>
     public void Initialize(CombatManager manager)
@@ -48,5 +48,4 @@ public abstract class Attack : BaseMono
     }
 
     #endregion
-
 }

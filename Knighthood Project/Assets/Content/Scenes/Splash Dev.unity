@@ -370,6 +370,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
+  volumeSE: 0
+  volumeMusic: 0
 --- !u!114 &1930441095
 MonoBehaviour:
   m_ObjectHideFlags: 0

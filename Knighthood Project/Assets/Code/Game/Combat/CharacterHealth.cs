@@ -1,22 +1,29 @@
 ﻿// Steve Yeager
 // 8.25.2013
 
-using UnityEngine;
-using System.Collections;
-
 /// <summary>
 /// Health for characters.
 /// </summary>
 public class CharacterHealth : Health
 {
+    #region Reference Fields
+
     private StatManager statManager;
 
+    #endregion
+
+
+    #region MonoBehaviour Overrides
 
     private void Awake()
     {
+        // get references
         statManager = GetSafeComponent<Character>().StatManager;
     }
 
+    #endregion
+
+    #region Public Methods
 
     /// <summary>
     /// 
@@ -29,17 +36,15 @@ public class CharacterHealth : Health
         this.statManager = stats;
     }
 
+    #endregion
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="hitID"></param>
-    /// <param name="hitInfo"></param>
+    #region Health Overrides
+
     public override void RecieveHit(object sender, int hitID, HitInfo hitInfo)
     {
         hitInfo.FactorDefendStats(statManager);
         base.RecieveHit(sender, hitID, hitInfo);
     }
 
+    #endregion
 }

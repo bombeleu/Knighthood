@@ -1,7 +1,6 @@
 ﻿// Steve Yeager
 // 8.18.2013
 
-using System;
 using UnityEngine;
 
 /// <summary>
@@ -15,7 +14,7 @@ public class GameResources : Singleton<GameResources>
 
     #endregion
 
-    #region GUI
+    #region Pool Fields
 
     public GameObject DamageIndicator_Prefab;
     public ObjectRecycler DamageIndicator_Pool;
@@ -35,11 +34,9 @@ public class GameResources : Singleton<GameResources>
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-
         DamageIndicator_Pool = new ObjectRecycler(DamageIndicator_Prefab);
         Hitbox_Pool = new ObjectRecycler(Hitbox_Prefab);
-    } // end Awake
+    }
 
 
     private void Start()
@@ -52,6 +49,11 @@ public class GameResources : Singleton<GameResources>
 
     #region Event Handlers
 
+    /// <summary>
+    /// Handler for LoadEvent. Reset's ObjectRecyclers.
+    /// </summary>
+    /// <param name="sender">GameData.</param>
+    /// <param name="loadSceneEventArgs">LoadEvent args.</param>
     private void LoadSceneHandler(object sender, LoadSceneEventArgs loadSceneEventArgs)
     {
         if (DamageIndicator_Pool != null)
@@ -65,5 +67,4 @@ public class GameResources : Singleton<GameResources>
     }
 
     #endregion
-
-} // end GameResources class
+}

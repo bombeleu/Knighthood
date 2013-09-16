@@ -13,249 +13,269 @@ using System.Threading;
 /// </summary>
 public class Job
 {
-  public event Action<bool> JobCompleteEvent;
-  private IEnumerator coroutine;
-  private bool killed;
-  private float runtime;
-  public bool paused { get; private set; }
-  public bool running { get; private set; }
-  private Queue<Job> childJobs;
+    #region Public Fields
+
+    public bool paused { get; private set; }
+    public bool running { get; private set; }
+
+    #endregion
+
+    #region Private Fields
+
+    private IEnumerator coroutine;
+    private bool killed;
+    private float runtime;
+    private Queue<Job> childJobs;
+
+    #endregion
+
+    #region Events
+
+    public event Action<bool> JobCompleteEvent;
+
+    #endregion
 
 
-  /// <summary>
-  /// 
-  /// </summary>
-  /// <param name="coroutine"></param>
-  /// <param name="start"></param>
-  public Job(IEnumerator coroutine, bool start = true)
-  {
-    this.coroutine = coroutine;
-    if (start)
+    #region Public Methods
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="coroutine">Coroutine to run.</param>
+    /// <param name="start">Start right away?</param>
+    public Job(IEnumerator coroutine, bool start = true)
     {
-      Start();
-    }
-  } // end Job
-
-
-  /// <summary>
-  /// 
-  /// </summary>
-  /// <param name="coroutine"></param>
-  /// <param name="runtime"></param>
-  /// <param name="start"></param>
-  public Job(IEnumerator coroutine, float runtime, bool start = true)
-  {
-    this.coroutine = coroutine;
-    this.runtime = runtime;
-    if (start)
-    {
-      Start();
-    }
-  } // end Job
-
-
-  /// <summary>
-  /// Pause the job.
-  /// </summary>
-  public void Pause()
-  {
-    paused = true;
-  } // end Pause
-
-
-  /// <summary>
-  /// Unpause the job.
-  /// </summary>
-  public void UnPause()
-  {
-    paused = false;
-  } // end UnPause
-
-
-  /// <summary>
-  /// Toggle pause.
-  /// </summary>
-  public void TogglePause()
-  {
-    paused = !paused;
-  } // end TogglePause
-
-
-  /// <summary>
-  /// Run the coroutine.
-  /// </summary>
-  public void Start()
-  {
-    running = true;
-    JobManager.Instance.StartCoroutine(Work());
-
-    if (runtime > 0f)
-    {
-      End(runtime);
-    }
-  } // end Start
-
-
-  /// <summary>
-  /// Run the coroutine.
-  /// </summary>
-  /// <returns>Return the coroutine as it runs.</returns>
-  public IEnumerator StartAsCoroutine()
-  {
-    running = true;
-    if (runtime > 0f)
-    {
-      End(runtime);
-    }
-    yield return JobManager.Instance.StartCoroutine(Work());
-  } // end StartAsCoroutine
-
-
-  /// <summary>
-  /// End Job by killing it.
-  /// </summary>
-  public void Kill()
-  {
-    if (childJobs != null)
-    {
-      while (childJobs.Count > 0)
-      {
-        childJobs.Dequeue().Kill();
-      }
-    }
-
-    killed = true;
-    running = false;
-    paused = false;
-  } // end Kill
-
-
-  /// <summary>
-  /// End Job by killing it.
-  /// </summary>
-  /// <param name="delay">Time in seconds to delay before killing.</param>
-  public void Kill(float delay)
-  {
-    delay *= 1000;
-    new Timer(obj =>
-      {
-        lock (this)
+        this.coroutine = coroutine;
+        if (start)
         {
-          Kill();
+            Start();
         }
-      }, null, (int)delay, Timeout.Infinite);
-  } // end Kill
-
-
-  /// <summary>
-  /// End Job without killing it.
-  /// </summary>
-  public void End()
-  {
-    killed = false;
-    running = false;
-    paused = false;
-  } // end End
-
-
-  /// <summary>
-  /// End Job without killing it.
-  /// </summary>
-  /// <param name="delay">Delay in seconds before ending.</param>
-  private void End(float delay)
-  {
-    delay *= 1000;
-    new Timer(obj =>
-    {
-      lock (this)
-      {
-        End();
-      }
-    }, null, (int)delay, Timeout.Infinite);
-  } // end End
-
-
-  /// <summary>
-  /// Create a new child job.
-  /// </summary>
-  /// <param name="child">Child method.</param>
-  /// <returns>New child job.</returns>
-  public Job CreateChildJob(IEnumerator child, float runtime = 0f)
-  {
-    Job job = new Job(child, runtime, false);
-    AddChildJob(job);
-    return job;
-  } // end CreateChildJob
-
-
-  /// <summary>
-  /// Add an existing job as a child.
-  /// </summary>
-  /// <param name="child">Job to add.</param>
-  public void AddChildJob(Job child)
-  {
-    if (childJobs == null)
-    {
-      childJobs = new Queue<Job>();
     }
-    childJobs.Enqueue(child);
-  } // end AddChildJob
 
 
-  /// <summary>
-  /// Run, run children, or pause.
-  /// </summary>
-  private IEnumerator Work()
-  {
-    // return null in case of starting paused
-    yield return null;
-
-    while (running)
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="coroutine">Coroutine to run.</param>
+    /// <param name="runtime">How long to run.</param>
+    /// <param name="start">Start right away?</param>
+    public Job(IEnumerator coroutine, float runtime, bool start = true)
     {
-      if (paused)
-      {
+        this.coroutine = coroutine;
+        this.runtime = runtime;
+        if (start)
+        {
+            Start();
+        }
+    }
+
+
+    /// <summary>
+    /// Pause the job.
+    /// </summary>
+    public void Pause()
+    {
+        paused = true;
+    }
+
+
+    /// <summary>
+    /// Unpause the job.
+    /// </summary>
+    public void UnPause()
+    {
+        paused = false;
+    }
+
+
+    /// <summary>
+    /// Toggle pause.
+    /// </summary>
+    public void TogglePause()
+    {
+        paused = !paused;
+    }
+
+
+    /// <summary>
+    /// Run the coroutine.
+    /// </summary>
+    public void Start()
+    {
+        running = true;
+        JobManager.Instance.StartCoroutine(Work());
+
+        if (runtime > 0f)
+        {
+            End(runtime);
+        }
+    }
+
+
+    /// <summary>
+    /// Run the coroutine.
+    /// </summary>
+    /// <returns>Return the coroutine as it runs.</returns>
+    public IEnumerator StartAsCoroutine()
+    {
+        running = true;
+        if (runtime > 0f)
+        {
+            End(runtime);
+        }
+        yield return JobManager.Instance.StartCoroutine(Work());
+    }
+
+
+    /// <summary>
+    /// End Job by killing it.
+    /// </summary>
+    public void Kill()
+    {
+        if (childJobs != null)
+        {
+            while (childJobs.Count > 0)
+            {
+                childJobs.Dequeue().Kill();
+            }
+        }
+
+        killed = true;
+        running = false;
+        paused = false;
+    }
+
+
+    /// <summary>
+    /// End Job by killing it.
+    /// </summary>
+    /// <param name="delay">Time in seconds to delay before killing.</param>
+    public void Kill(float delay)
+    {
+        delay *= 1000;
+        new Timer(obj =>
+        {
+            lock (this)
+            {
+                Kill();
+            }
+        }, null, (int)delay, Timeout.Infinite);
+    }
+
+
+    /// <summary>
+    /// End Job without killing it.
+    /// </summary>
+    public void End()
+    {
+        killed = false;
+        running = false;
+        paused = false;
+    }
+
+
+    /// <summary>
+    /// Create a new child job.
+    /// </summary>
+    /// <param name="child">Child method.</param>
+    /// <returns>New child job.</returns>
+    public Job CreateChildJob(IEnumerator child, float runtime = 0f)
+    {
+        Job job = new Job(child, runtime, false);
+        AddChildJob(job);
+        return job;
+    }
+
+
+    /// <summary>
+    /// Add an existing job as a child.
+    /// </summary>
+    /// <param name="child">Job to add.</param>
+    public void AddChildJob(Job child)
+    {
+        if (childJobs == null)
+        {
+            childJobs = new Queue<Job>();
+        }
+        childJobs.Enqueue(child);
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    /// <summary>
+    /// End Job without killing it.
+    /// </summary>
+    /// <param name="delay">Delay in seconds before ending.</param>
+    private void End(float delay)
+    {
+        delay *= 1000;
+        new Timer(obj =>
+        {
+            lock (this)
+            {
+                End();
+            }
+        }, null, (int)delay, Timeout.Infinite);
+    }
+
+
+    /// <summary>
+    /// Run, run children, or pause.
+    /// </summary>
+    private IEnumerator Work()
+    {
+        // return null in case of starting paused
         yield return null;
-      }
-      else
-      {
-        if (coroutine.MoveNext())
+
+        while (running)
         {
-          yield return coroutine.Current;
+            if (paused)
+            {
+                yield return null;
+            }
+            else
+            {
+                if (coroutine.MoveNext())
+                {
+                    yield return coroutine.Current;
+                }
+                else
+                {
+                    // run any child jobs
+                    if (childJobs != null)
+                    {
+                        yield return JobManager.Instance.StartCoroutine(RunChildJobs());
+                    }
+
+                    running = false;
+                }
+            }
         }
-        else
+
+        // fire complete event
+        if (JobCompleteEvent != null)
         {
-          // run any child jobs
-          if (childJobs != null)
-          {
-            yield return JobManager.Instance.StartCoroutine(RunChildJobs());
-          }
-
-          running = false;
+            JobCompleteEvent(killed);
         }
-      }
     }
 
-    // fire complete event
-    if (JobCompleteEvent != null)
+
+    /// <summary>
+    /// Run all child jobs in order.
+    /// </summary>
+    private IEnumerator RunChildJobs()
     {
-      JobCompleteEvent(killed);
+        if (childJobs != null && childJobs.Count > 0)
+        {
+            do
+            {
+                Job childJob = childJobs.Dequeue();
+                yield return JobManager.Instance.StartCoroutine(childJob.StartAsCoroutine());
+            } while (childJobs.Count > 0);
+        }
     }
-  } // end Work
 
-
-  /// <summary>
-  /// Run all child jobs in order.
-  /// </summary>
-  private IEnumerator RunChildJobs()
-  {
-    if (childJobs != null && childJobs.Count > 0)
-    {
-      do
-      {
-        Job childJob = childJobs.Dequeue();
-        yield return JobManager.Instance.StartCoroutine(childJob.StartAsCoroutine());
-      } while (childJobs.Count > 0);
-    }
-  } // end RunChildJobs
-
-} // end Job class
+    #endregion    
+}
