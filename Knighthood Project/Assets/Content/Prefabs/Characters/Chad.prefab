@@ -12,7 +12,7 @@ GameObject:
   - 136: {fileID: 13600000}
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400002}
-  - 114: {fileID: 11400000}
+  - 114: {fileID: 11400024}
   - 114: {fileID: 11400010}
   - 114: {fileID: 11400018}
   - 114: {fileID: 11400004}
@@ -25,7 +25,7 @@ GameObject:
   m_Layer: 8
   m_Name: Chad
   m_TagString: Player
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 266726316, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -109,20 +109,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1f2ba6ab616eda47b413aa0dce1fb3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  log: 1
-  maxHealth: 100
-  invincible: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -136,11 +122,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   log: 0
   moveSpeed: 13
-  gravity: 75
+  gravity: 70
   terminalVelocity: 40
-  jumpingInfo:
-    jumpSpeed: 21
-    climbTime: .300000012
+  jumpSpeed: 21
+  climbTime: .300000012
   StatManager:
     health: 0
     physicalAttack: 1
@@ -155,7 +140,7 @@ MonoBehaviour:
   prematureJumpTime: .100000001
   keyboard: 0
   attackDeadZone: .699999988
-  magicModifierDeadZone: .800000012
+  superModifierDeadZone: .800000012
   moveBuffer: 0
   animationNames:
   - Idling
@@ -429,6 +414,21 @@ MonoBehaviour:
   combatIncrease: 25
   increaseTime: 30
   tauntTime: 2
+--- !u!114 &11400024
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9ccf49673923fa4295f661697abe769, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  maxHealth: 0
+  currentHealth: 0
+  invincible: 0
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
