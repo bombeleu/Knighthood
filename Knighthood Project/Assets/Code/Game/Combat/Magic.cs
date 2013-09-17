@@ -54,7 +54,6 @@ public class Magic : BaseMono
     public bool CastMagic(int amount)
     {
         if (amount > currentMagic) return false;
-        Debug.Log("Cast");
         currentMagic -= amount;
         StopCoroutine("RegenerateMagic");
         StartCoroutine("RegenerateMagic");

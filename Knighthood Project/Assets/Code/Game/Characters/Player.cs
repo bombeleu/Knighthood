@@ -22,6 +22,10 @@ public class Player : Character
 
     #region State Fields
 
+    private const string JumpingState = "Jumping";
+    private const string MovingState = "Moving";
+    private const string DefendingState = "Defending";
+
     public float spawnTime;
     public float fastFallSpeed;
     private bool fallingThrough;
@@ -38,7 +42,7 @@ public class Player : Character
     public PlayerInfo playerInfo { get; private set; }
     public bool keyboard = false;
     public float attackDeadZone = 0.7f;
-    public float magicModifierDeadZone = 0.8f;
+    public float superModifierDeadZone = 0.8f;
     public float moveBuffer = 0.1f;
     private enum AttackTypes
     {
@@ -72,13 +76,14 @@ public class Player : Character
         myMaterial = myTransform.FindChild("Body").renderer.materials[0];
 
         // create states
-        CreateState(States.Spawning, SpawningEnter, info => {});
-        CreateState(States.Idling, IdlingEnter, IdlingExit);
-        CreateState(States.Jumping, JumpingEnter, info => {});
-        CreateState(States.Moving, MovingEnter, MovingExit);
-        CreateState(States.Falling, FallingEnter, info => {});
-        CreateState(States.Attacking, AttackingEnter, info => {});
-        initialState = States.Spawning;
+        CreateState(SpawningState, SpawningEnter, info => {});
+        CreateState(IdlingState, IdlingEnter, IdlingExit);
+        CreateState(JumpingState, JumpingEnter, info => { });
+        CreateState(MovingState, MovingEnter, MovingExit);
+        CreateState(FallingState, FallingEnter, FallingExit);
+        CreateState(AttackingState, AttackingEnter, info => {});
+        CreateState(DefendingState, DefendingEnter, DefendingExit);
+        initialState = SpawningState;
 
         // combat
         attackManager = GetComponent<AttackManager>();
@@ -91,7 +96,9 @@ public class Player : Character
 
     private void Start()
     {
-        UnityEditor.Selection.objects = new UnityEngine.Object[1] { gameObject };
+#if UNITY_EDITOR
+        //UnityEditor.Selection.objects = new UnityEngine.Object[1] { gameObject };
+#endif
     }
 
 
@@ -135,7 +142,7 @@ public class Player : Character
     {
         yield return WaitForTime(spawnTime);
 
-        SetState(States.Idling, null);
+        SetState(IdlingState, null);
     }
 
 
@@ -144,14 +151,14 @@ public class Player : Character
         // make sure in correct state
         if (!myMotor.IsGrounded())
         {
-            SetState(States.Falling, null);
+            SetState(FallingState, null);
             return;
         }
         else
         {
             if (GetMovingInput().x != 0f)
             {
-                SetState(States.Moving, null);
+                SetState(MovingState, null);
             }
         }
 
@@ -173,7 +180,7 @@ public class Player : Character
             // fall through
             if (CanFallThrough())
             {
-                SetState(States.Falling, new Dictionary<string, object>{{"fallingThrough", true}});
+                SetState(FallingState, new Dictionary<string, object>{{"fallingThrough", true}});
                 yield break;
             }
 
@@ -185,24 +192,31 @@ public class Player : Character
                 yield break;
             }
 
+            // enter defending state
+            if (GetDefendingInput())
+            {
+                SetState(DefendingState, new Dictionary<string, object>());
+                yield break;
+            }
+
             // enter jumping state
             if (GetJumpingInput())
             {
-                SetState(States.Jumping, null);
+                SetState(JumpingState, null);
                 yield break;
             }
 
             // enter moving state
             if (GetMovingInput().x != 0f)
             {
-                SetState(States.Moving, null);
+                SetState(MovingState, null);
                 yield break;
             }
 
             // enter falling state
             if (!myMotor.IsGrounded())
             {
-                SetState(States.Falling, null);
+                SetState(FallingState, null);
                 yield break;
             }
 
@@ -210,7 +224,7 @@ public class Player : Character
             Texture tauntTexture = GetTauntingInput();
             if (tauntTexture != null)
             {
-                SetState(States.Attacking, new Dictionary<string, object>{{"attackTexture", tauntTexture}});
+                SetState(AttackingState, new Dictionary<string, object>{{"attackTexture", tauntTexture}});
                 yield break;
             }
 
@@ -239,17 +253,24 @@ public class Player : Character
                 yield break;
             }
 
+            // enter defending state
+            if (GetDefendingInput())
+            {
+                SetState(DefendingState, new Dictionary<string, object>());
+                yield break;
+            }
+
             // enter jumping state
             if (GetJumpingInput())
             {
-                SetState(States.Jumping, null);
+                SetState(JumpingState, null);
                 yield break;
             }
 
             // fall through
             if (CanFallThrough())
             {
-                SetState(States.Falling, new Dictionary<string, object> { { "fallingThrough", true } });
+                SetState(FallingState, new Dictionary<string, object> { { "fallingThrough", true } });
                 yield break;
             }
 
@@ -258,7 +279,7 @@ public class Player : Character
             // enter idling state
             if (moveVector.x == 0f)
             {
-                SetState(States.Idling, null);
+                SetState(IdlingState, null);
                 yield break;
             }
 
@@ -266,7 +287,7 @@ public class Player : Character
             Texture tauntTexture = GetTauntingInput();
             if (tauntTexture != null)
             {
-                SetState(States.Attacking, new Dictionary<string, object> { { "attackTexture", tauntTexture } });
+                SetState(AttackingState, new Dictionary<string, object> { { "attackTexture", tauntTexture } });
                 yield break;
             }
 
@@ -281,7 +302,7 @@ public class Player : Character
             if (!myMotor.IsGrounded())
             {
                 var info = new Dictionary<string, object> {{"extraJump", true}};
-                SetState(States.Falling, info);
+                SetState(FallingState, info);
                 yield break;
             }
 
@@ -318,7 +339,7 @@ public class Player : Character
                                             {
                                                 if (killed) return;
                                                 info = new Dictionary<string, object> {{"fromJump", true}};
-                                                SetState(States.Falling, info);
+                                                SetState(FallingState, info);
                                             };
         currentStateJob.Start();
     }
@@ -386,12 +407,12 @@ public class Player : Character
         {
             if (myMotor.IsGrounded())
             {
-                SetState((GetMovingInput().x == 0f ? States.Idling : States.Moving), new Dictionary<string, object>());
+                SetState((GetMovingInput().x == 0f ? IdlingState : MovingState), new Dictionary<string, object>());
                 return;
             }
         }
 
-        // attackAnimation
+        // fall animation
         myMaterial.mainTexture = animationTex[Array.IndexOf(animationNames, "Falling")];
 
         // give extra jump waitTime
@@ -412,7 +433,7 @@ public class Player : Character
             // enter idling or jumping state
             if (!fallingThrough && myMotor.IsGrounded())
             {
-                SetState((prematureJump ? States.Jumping : States.Idling), new Dictionary<string, object>());
+                SetState((prematureJump ? JumpingState : IdlingState), new Dictionary<string, object>());
                 yield break;
             }
 
@@ -424,10 +445,17 @@ public class Player : Character
                 yield break;
             }
 
+            // enter defending state
+            if (GetDefendingInput())
+            {
+                SetState(DefendingState, new Dictionary<string, object>());
+                yield break;
+            }
+
             // enter jumping state
             if (canExtraJump && GetJumpingInput())
             {
-                SetState(States.Jumping, new Dictionary<string, object>());
+                SetState(JumpingState, new Dictionary<string, object>());
                 yield break;
             }
 
@@ -447,16 +475,17 @@ public class Player : Character
             // move
             SetRotation();
             velocity.x = GetMovingInput().x * moveSpeed;
-            velocity.y -= gravity * GameTime.deltaTime;
-            if (velocity.y < -terminalVelocity)
-            {
-                velocity.y = -terminalVelocity;
-            }
+            Fall();
             SetVelocity(velocity);
 
             yield return null;
         }
+    }
 
+
+    private void FallingExit(Dictionary<string, object> info)
+    {
+        StopCoroutine("Fall");
     }
 
 
@@ -490,6 +519,45 @@ public class Player : Character
         }
     }
 
+
+    private void DefendingEnter(Dictionary<string, object> info)
+    {
+        myHealth.invincible = true;
+
+        currentStateJob = new Job(DefendingUpdate());
+    }
+
+
+    private IEnumerator DefendingUpdate()
+    {
+        while (true)
+        {
+            // enter idle state
+            if (!GetDefendingInput())
+            {
+                SetState(IdlingState, new Dictionary<string, object>());
+                yield break;
+            }
+
+            // stop movement
+            if (myMotor.IsGrounded())
+            {
+                velocity.x = 0f;
+                SetVelocity(velocity);
+            }
+
+            SetRotation();
+
+            yield return null;
+        }
+    }
+
+
+    private void DefendingExit(Dictionary<string, object> info)
+    {
+        myHealth.invincible = false;
+    }
+
     #endregion
 
     #region Input Methods
@@ -509,7 +577,7 @@ public class Player : Character
             }
             else
             {
-                return Input.GetButton("A_" + playerInfo.playerNumber) && Input.GetAxis("TriggersR_" + playerInfo.playerNumber) < magicModifierDeadZone;
+                return Input.GetButton("A_" + playerInfo.playerNumber) && Input.GetAxis("TriggersR_" + playerInfo.playerNumber) < superModifierDeadZone;
             }
         }
         else
@@ -520,7 +588,7 @@ public class Player : Character
             }
             else
             {
-                return Input.GetButtonDown("A_" + playerInfo.playerNumber) && Input.GetAxis("TriggersR_" + playerInfo.playerNumber) < magicModifierDeadZone;
+                return Input.GetButtonDown("A_" + playerInfo.playerNumber) && Input.GetAxis("TriggersR_" + playerInfo.playerNumber) < superModifierDeadZone;
             }
         }
     }
@@ -612,7 +680,7 @@ public class Player : Character
         else
         {
             // super
-            if (Input.GetAxis("TriggersR_" + playerInfo.playerNumber) >= magicModifierDeadZone)
+            if (Input.GetAxis("TriggersR_" + playerInfo.playerNumber) >= superModifierDeadZone)
             {
                 if (Input.GetButtonDown("X_" + playerInfo.playerNumber) && attackManager.CanActivate(AttackTypes.SuperLight.ToString()))
                 {
@@ -650,6 +718,23 @@ public class Player : Character
         }
 
         return AttackTypes.None;
+    }
+
+
+    /// <summary>
+    /// Detect player defending input.
+    /// </summary>
+    /// <returns>True, if recieving defending input.</returns>
+    private bool GetDefendingInput()
+    {
+        if (keyboard)
+        {
+            return Input.GetKey(KeyCode.F);
+        }
+        else
+        {
+            return Input.GetAxis("TriggersL_" + playerInfo.playerNumber) >= superModifierDeadZone;
+        }
     }
 
 
@@ -750,7 +835,7 @@ public class Player : Character
         }
 
         info.Add("attackTexture", attackTexture);
-        SetState(States.Attacking, info);
+        SetState(AttackingState, info);
     }
 
     #endregion
@@ -777,6 +862,20 @@ public class Player : Character
         }
 
         myMotor.Velocity = moveVector;
+    }
+
+
+    /// <summary>
+    /// Add gravity to velocity for falling.
+    /// </summary>
+    private void Fall()
+    {
+        velocity.y -= gravity*GameTime.deltaTime;
+        if (velocity.y < -terminalVelocity)
+        {
+            velocity.y = -terminalVelocity;
+        }
+        SetVelocity(velocity);
     }
 
     #endregion

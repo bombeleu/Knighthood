@@ -100,7 +100,7 @@ public class ComboManager : CombatManager
         currentComboString += comboQueue.Dequeue();
         int comboStringIndex = GetAttackIndexFromComboString(currentComboString);
         Texture attackTexture = Activate(comboStringIndex);
-        myCharacter.SetState(Character.States.Attacking, new Dictionary<string, object> { { "attackTexture", attackTexture } });
+        myCharacter.SetState(Character.AttackingState, new Dictionary<string, object> { { "attackTexture", attackTexture } });
     }
 
 

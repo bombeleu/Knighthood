@@ -43,7 +43,7 @@ public class CharacterMotor : BaseMono
 
         if (!info.contacts.Any(contact => contact.point.y > myTransform.position.y)) return;
         Velocity = new Vector3(Velocity.x, 0f, 0f);
-        GetComponent<Character>().SetState(Character.States.Falling, null);
+        GetComponent<Character>().SetState(Character.FallingState, null);
     }
 
     #endregion

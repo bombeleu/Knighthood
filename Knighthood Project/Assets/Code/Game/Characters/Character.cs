@@ -16,16 +16,23 @@ public class Character : BaseMono
     protected CharacterMotor myMotor;
     protected Transform myTransform;
     protected Rigidbody myRigidbody;
+    protected CharacterHealth myHealth;
 
     #endregion
 
     #region State Fields
 
-    public enum States { Spawning, Idling, Moving, Jumping, Falling, Attacking, Flinching, Dying }
-    protected States currentState;
-    protected States initialState;
-    private readonly Dictionary<States, Action<Dictionary<string, object>>> enterMethods = new Dictionary<States, Action<Dictionary<string, object>>>();
-    private readonly Dictionary<States, Action<Dictionary<string, object>>> exitMethods = new Dictionary<States, Action<Dictionary<string, object>>>();
+    //public enum States { Spawning, Idling, Moving, Jumping, Falling, Attacking, Defending, Flinching, Dying }
+    public const string SpawningState = "Spawning";
+    public const string IdlingState = "Idling";
+    public const string AttackingState = "Attacking";
+    public const string FallingState = "Falling";
+
+
+    protected string currentState;
+    protected string initialState;
+    private readonly Dictionary<string, Action<Dictionary<string, object>>> enterMethods = new Dictionary<string, Action<Dictionary<string, object>>>();
+    private readonly Dictionary<string, Action<Dictionary<string, object>>> exitMethods = new Dictionary<string, Action<Dictionary<string, object>>>();
     protected Job currentStateJob;
 
     #endregion
@@ -58,6 +65,7 @@ public class Character : BaseMono
         myMotor = GetComponent<CharacterMotor>();
         myTransform = transform;
         myRigidbody = rigidbody;
+        myHealth = GetComponent<CharacterHealth>();
     }
 
     #endregion
@@ -70,7 +78,7 @@ public class Character : BaseMono
     /// <param name="stateName">State.</param>
     /// <param name="enterMethod">Enter method for currentState.</param>
     /// <param name="exitMethod">Exit method for currentState.</param>
-    protected void CreateState(States stateName, Action<Dictionary<string, object>> enterMethod, Action<Dictionary<string, object>> exitMethod)
+    protected void CreateState(string stateName, Action<Dictionary<string, object>> enterMethod, Action<Dictionary<string, object>> exitMethod)
     {
         enterMethods.Add(stateName, enterMethod);
         exitMethods.Add(stateName, exitMethod);
@@ -82,7 +90,7 @@ public class Character : BaseMono
     /// </summary>
     /// <param name="stateName">State to transition to.</param>
     /// <param name="info">Info to pass to the exit and enter states.</param>
-    public void SetState(States stateName, Dictionary<string, object> info)
+    public void SetState(string stateName, Dictionary<string, object> info)
     {
         // save previous state
         if (info == null)
@@ -93,7 +101,7 @@ public class Character : BaseMono
 
         // exit state
         exitMethods[currentState](info);
-        currentStateJob.Kill();
+        if (currentStateJob != null) currentStateJob.Kill();
 
         // enter state
         Log(name + " Entering: " + stateName + " - " + Time.timeSinceLevelLoad);
@@ -122,7 +130,7 @@ public class Character : BaseMono
     /// <param name="attackTexture">Texture corresponding to the attack being performed.</param>
     public void Attack(Texture attackTexture)
     {
-        SetState(States.Attacking, new Dictionary<string, object> { { "attackTexture", attackTexture } });
+        SetState(AttackingState, new Dictionary<string, object> { { "attackTexture", attackTexture } });
     }
 
 
@@ -131,7 +139,7 @@ public class Character : BaseMono
     /// </summary>
     public void EndAttack()
     {
-        SetState(States.Idling, null);
+        SetState(IdlingState, null);
     }
 
     #endregion
