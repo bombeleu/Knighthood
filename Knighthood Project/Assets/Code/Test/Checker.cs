@@ -9,8 +9,11 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class Checker : MonoBehaviour
 {
-  void OnEnable()
-  {
-    renderer.material.mainTextureScale = new Vector2(transform.lossyScale.x/2, transform.lossyScale.y/2);
-  }
+    public Material CheckerMaterial;
+
+    void OnEnable()
+    {
+        renderer.material = new Material(CheckerMaterial);
+        renderer.sharedMaterial.mainTextureScale = new Vector2(transform.lossyScale.x / 2, transform.lossyScale.y / 2);
+    }
 }
