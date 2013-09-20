@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: d9bea3bc4a3dd2a4aa0804d0661f3da8
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - Node_Prefab: {fileID: 100000, guid: e8440eca27c45cb4d947e209145e0d88, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

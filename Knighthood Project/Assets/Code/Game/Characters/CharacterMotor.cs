@@ -18,7 +18,7 @@ public class CharacterMotor : BaseMono
 
     #region Movement Fields
 
-    private const float GroundedRayDist = 0.3f;
+    private const float GroundedRayDist = 0.5f;
     private int terrainLayer;
     public Vector3 Velocity { get { return myRigidbody.velocity; } set { myRigidbody.velocity = value; } }
 

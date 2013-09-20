@@ -22,11 +22,11 @@ public class Character : BaseMono
 
     #region State Fields
 
-    //public enum States { Spawning, Idling, Moving, Jumping, Falling, Attacking, Defending, Flinching, Dying }
     public const string SpawningState = "Spawning";
     public const string IdlingState = "Idling";
-    public const string AttackingState = "Attacking";
+    public const string MovingState = "Moving";
     public const string FallingState = "Falling";
+    public const string AttackingState = "Attacking";
 
 
     protected string currentState;

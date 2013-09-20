@@ -40,7 +40,6 @@ public class LevelManager : Singleton<LevelManager>
     /// </summary>
     protected void CreatePlayers()
     {
-        Log("creating");
         PlayerTransforms = new List<Transform>();
 
         Transform playerParent = (new GameObject().transform);
@@ -49,7 +48,7 @@ public class LevelManager : Singleton<LevelManager>
         for (int i = 0; i < GameData.Instance.playerUsernames.Count; i++)
         {
             GameObject player = (GameObject)Instantiate(GameResources.Instance.Player_Prefabs[GameData.Instance.playerCharacters[i]],
-                                                        new Vector3(-17f + 2f * i, 0.5f, 0f),
+                                                        new Vector3(10f + 2f * i, 0.5f, 0f),
                                                         Quaternion.Euler(0f, 90f, 0f));
             playerUsernames.Add(GameData.Instance.playerUsernames[i]);
             PlayerTransforms.Add(player.transform);

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEditor;
+//using UnityEditor;
 
 /// <summary>
 /// Singleton to hold game data and handle player sign in.
@@ -76,15 +76,17 @@ public class GameData : Singleton<GameData>
             }
         }
 
+#if UNITY_EDITOR
         // test
         if (Input.GetKeyDown(KeyCode.KeypadEnter))
         {
-            Assembly assembly = Assembly.GetAssembly(typeof(SceneView));
+            Assembly assembly = Assembly.GetAssembly(typeof(UnityEditor.SceneView));
 
             Type type = assembly.GetType("UnityEditorInternal.LogEntries");
             MethodInfo method = type.GetMethod("Clear");
             method.Invoke(new object(), null);
         }
+#endif
     }
 
     #endregion

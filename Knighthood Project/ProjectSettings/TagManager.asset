@@ -6,6 +6,7 @@ TagManager:
   - Enemy
   - Translucent
   - GameMaster
+  - Floor
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   Builtin Layer 7: 
   User Layer 8: Character
   User Layer 9: Terrain
-  User Layer 10: 
+  User Layer 10: NavMeshNode
   User Layer 11: 
   User Layer 12: 
   User Layer 13: 
