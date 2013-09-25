@@ -1,0 +1,2 @@
+*** 9/24/2013 10:58:34 PM ***
+0: Creating JobManager singleton

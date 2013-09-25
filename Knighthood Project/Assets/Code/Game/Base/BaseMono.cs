@@ -68,9 +68,9 @@ public class BaseMono : MonoBehaviour
 
     #region Log Methods
 
-    protected void Log(object message)
+    protected void Log(object message, bool save = true, Debugger.LogTypes logType = Debugger.LogTypes.Default)
     {
-        if (log) Debugger.Log(message, this);
+        if (log) Debugger.Log(message, this, save, logType);
     }
 
     #endregion
