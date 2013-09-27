@@ -9,11 +9,12 @@ using UnityEngine;
 /// A node in the nav mesh.
 /// </summary>
 [ExecuteInEditMode]
-public class NavMeshNode : BaseMono
+public class Node : BaseMono
 {
-    public NavMeshNode[] neighbors;
+    public Node[] neighbors;
     public float[] distances;
     public bool edge;
+    public Vector3 position;
 
     public bool drawConnections;
 
@@ -38,7 +39,7 @@ public class NavMeshNode : BaseMono
 
     public void Bake(Transform[] allNodes, float jumpHeight, float dropHorDist)
     {
-        List<NavMeshNode> neighborList = new List<NavMeshNode>();
+        List<Node> neighborList = new List<Node>();
         List<float> distanceList = new List<float>();
 
         foreach (var nextNode in allNodes)
@@ -46,13 +47,14 @@ public class NavMeshNode : BaseMono
             // this node
             if (nextNode == transform) continue;
             // not navemeshnode
-            if (nextNode.GetComponent<NavMeshNode>() == null) continue;
+            if (nextNode.GetComponent<Node>() == null) continue;
 
             // get difference
             Vector3 difference = nextNode.position - transform.position;
 
             // can reach node
-            RaycastHit[] hits = Physics.RaycastAll(transform.position, difference.normalized, difference.magnitude);
+            RaycastHit[] hits = Physics.RaycastAll(transform.position, difference.normalized, difference.magnitude, (1<<LayerMask.NameToLayer("Terrain") | 1<<LayerMask.NameToLayer("NavMeshNode")));
+
             if (hits.Length == 2)
             {
                 if (!((hits[0].collider == nextNode.collider || hits[0].collider.isTrigger) &&
@@ -69,14 +71,14 @@ public class NavMeshNode : BaseMono
             // fall
             if (difference.y < 0 && Mathf.Abs(difference.x) <= dropHorDist)
             {
-                neighborList.Add(nextNode.GetComponent<NavMeshNode>());
+                neighborList.Add(nextNode.GetComponent<Node>());
                 distanceList.Add(difference.magnitude);
                 continue;
             }
             // jump
             if (difference.magnitude <= jumpHeight)
             {
-                neighborList.Add(nextNode.GetComponent<NavMeshNode>());
+                neighborList.Add(nextNode.GetComponent<Node>());
                 distanceList.Add(difference.magnitude);
                 continue;
                 

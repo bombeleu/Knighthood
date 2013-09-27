@@ -138,7 +138,7 @@ MonoBehaviour:
   fastFallSpeed: 50
   extraJumpTime: .0199999996
   prematureJumpTime: .100000001
-  keyboard: 0
+  keyboard: 1
   attackDeadZone: .699999988
   superModifierDeadZone: .800000012
   moveBuffer: 0

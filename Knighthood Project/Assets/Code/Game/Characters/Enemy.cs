@@ -21,6 +21,7 @@ public class Enemy : Character
     public const string JumpingState = "Jumping";
     public float navBuffer = 0.5f;
     public float navStopRange = 3f;
+    private bool fallingThrough;
 
     #endregion
 
@@ -38,9 +39,10 @@ public class Enemy : Character
         CreateState(SpawningState, info => SetState(IdlingState, new Dictionary<string, object>()), info => {});
         CreateState(IdlingState, IdlingEnter, info => {});
         CreateState(MovingState, MovingEnter, MovingExit);
-        CreateState(JumpingState, JumpingEnter, JumpingExit);
+        CreateState(JumpingState, JumpingEnter, info => {});
+        CreateState(FallingState, FallingEnter, info => {});
 
-        initialState = MovingState;
+        initialState = IdlingState;
     }
 
 
@@ -55,15 +57,21 @@ public class Enemy : Character
 
     private void IdlingEnter(Dictionary<string, object> info)
     {
+        ClearVelocity();
         currentStateJob = new Job(IdlingUpdate());
     }
 
 
     private IEnumerator IdlingUpdate()
     {
+        Transform player = LevelManager.Instance.PlayerTransforms[0];
         while (true)
         {
-
+            if (Vector3.Distance(myTransform.position, player.position) > 5f)
+            {
+                SetState(MovingState, new Dictionary<string, object>{{"Target", player}});
+                yield break;
+            }
             yield return null;
         }
     }
@@ -71,16 +79,51 @@ public class Enemy : Character
 
     private void MovingEnter(Dictionary<string, object> info)
     {
-        currentStateJob = new Job(MovingUpdate((Transform)info["Target"]));
         StartCoroutine("CalculatePath", info["Target"]);
+
+        currentStateJob = new Job(MovingUpdate());
     }
 
 
-    private IEnumerator MovingUpdate(Transform Target)
+    private IEnumerator MovingUpdate()
     {
-        while (true)//Vector3.Distance(myTransform.position, Target.position) > navStopRange)
+        Vector3 nodePosition;
+        while (true)
         {
+            // idle
+            if (!myNavAgent.GetNextNodePosition(out nodePosition))
+            {
+                SetState(IdlingState, new Dictionary<string, object>());
+                yield break;
+            }
+
+            // rotate
+            myMotor.SetRotation((nodePosition - myTransform.position).x);
+
             // jump
+            if (nodePosition.y - myTransform.position.y >= myNavAgent.stepHeight)
+            {
+                SetState(JumpingState, new Dictionary<string, object>{{"target", nodePosition}});
+                yield break;
+            }
+
+            // fall
+            if (!myMotor.IsGrounded() || (nodePosition.y - myTransform.position.y < -myNavAgent.stepHeight && myMotor.OverTranslucent()))
+            {
+                SetState(FallingState, new Dictionary<string, object>{{"target", nodePosition}, {"translucent",  true}});
+                yield break;
+            }
+
+            // move
+            SetVelocityX(Mathf.Sign((nodePosition - myTransform.position).x) * moveSpeed);
+            
+            // next node
+            if (Vector3.Distance(myTransform.position, nodePosition) <= myNavAgent.allowedRadius)
+            {
+                Vector3 nextNode;
+                myNavAgent.Continue(out nextNode);
+            }
+
             yield return null;
         }
     }
@@ -94,21 +137,66 @@ public class Enemy : Character
 
     private void JumpingEnter(Dictionary<string, object> info)
     {
-        
+        ClearVelocity();
+        currentStateJob = new Job(JumpingUpdate((Vector3)info["target"]));
     }
 
 
-    private IEnumerator JumpingUpdate()
+    private IEnumerator JumpingUpdate(Vector3 target)
     {
+        float timeX = Mathf.Abs((target.x - myTransform.position.x)/moveSpeed);
+        float velY = (Mathf.Abs(target.y - myTransform.position.y) + 0.5f*gravity*timeX*timeX)/timeX;
+        Vector3 initialVel = new Vector3(Mathf.Sign((target-myTransform.position).x)*moveSpeed, velY, 0f);
+        Log(initialVel, true, Debugger.LogTypes.Navigation);
 
+        while (timeX > 0f)
+        {
+            Debug.DrawRay(myTransform.position, initialVel);
+            timeX -= GameTime.deltaTime;
+            SetVelocity(initialVel);
+            initialVel += Vector3.down*gravity*GameTime.deltaTime;
+
+            yield return null;
+        }
+
+        myNavAgent.Continue();
+        SetState(MovingState, new Dictionary<string, object> { { "Target", LevelManager.Instance.PlayerTransforms[0] } });
 
         yield return null;
     }
 
 
-    private void JumpingExit(Dictionary<string, object> info)
+    private void FallingEnter(Dictionary<string, object> info)
     {
-        
+        if (info.ContainsKey("translucent"))
+        {
+            fallingThrough = true;
+            InvokeAction(() => fallingThrough = false, 0.2f);    
+        }
+
+        currentStateJob = new Job(FallingUpdate((Vector3)info["target"]));
+    }
+
+
+    private IEnumerator FallingUpdate(Vector3 target)
+    {
+        while (true)
+        {
+            // land
+            if (!fallingThrough && myMotor.IsGrounded())
+            {
+                SetState(MovingState, new Dictionary<string, object>{{"Target", LevelManager.Instance.PlayerTransforms[0]}});
+                yield break;
+            }
+
+            // move
+            if (myMotor.velocity.y > -terminalVelocity)
+            {
+                AddVelocityY(-gravity * GameTime.deltaTime);
+            }
+
+            yield return null;
+        }
     }
 
     #endregion

@@ -18,6 +18,7 @@ public class NavMeshWindow : EditorWindow
     private int gridSpace = 5;
     private int gridHeight = 9;
     private int gridWidth = 21;
+    private LayerMask nodeMask;
 
     private bool baking;
 
@@ -60,12 +61,6 @@ public class NavMeshWindow : EditorWindow
         if (GUILayout.Button("Bake"))
         {
             NavMesh.Instance.Bake(jumpHeight, dropHorDist);            
-        }
-
-        if (GUILayout.Button("Simplify"))
-        {
-            NavMesh.Instance.Simplify();
-            NavMesh.Instance.Bake(jumpHeight, dropHorDist);
         }
 
         if (GUILayout.Button("Clear"))

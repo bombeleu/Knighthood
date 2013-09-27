@@ -1,6 +1,6 @@
 ﻿// Steve Yeager
 // 8.18.2013
-//#define LOG
+#define LOG
 #define WARNING
 #define ERROR
 
@@ -67,7 +67,7 @@ public class Debugger : Singleton<Debugger>
     #region Public Methods
 
     [System.Diagnostics.Conditional("LOG")]
-    public static void Log(object message, bool save = true, LogTypes logType = LogTypes.Default)
+    public new static void Log(object message, bool save = true, LogTypes logType = LogTypes.Default)
     {
         if (Instance.logFlags[(int) logType])
         {

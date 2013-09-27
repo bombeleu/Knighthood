@@ -36,13 +36,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28a77fa675de38448931c553185a0704, type: 3}
+  m_Script: {fileID: 11500000, guid: 481c3010581bdd94997370fef64debe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 0
+  log: 1
   neighbors: []
   distances: []
   edge: 0
+  drawConnections: 0
 --- !u!135 &13500000
 SphereCollider:
   m_ObjectHideFlags: 1

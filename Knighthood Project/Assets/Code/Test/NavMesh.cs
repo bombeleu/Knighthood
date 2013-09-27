@@ -17,7 +17,7 @@ public class NavMesh : Singleton<NavMesh>
     public GameObject Node_Prefab;
     public float yBuffer = 0.5f;
     public float nodeRadius = 0.5f;
-    public List<NavMeshNode>[][] worldMatrix;
+    public List<Node>[][] worldMatrix;
     public int gridSpace;
     public int gridHeight;
     public int gridWidth;
@@ -37,17 +37,20 @@ public class NavMesh : Singleton<NavMesh>
         DateTime start = DateTime.Now;
 
         GameObject[] terrainPieces = FindGameObjectsWithLayer("Terrain");
-        List<NavMeshNode> nodeList = new List<NavMeshNode>();
+        List<Node> nodeList = new List<Node>();
+        Node node;
 
         foreach (var terrain in terrainPieces)
         {
             float yPos = terrain.collider.bounds.center.y + terrain.collider.bounds.extents.y + yBuffer;
             float startXPos = terrain.collider.bounds.center.x - terrain.collider.bounds.extents.x;
-
+            
             // left edge
-            CreateNode(new Vector3(startXPos, yPos, 0f), true);
+            node = CreateNode(new Vector3(startXPos, yPos, 0f), true);
+            node.position = node.transform.position + Vector3.down*yBuffer;
             // right edge
-            CreateNode(new Vector3(terrain.collider.bounds.center.x + terrain.collider.bounds.extents.x, yPos, 0f), true);
+            node = CreateNode(new Vector3(terrain.collider.bounds.center.x + terrain.collider.bounds.extents.x, yPos, 0f), true);
+            node.position = node.transform.position + Vector3.down * yBuffer;
 
             int num = Mathf.FloorToInt(terrain.collider.bounds.size.x / horDist);
             float aveHorDist = terrain.collider.bounds.size.x / num;
@@ -55,10 +58,11 @@ public class NavMesh : Singleton<NavMesh>
             for (int i = 1; i < num; i++)
             {
                 Vector3 nodePosition = new Vector3(startXPos + i * aveHorDist, yPos, 0f);
-                NavMeshNode node = CreateNode(nodePosition);
+                node = CreateNode(nodePosition);
                 if (node)
                 {
                     nodeList.Add(node);
+                    node.position = node.transform.position + Vector3.down * yBuffer;
                 }
             }
         }
@@ -77,7 +81,7 @@ public class NavMesh : Singleton<NavMesh>
         {
             try
             {
-                node.GetComponent<NavMeshNode>().Bake(allNodes, jumpHeight, dropHorDist);
+                node.GetComponent<Node>().Bake(allNodes, jumpHeight, dropHorDist);
             }
             catch (Exception)
             {
@@ -100,7 +104,7 @@ public class NavMesh : Singleton<NavMesh>
     }
 
 
-    private NavMeshNode CreateNode(Vector3 position, bool edge = false)
+    private Node CreateNode(Vector3 position, bool edge = false)
     {
         if (Physics.OverlapSphere(position, nodeRadius).Length == 0)
         {
@@ -108,9 +112,9 @@ public class NavMesh : Singleton<NavMesh>
             node.transform.parent = transform;
             if (edge)
             {
-                node.GetComponent<NavMeshNode>().edge = true;
+                node.GetComponent<Node>().edge = true;
             }
-            return node.GetComponent<NavMeshNode>();
+            return node.GetComponent<Node>();
         }
 
         return null;
@@ -125,13 +129,13 @@ public class NavMesh : Singleton<NavMesh>
         this.gridHeight = gridHeight;
         this.gridWidth = gridWidth;
 
-        worldMatrix = new List<NavMeshNode>[gridHeight][];
+        worldMatrix = new List<Node>[gridHeight][];
         for (int i = 0; i < gridHeight; i++)
         {
-            worldMatrix[i] = new List<NavMeshNode>[gridWidth];
+            worldMatrix[i] = new List<Node>[gridWidth];
             for (int j = 0; j < gridWidth; j++)
             {
-                worldMatrix[i][j] = new List<NavMeshNode>();
+                worldMatrix[i][j] = new List<Node>();
             }
         }
 
@@ -144,7 +148,7 @@ public class NavMesh : Singleton<NavMesh>
             //int y = Mathf.FloorToInt(allNodes[i].transform.position.y / gridSpace);
             try
             {
-                worldMatrix[y][x].Add(allNodes[i].GetComponent<NavMeshNode>());
+                worldMatrix[y][x].Add(allNodes[i].GetComponent<Node>());
             }
             catch (Exception)
             {
@@ -172,7 +176,7 @@ public class NavMesh : Singleton<NavMesh>
         DateTime start = DateTime.Now;
         int deleted = 0;
 
-        NavMeshNode[] allNodes = GetComponentsInChildren<NavMeshNode>();
+        Node[] allNodes = GetComponentsInChildren<Node>();
 
         foreach (var node in allNodes)
         {
@@ -186,9 +190,9 @@ public class NavMesh : Singleton<NavMesh>
     }
 
 
-    public NavMeshNode ClosestNode(Vector3 position)
+    public Node ClosestNode(Vector3 position)
     {
-        List<NavMeshNode> nodes = new List<NavMeshNode>();
+        List<Node> nodes = new List<Node>();
 
         int x = Mathf.FloorToInt(position.x / gridSpace);
         x = Mathf.Clamp(x, 0, gridWidth - 1);
@@ -204,7 +208,7 @@ public class NavMesh : Singleton<NavMesh>
         }
 
         float closestDist = gridSpace+1;
-        NavMeshNode closest = null;
+        Node closest = null;
         foreach (var node in nodes)
         {
             if (Vector3.Distance(position, node.transform.position) <= closestDist)
@@ -246,7 +250,7 @@ public class NavMesh : Singleton<NavMesh>
     public void ToggleNodeConnections()
     {
         drawNodeConnections = !drawNodeConnections;
-        var nodes = GetComponentsInChildren<NavMeshNode>();
+        var nodes = GetComponentsInChildren<Node>();
         foreach (var node in nodes)
         {
             node.drawConnections = drawNodeConnections;

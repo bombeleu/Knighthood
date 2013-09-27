@@ -23,7 +23,6 @@ public class Player : Character
     #region State Fields
 
     private const string JumpingState = "Jumping";
-    private const string MovingState = "Moving";
     private const string DefendingState = "Defending";
 
     public float spawnTime;
@@ -292,7 +291,7 @@ public class Player : Character
             }
 
             // rotate
-            SetRotation();
+            myMotor.SetRotation(GetMovingInput().x);
 
             // move
             velocity.x = moveVector.x * moveSpeed;
@@ -335,6 +334,7 @@ public class Player : Character
         currentStateJob.CreateChildJob(Climb(), climbTime);
         currentStateJob.CreateChildJob(Float());
 
+        //
         currentStateJob.JobCompleteEvent += (killed) =>
                                             {
                                                 if (killed) return;
@@ -366,7 +366,7 @@ public class Player : Character
                 yield break;
             }
 
-            SetRotation();
+            myMotor.SetRotation(GetMovingInput().x);
             velocity.x = GetMovingInput().x * moveSpeed;
             SetVelocity(velocity);
             yield return null;
@@ -386,7 +386,7 @@ public class Player : Character
                 yield break;
             }
 
-            SetRotation();
+            myMotor.SetRotation(GetMovingInput().x);
             velocity.x = GetMovingInput().x * moveSpeed;
             velocity.y -= gravity * GameTime.deltaTime;
             SetVelocity(velocity);
@@ -473,7 +473,7 @@ public class Player : Character
             }
 
             // move
-            SetRotation();
+            myMotor.SetRotation(GetMovingInput().x);
             velocity.x = GetMovingInput().x * moveSpeed;
             Fall();
             SetVelocity(velocity);
@@ -546,7 +546,7 @@ public class Player : Character
                 SetVelocity(velocity);
             }
 
-            SetRotation();
+            myMotor.SetRotation(GetMovingInput().x);
 
             yield return null;
         }
@@ -607,25 +607,6 @@ public class Player : Character
         else
         {
             return new Vector3(Input.GetAxis("L_XAxis_" + playerInfo.playerNumber), Input.GetAxis("L_YAxis_" + playerInfo.playerNumber), 0f);
-        }
-    }
-
-
-    /// <summary>
-    /// Set correct y rotation based on GetMovingInput.
-    /// </summary>
-    private void SetRotation()
-    {
-        float x = GetMovingInput().x;
-        if (x > 0)
-        {
-            myTransform.rotation = Quaternion.Euler(0f, 90f, 0f);
-            myTransform.Align();
-        }
-        else if (x < 0)
-        {
-            myTransform.rotation = Quaternion.Euler(0f, 270f, 0f);
-            myTransform.Align();
         }
     }
 
@@ -843,7 +824,7 @@ public class Player : Character
     #region Movement Methods
 
     /// <summary>
-    /// Set the CharacterMotor Velocity if allow.
+    /// Set the CharacterMotor velocity if allow.
     /// </summary>
     /// <param name="moveVector">Move vector not multiplied by deltaTime.</param>
     private void SetVelocity(Vector3 moveVector)
@@ -861,7 +842,7 @@ public class Player : Character
             moveVector.x = 0f;
         }
 
-        myMotor.Velocity = moveVector;
+        myMotor.velocity = moveVector;
     }
 
 

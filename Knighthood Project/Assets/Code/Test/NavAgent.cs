@@ -10,33 +10,59 @@ using UnityEngine;
 /// </summary>
 public class NavAgent : BaseMono
 {
-    private List<NavMeshNode> path = new List<NavMeshNode>();
-    private PriorityQueue<float, NavMeshNode> openList = new PriorityQueue<float, NavMeshNode>();
-    private Dictionary<NavMeshNode, bool> closedDict = new Dictionary<NavMeshNode, bool>();
-    private Dictionary<NavMeshNode, NavMeshNode> parentDict = new Dictionary<NavMeshNode, NavMeshNode>();
-    private Dictionary<NavMeshNode, float> costDict = new Dictionary<NavMeshNode, float>();
+    #region Cached Fields
 
-    public Transform nextNode
-    {
-        get
-        {
-            return path.Count > 0 ? path[0].transform : null;
-        }
-    }
+    private Transform myTransform;
+
+    #endregion
+
+    #region Private Fields
+
+    private List<Node> path = new List<Node>();
+    private PriorityQueue<float, Node> openList = new PriorityQueue<float, Node>();
+    private Dictionary<Node, bool> closedDict = new Dictionary<Node, bool>();
+    private Dictionary<Node, Node> parentDict = new Dictionary<Node, Node>();
+    private Dictionary<Node, float> costDict = new Dictionary<Node, float>();
+    private Node currentNode;
+
+    #endregion
+
+    #region Public Fields
+
+    public bool drawPath;
+    // make into a method
+    public float allowedRadius = 0.5f;
+    // make into a method
+    public float stepHeight = 0.5f;
+
+    #endregion
+
 
     #region MonoBehaviour Overrides
 
+    private void Awake()
+    {
+        // cache
+        myTransform = transform;
+    }
+
+
     private void Update()
     {
-        //FindPath(playerTransform.position);
-
-        DrawPath();
+        if (drawPath)
+        {
+            DrawPath();
+        }
     }
 
     #endregion
 
     #region Public Methods
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="targetPosition"></param>
     public void FindPath(Vector3 targetPosition)
     {
         DateTime start = DateTime.Now;
@@ -45,10 +71,11 @@ public class NavAgent : BaseMono
         ClearSearchData();
 
         // ending node
-        NavMeshNode endNode = NavMesh.Instance.ClosestNode(targetPosition);
+        Node endNode = NavMesh.Instance.ClosestNode(targetPosition);
 
         // starting node
-        NavMeshNode startNode = path.Count == 0 ? NavMesh.Instance.ClosestNode(transform.position) : path[0];
+        Node startNode = NavMesh.Instance.ClosestNode(myTransform.position);
+            //path.Count == 0 ? NavMesh.Instance.ClosestNode(myTransform.position) : path[0];
         if (endNode == null || startNode == null) return;
         openList.Enqueue(0f, startNode);
         closedDict.Add(startNode, false);
@@ -58,42 +85,46 @@ public class NavAgent : BaseMono
         // main loop
         while (openList.Count > 0)
         {
-            NavMeshNode currentNode = openList.DequeueValue();
+            Node node = openList.DequeueValue();
 
             // goal?
-            if (currentNode == endNode)
+            if (node == endNode)
             {
                 path.Clear();
-                while (currentNode != null)
+                while (node != startNode)
                 {
-                    path.Add(currentNode);
-                    currentNode = parentDict[currentNode];
+                    path.Add(node);
+                    node = parentDict[node];
                 }
-                path.Reverse();
-                Debug.Log("Path time: " + (DateTime.Now - start));
-                //Debug.Log("Path: " + path.Count);
+
+                if (path.Count > 0)
+                {
+                    path.Reverse();
+                    currentNode = path[0];
+                }
+                Log("Path time: " + (DateTime.Now - start));
                 return;
             }
 
             // process current node
-            closedDict[currentNode] = true;
+            closedDict[node] = true;
 
             // look at all of current node's neighbors
-            for (int i = 0; i < currentNode.neighbors.Length; i++) // maybe cache size
+            for (int i = 0; i < node.neighbors.Length; i++) // maybe cache size
             {
                 // cache neighbor
-                NavMeshNode neighbor = currentNode.neighbors[i];
+                Node neighbor = node.neighbors[i];
 
                 // get cost of whole path to neighbor
-                float cost = costDict[currentNode] + currentNode.distances[i];
+                float cost = costDict[node] + node.distances[i];
 
                 // see if already open or closed
                 if (!closedDict.ContainsKey(neighbor))
                 {
                     // add to open
-                    openList.Enqueue(cost + Vector3.Distance(neighbor.transform.position, endNode.transform.position), neighbor);
+                    openList.Enqueue(cost + Vector3.Distance(neighbor.position, endNode.position), neighbor);
                     closedDict.Add(neighbor, false);
-                    parentDict.Add(neighbor, currentNode);
+                    parentDict.Add(neighbor, node);
                     costDict.Add(neighbor, cost);
                 }
             }
@@ -101,16 +132,55 @@ public class NavAgent : BaseMono
     }
 
 
-    public Transform Continue()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public bool Continue()
     {
+        if (path.Count == 0) return false;
+
+        currentNode = path[0];
         path.RemoveAt(0);
+        return path.Count > 1;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public bool Continue(out Vector3 nodePosition)
+    {
+        if (path.Count == 0)
+        {
+            nodePosition = currentNode.position;
+            return false;
+        }
+
+        currentNode = path[0];
+        path.RemoveAt(0);
+
+        return GetNextNodePosition(out nodePosition);
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="nodePosition"></param>
+    /// <returns></returns>
+    public bool GetNextNodePosition(out Vector3 nodePosition)
+    {
         if (path.Count > 0)
         {
-            return path[0].transform;
+            nodePosition = path[0].position;
+            return true;
         }
         else
         {
-            return null;
+            nodePosition = currentNode.position;
+            return false;
         }
     }
 
@@ -118,6 +188,9 @@ public class NavAgent : BaseMono
 
     #region Private Methods
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void ClearSearchData()
     {
         openList.Clear();
@@ -127,11 +200,17 @@ public class NavAgent : BaseMono
     }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
     private void DrawPath()
     {
-        for (int i = 0; i < path.Count-1; i++)
+        if (path.Count == 0) return;
+
+        Debug.DrawLine(myTransform.position, path[0].transform.position, Color.blue);        
+        for (int i = 0; i < path.Count - 1; i++)
         {
-            Debug.DrawLine(path[i].transform.position, path[i+1].transform.position, Color.blue);
+            Debug.DrawLine(path[i].transform.position, path[i + 1].transform.position, Color.blue);
         }
     }
 
