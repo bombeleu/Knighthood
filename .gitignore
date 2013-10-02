@@ -1,6 +1,7 @@
 Knighthood Project/Library
 Knighthood Project/Temp
 Knighthood Project/obj
+Knighthood Project/Assets/Files/Debug
 *.sln
 *.csproj
-Knighthood Project/Assets/Files/Debug
+*.suo
