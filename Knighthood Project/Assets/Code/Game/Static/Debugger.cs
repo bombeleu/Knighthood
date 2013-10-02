@@ -20,12 +20,14 @@ public class Debugger : Singleton<Debugger>
     public bool[] logFlags =
     {
         true,    // None
-        true    // Navigation
+        true,    // Navigation
+        true     // Combat
     };
     public enum LogTypes
     {
         Default = 0,
         Navigation = 1,
+        Combat = 2
     }
 
     #endregion

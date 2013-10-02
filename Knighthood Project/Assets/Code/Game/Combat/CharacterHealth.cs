@@ -18,7 +18,7 @@ public class CharacterHealth : Health
     private void Awake()
     {
         // get references
-        statManager = GetSafeComponent<Character>().StatManager;
+        statManager = GetSafeComponent<Character>().myStats;
     }
 
     #endregion
@@ -26,7 +26,7 @@ public class CharacterHealth : Health
     #region Public Methods
 
     /// <summary>
-    /// 
+    /// Set current and max health through the StatManager.
     /// </summary>
     /// <param name="statManager"></param>
     public void Initialize(StatManager stats)

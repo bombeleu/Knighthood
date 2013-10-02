@@ -15,6 +15,7 @@ public class Character : BaseMono
 
     protected CharacterMotor myMotor;
     protected Transform myTransform;
+    protected GameObject myGameObject;
     protected Rigidbody myRigidbody;
     protected CharacterHealth myHealth;
     private Material myMaterial;
@@ -28,6 +29,7 @@ public class Character : BaseMono
     public const string MovingState = "Moving";
     public const string FallingState = "Falling";
     public const string AttackingState = "Attacking";
+    public const string DyingState = "Dying";
 
     protected string currentState;
     protected string initialState;
@@ -52,7 +54,7 @@ public class Character : BaseMono
 
     #region Stat Fields
 
-    public StatManager StatManager;// { get; protected set; }
+    public StatManager myStats;// { get; protected set; }
 
     #endregion
 
@@ -71,6 +73,7 @@ public class Character : BaseMono
         // get references
         myMotor = GetComponent<CharacterMotor>();
         myTransform = transform;
+        myGameObject = gameObject;
         myRigidbody = rigidbody;
         myHealth = GetComponent<CharacterHealth>();
         myMaterial = myTransform.FindChild("Body").renderer.materials[0];

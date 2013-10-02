@@ -1,0 +1,4 @@
+﻿PLAYER SAVE DATA
+- playerName: Data
+- Can have spaces.
+	- yeagz7: Total Experience

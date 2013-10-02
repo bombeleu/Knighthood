@@ -27,7 +27,7 @@ public class HitInfo
     /// <summary>
     /// Multiply base damage by correct attack stat.
     /// </summary>
-    /// <param name="statManager">Attacker's StatManager.</param>
+    /// <param name="statManager">Attacker's myStats.</param>
     public void FactorAttackStats(StatManager statManager)
     {
         if (effect == Effects.None)
@@ -44,7 +44,7 @@ public class HitInfo
     /// <summary>
     /// Multiple base damage by correct defense stat. Needs to have FactorAttackStats called first.
     /// </summary>
-    /// <param name="statManager">Reciever's StatManager.</param>
+    /// <param name="statManager">Reciever's myStats.</param>
     public void FactorDefendStats(StatManager statManager)
     {
         if (effect == Effects.None)

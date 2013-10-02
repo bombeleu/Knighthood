@@ -95,7 +95,7 @@ public class Hitbox : BaseMono
         }
 
         // physical/magic attack
-        hitInfo.FactorAttackStats(sender.StatManager);
+        hitInfo.FactorAttackStats(sender.myStats);
 
         InvokeMethod("End", time);
     }

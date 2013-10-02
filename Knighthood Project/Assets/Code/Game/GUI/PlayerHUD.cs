@@ -26,7 +26,7 @@ public class PlayerHUD : BaseMono
         player = GetComponent<Player>();
         health = GetComponent<Health>();
         magic = GetComponent<Magic>();
-        statManager = player.StatManager;
+        statManager = player.myStats;
     }
 
 

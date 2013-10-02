@@ -36,7 +36,7 @@ public class Magic : BaseMono
 
 
     /// <summary>
-    /// Get magic ready for new character that has a StatManager.
+    /// Get magic ready for new character that has a myStats.
     /// </summary>
     /// <param name="stats"></param>
     public void Initialize(StatManager stats)

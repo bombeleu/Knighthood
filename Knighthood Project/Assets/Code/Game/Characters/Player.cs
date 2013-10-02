@@ -56,6 +56,12 @@ public class Player : Character
 
     #endregion
 
+    #region Stat Fields
+
+    public ExperienceManager myExperience;
+
+    #endregion
+
 
     #region MonoBehaviour Overrides
 
@@ -79,13 +85,16 @@ public class Player : Character
         comboManager = GetComponent<ComboManager>();
         comboManager.Initialize(this);
         tauntManager = GetComponent<TauntManager>();
+
+        // set up
+        myExperience.Load(0);
     }
 
 
     private void Start()
     {
 #if UNITY_EDITOR
-        //UnityEditor.Selection.objects = new UnityEngine.Object[1] { gameObject };
+        UnityEditor.Selection.objects = new UnityEngine.Object[1] { gameObject };
 #endif
     }
 
@@ -114,6 +123,17 @@ public class Player : Character
         name = username;
 
         StartInitialState(null);
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="enemy"></param>
+    /// <param name="experience"></param>
+    public void RecieveKill(Enemy.EnemyTypes enemy, int experience)
+    {
+        myExperience.Increase(experience);
     }
 
     #endregion

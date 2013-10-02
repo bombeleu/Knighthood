@@ -25,6 +25,17 @@ public class Enemy : Character
 
     #endregion
 
+    #region Stat Fields
+
+    public enum EnemyTypes
+    {
+        Dummy
+    }
+    public EnemyTypes enemType;
+    public int experience;
+
+    #endregion
+
 
     #region MonoBehaviour Overrides
 
@@ -41,14 +52,21 @@ public class Enemy : Character
         CreateState(MovingState, MovingEnter, MovingExit);
         CreateState(JumpingState, JumpingEnter, info => {});
         CreateState(FallingState, FallingEnter, FallingExit);
+        CreateState(DyingState, DyingEnter, info => {});
 
         initialState = IdlingState;
+
+        // set up
+        myHealth.Initialize();
     }
 
 
     protected void Start()
     {
         StartInitialState(new Dictionary<string, object>{{"Target", LevelManager.Instance.PlayerTransforms[0]}});
+
+        // register events
+        myHealth.HitEvent += HitHandler;
     }
 
     #endregion
@@ -233,6 +251,12 @@ public class Enemy : Character
         fallingThrough = false;
     }
 
+
+    private void DyingEnter(Dictionary<string, object> info)
+    {
+        myGameObject.SetActive(false);
+    }
+
     #endregion
 
     #region Movement Methods
@@ -247,6 +271,23 @@ public class Enemy : Character
         {
             myNavAgent.FindPath(Target.position);
             yield return WaitForTime(navBuffer);
+        }
+    }
+
+    #endregion
+
+    #region Event Handlers
+
+    private void HitHandler(object sender, HitEventArgs args)
+    {
+        if (args.dead)
+        {
+            Log("Killed by: " + sender, Debugger.LogTypes.Combat);
+
+            Player player = (Player)sender;
+            player.RecieveKill(enemType, experience);
+
+            SetState(DyingState, new Dictionary<string, object>());
         }
     }
 

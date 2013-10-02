@@ -37,7 +37,6 @@ public class ComboManager : CombatManager
             if (Array.IndexOf(comboStrings, currentComboString + attackIndex) != -1)
             {
                 comboQueue.Enqueue(attackIndex);
-                Debug.Log(comboQueue.Peek());
             }
             return false;
         }
