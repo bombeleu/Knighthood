@@ -50,20 +50,24 @@ public class CharacterMotor : BaseMono
     #endregion
 
     #region Movement Methods
-
+    
     /// <summary>
     /// If the myCharacter is close enough to the ground to be considered on it. Snaps to ground.
     /// </summary>
-    /// <returns>True, if on ground.</returns>
-    public bool IsGrounded()
+    /// <param name="ground">Should the character snap to the ground?</param>
+    /// <returns>True, if character is close enough to be considered on the ground.</returns>
+    public bool IsGrounded(bool ground = false)
     {
         if (velocity.y > 0) return false;
 
         RaycastHit rayInfo;
         if (Physics.Raycast(myTransform.position + Vector3.up * 0.1f, Vector3.down, out rayInfo, GroundedRayDist + 0.1f, terrainLayer))
         {
-            velocity = new Vector3(velocity.x, 0f, 0f);
-            myTransform.position += Vector3.down * (rayInfo.distance - 0.1f);
+            if (ground)
+            {
+                velocity = new Vector3(velocity.x, 0f, 0f);
+                myTransform.position += Vector3.down*(rayInfo.distance - 0.1f);
+            }
             return true;
         }
         return false;

@@ -40,7 +40,7 @@ public class Enemy : Character
         CreateState(IdlingState, IdlingEnter, info => {});
         CreateState(MovingState, MovingEnter, MovingExit);
         CreateState(JumpingState, JumpingEnter, info => {});
-        CreateState(FallingState, FallingEnter, info => {});
+        CreateState(FallingState, FallingEnter, FallingExit);
 
         initialState = IdlingState;
     }
@@ -58,6 +58,9 @@ public class Enemy : Character
     private void IdlingEnter(Dictionary<string, object> info)
     {
         ClearVelocity();
+
+        PlayAnimation(IdlingState);
+
         currentStateJob = new Job(IdlingUpdate());
     }
 
@@ -80,6 +83,8 @@ public class Enemy : Character
     private void MovingEnter(Dictionary<string, object> info)
     {
         StartCoroutine("CalculatePath", info["Target"]);
+
+        PlayAnimation(MovingState);
 
         currentStateJob = new Job(MovingUpdate());
     }
@@ -138,21 +143,39 @@ public class Enemy : Character
     private void JumpingEnter(Dictionary<string, object> info)
     {
         ClearVelocity();
+
+        PlayAnimation(JumpingState);
+
         currentStateJob = new Job(JumpingUpdate((Vector3)info["target"]));
     }
 
 
     private IEnumerator JumpingUpdate(Vector3 target)
     {
-        float timeX = Mathf.Abs((target.x - myTransform.position.x)/moveSpeed);
-        float velY = (Mathf.Abs(target.y - myTransform.position.y) + 0.5f*gravity*timeX*timeX)/timeX;
-        Vector3 initialVel = new Vector3(Mathf.Sign((target-myTransform.position).x)*moveSpeed, velY, 0f);
-        Log(initialVel, true, Debugger.LogTypes.Navigation);
+        //float timeX = Mathf.Abs((target.x - myTransform.position.x)/moveSpeed);
+        
+        //float velY = ((target.y - myTransform.position.y) + 0.5f*gravity*timeX*timeX)/timeX; // error?
+        //if (velY >= 200) Debug.Log(timeX);
+        //Vector3 initialVel = new Vector3(Mathf.Sign((target-myTransform.position).x)*moveSpeed, velY, 0f);
+        //Log(initialVel, true, Debugger.LogTypes.Navigation);
 
-        while (timeX > 0f)
+
+        Vector3 dist = target - myTransform.position;
+        
+        float velY0 = Mathf.Sqrt(2*gravity*(dist.y + 1));
+        float timeY = (-velY0 - Mathf.Sqrt(velY0*velY0 - 2*gravity*dist.y))/-gravity;
+
+        float velX = dist.x/timeY;
+
+        Vector3 initialVel = new Vector3(velX, velY0, 0f);
+
+
+
+
+        while (timeY > 0f)
         {
             Debug.DrawRay(myTransform.position, initialVel);
-            timeX -= GameTime.deltaTime;
+            timeY -= GameTime.deltaTime;
             SetVelocity(initialVel);
             initialVel += Vector3.down*gravity*GameTime.deltaTime;
 
@@ -168,6 +191,8 @@ public class Enemy : Character
 
     private void FallingEnter(Dictionary<string, object> info)
     {
+        PlayAnimation(FallingState);
+
         if (info.ContainsKey("translucent"))
         {
             fallingThrough = true;
@@ -183,13 +208,16 @@ public class Enemy : Character
         while (true)
         {
             // land
-            if (!fallingThrough && myMotor.IsGrounded())
+            if (!fallingThrough && myMotor.IsGrounded(true))
             {
                 SetState(MovingState, new Dictionary<string, object>{{"Target", LevelManager.Instance.PlayerTransforms[0]}});
                 yield break;
             }
 
             // move
+            SetVelocityX(Mathf.Clamp((target - myTransform.position).x, -moveSpeed, moveSpeed));
+
+            
             if (myMotor.velocity.y > -terminalVelocity)
             {
                 AddVelocityY(-gravity * GameTime.deltaTime);
@@ -197,6 +225,12 @@ public class Enemy : Character
 
             yield return null;
         }
+    }
+
+
+    private void FallingExit(Dictionary<string, object> info)
+    {
+        fallingThrough = false;
     }
 
     #endregion

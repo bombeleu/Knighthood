@@ -16,7 +16,6 @@ public class Player : Character
     private ComboManager comboManager;
     private AttackManager attackManager;
     private TauntManager tauntManager;
-    private Material myMaterial;
 
     #endregion
 
@@ -57,22 +56,12 @@ public class Player : Character
 
     #endregion
 
-    #region Animation Fields
-
-    public string[] animationNames;
-    public Texture[] animationTex;
-
-    #endregion
-
 
     #region MonoBehaviour Overrides
 
     protected override void Awake()
     {
         base.Awake();
-
-        // get references
-        myMaterial = myTransform.FindChild("Body").renderer.materials[0];
 
         // create states
         CreateState(SpawningState, SpawningEnter, info => {});
@@ -133,7 +122,8 @@ public class Player : Character
 
     private void SpawningEnter(Dictionary<string, object> info)
     {
-        currentStateJob = new Job(SpawningUpdate());
+        SetState(IdlingState, new Dictionary<string, object>());
+        //currentStateJob = new Job(SpawningUpdate());
     }
 
 
@@ -162,7 +152,7 @@ public class Player : Character
         }
 
         // attackAnimation
-        myMaterial.mainTexture = animationTex[Array.IndexOf(animationNames, "Idling")];
+        PlayAnimation(IdlingState);
 
         // reset values
         velocity = Vector3.zero;
@@ -313,7 +303,7 @@ public class Player : Character
     private void MovingEnter(Dictionary<string, object> info)
     {
         // attackAnimation
-        myMaterial.mainTexture = animationTex[Array.IndexOf(animationNames, "Moving")];
+        PlayAnimation(MovingState);
     
         currentStateJob = new Job(MovingUpdate());
     }
@@ -328,7 +318,7 @@ public class Player : Character
     private void JumpingEnter(Dictionary<string, object> info)
     {
         // attackAnimation
-        myMaterial.mainTexture = animationTex[Array.IndexOf(animationNames, "Jumping")];
+        PlayAnimation(JumpingState);
 
         currentStateJob = new Job(JumpingUpdate(), false);
         currentStateJob.CreateChildJob(Climb(), climbTime);
@@ -405,7 +395,7 @@ public class Player : Character
         }
         else
         {
-            if (myMotor.IsGrounded())
+            if (myMotor.IsGrounded(true))
             {
                 SetState((GetMovingInput().x == 0f ? IdlingState : MovingState), new Dictionary<string, object>());
                 return;
@@ -413,7 +403,7 @@ public class Player : Character
         }
 
         // fall animation
-        myMaterial.mainTexture = animationTex[Array.IndexOf(animationNames, "Falling")];
+        PlayAnimation(FallingState);
 
         // give extra jump waitTime
         if (info != null && info.ContainsKey("extraJump"))
@@ -431,7 +421,7 @@ public class Player : Character
         while (true)
         {
             // enter idling or jumping state
-            if (!fallingThrough && myMotor.IsGrounded())
+            if (!fallingThrough && myMotor.IsGrounded(true))
             {
                 SetState((prematureJump ? JumpingState : IdlingState), new Dictionary<string, object>());
                 yield break;
@@ -493,7 +483,8 @@ public class Player : Character
     {
         Texture attackTexture = (Texture)info["attackTexture"];
 
-        myMaterial.mainTexture = attackTexture;
+        PlayAnimation(attackTexture);
+        
         currentStateJob = new Job(AttackingUpdate());
     }
 
@@ -540,7 +531,7 @@ public class Player : Character
             }
 
             // stop movement
-            if (myMotor.IsGrounded())
+            if (myMotor.IsGrounded(true))
             {
                 velocity.x = 0f;
                 SetVelocity(velocity);

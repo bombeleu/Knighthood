@@ -17,6 +17,7 @@ public class Character : BaseMono
     protected Transform myTransform;
     protected Rigidbody myRigidbody;
     protected CharacterHealth myHealth;
+    private Material myMaterial;
 
     #endregion
 
@@ -55,6 +56,13 @@ public class Character : BaseMono
 
     #endregion
 
+    #region Animation Fields
+
+    public string[] animationNames;
+    public Texture[] animationTex;
+
+    #endregion
+
 
     #region MonoBehaviour Overrides
 
@@ -65,6 +73,7 @@ public class Character : BaseMono
         myTransform = transform;
         myRigidbody = rigidbody;
         myHealth = GetComponent<CharacterHealth>();
+        myMaterial = myTransform.FindChild("Body").renderer.materials[0];
     }
 
     #endregion
@@ -223,6 +232,29 @@ public class Character : BaseMono
     public void EndAttack()
     {
         SetState(IdlingState, null);
+    }
+
+    #endregion
+
+    #region Animation Methods
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="animationName"></param>
+    protected void PlayAnimation(string animationName)
+    {
+        myMaterial.mainTexture = animationTex[Array.IndexOf(animationNames, animationName)];
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="animationTexure"></param>
+    protected void PlayAnimation(Texture animationTexure)
+    {
+        myMaterial.mainTexture = animationTexure;
     }
 
     #endregion

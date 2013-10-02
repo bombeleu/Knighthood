@@ -39,11 +39,13 @@ public class NameListDrawer : PropertyDrawer
             //}
 
             string[] names = Enum.GetNames(nameListAttribute.names);
+            Rect rect = EditorGUI.IndentedRect(position);
+            //rect.height = GetPropertyHeight()
             for (int i = 0; i < names.Length; i++)
             {
-                Rect rect = EditorGUI.IndentedRect(position);
-                rect.y += 15*(i + 2);
-                rect.height = 15f;
+
+                rect.y += rect.height;
+                //rect.height = 15f;
                 EditorGUI.PropertyField(rect, property.GetArrayElementAtIndex(i), new GUIContent(i >= names.Length ? "" : names[i]));
             }
         }

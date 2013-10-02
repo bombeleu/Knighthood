@@ -37,7 +37,7 @@ GameObject:
   m_Icon: {fileID: -1003283189, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &400000
 Transform:
   m_ObjectHideFlags: 1
@@ -114,8 +114,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   log: 1
   moveSpeed: 10
-  gravity: 25
-  terminalVelocity: 0
+  gravity: 40
+  terminalVelocity: 40
   jumpSpeed: 50
   climbTime: .300000012
   StatManager:
@@ -126,6 +126,16 @@ MonoBehaviour:
     magicDefense: 1
     magicMax: 0
     attackSpeed: 0
+  animationNames:
+  - Idling
+  - Moving
+  - Jumping
+  - Falling
+  animationTex:
+  - {fileID: 2800000, guid: 0e5999ff83efc6f459f61cb19b2e4a01, type: 3}
+  - {fileID: 2800000, guid: 6cebf2eb05df4b24eb2bfc14f9cdec29, type: 3}
+  - {fileID: 2800000, guid: b76e982ed2fb82f4b8d0cb0a5cfacda1, type: 3}
+  - {fileID: 2800000, guid: cb4e16837103d614eb9de021cfceffb9, type: 3}
   navBuffer: .5
   navStopRange: 3
 --- !u!114 &11400002
