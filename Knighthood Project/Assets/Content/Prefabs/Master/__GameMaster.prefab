@@ -82,6 +82,7 @@ MonoBehaviour:
   DamageIndicator_Prefab: {fileID: 100000, guid: b67f3764dbb6a734d9800090eebdf538,
     type: 2}
   Hitbox_Prefab: {fileID: 100000, guid: 73c37bd95eaf42d4597e295bd2852f0e, type: 2}
+  Money_Prefab: {fileID: 100000, guid: b868af81f023a0b4f804d87bdbc0dc13, type: 2}
   NPCStats: {fileID: 4900000, guid: 9867934e021c513429e5a3a6f4814e2c, type: 3}
 --- !u!114 &11400006
 MonoBehaviour:
@@ -108,7 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   log: 1
   overwrite: 1
-  logFlags: 0101
+  logFlags: 010101
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

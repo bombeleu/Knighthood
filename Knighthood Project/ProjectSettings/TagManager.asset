@@ -7,6 +7,7 @@ TagManager:
   - Translucent
   - GameMaster
   - Floor
+  - Money
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   User Layer 8: Character
   User Layer 9: Terrain
   User Layer 10: NavMeshNode
-  User Layer 11: 
+  User Layer 11: Money
   User Layer 12: 
   User Layer 13: 
   User Layer 14: 

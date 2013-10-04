@@ -20,6 +20,8 @@ public class GameResources : Singleton<GameResources>
     public ObjectRecycler DamageIndicator_Pool;
     public GameObject Hitbox_Prefab;
     public ObjectRecycler Hitbox_Pool;
+    public GameObject Money_Prefab;
+    public ObjectRecycler Money_Pool;
 
     #endregion
 
@@ -34,8 +36,10 @@ public class GameResources : Singleton<GameResources>
 
     private void Awake()
     {
+        // pools
         DamageIndicator_Pool = new ObjectRecycler(DamageIndicator_Prefab);
         Hitbox_Pool = new ObjectRecycler(Hitbox_Prefab);
+        Money_Pool = new ObjectRecycler(Money_Prefab, new GameObject("Money").transform);
     }
 
 

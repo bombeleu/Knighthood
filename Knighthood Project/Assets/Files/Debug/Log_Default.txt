@@ -1,7 +1,2 @@
-*** 10/1/2013 10:17:12 PM ***
+*** 10/3/2013 10:14:02 PM ***
 0: Creating JobManager singleton
-0.02: Enemy Entering: Moving - 0.02
-0.1944416: Enemy Entering: Falling - 0.1944416
-0.3601084: Enemy Entering: Moving - 0.3601084
-1.288637: Enemy Entering: Idling - 1.288637
-3.88: Enemy Entering: Dying - 3.88

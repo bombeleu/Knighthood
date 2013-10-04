@@ -59,6 +59,13 @@ public class Player : Character
     #region Stat Fields
 
     public ExperienceManager myExperience;
+    public MoneyManager myMoney;
+
+    #endregion
+
+    #region Events
+
+    public static EventHandler<MoneyEventAgs> MoneyEvent;
 
     #endregion
 
@@ -88,6 +95,7 @@ public class Player : Character
 
         // set up
         myExperience.Load(0);
+        myMoney.Load(playerInfo.username);
     }
 
 
@@ -96,6 +104,9 @@ public class Player : Character
 #if UNITY_EDITOR
         UnityEditor.Selection.objects = new UnityEngine.Object[1] { gameObject };
 #endif
+
+        // events
+        MoneyEvent += CollectMoney;
     }
 
 
@@ -106,6 +117,19 @@ public class Player : Character
         {
             GameData.Instance.ReloadScene();
         }
+    }
+
+    #endregion
+
+    #region Static Methods
+
+    /// <summary>
+    /// Trigger the MoneyEvent.
+    /// </summary>
+    /// <param name="worth"></param>
+    public static void AllCollectMoney(object collector, int worth)
+    {
+        MoneyEvent(collector, new MoneyEventAgs(worth));
     }
 
     #endregion
@@ -134,6 +158,18 @@ public class Player : Character
     public void RecieveKill(Enemy.EnemyTypes enemy, int experience)
     {
         myExperience.Increase(experience);
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    /// <summary>
+    /// Handler for MoneyEvent. Add money to manager.
+    /// </summary>
+    private void CollectMoney(object collector, MoneyEventAgs args)
+    {
+        myMoney.Transaction(args.worth);
     }
 
     #endregion
@@ -308,7 +344,7 @@ public class Player : Character
             SetVelocity(velocity);
 
             // enter falling state
-            if (!myMotor.IsGrounded())
+            if (!myMotor.IsGrounded(true))
             {
                 var info = new Dictionary<string, object> {{"extraJump", true}};
                 SetState(FallingState, info);
