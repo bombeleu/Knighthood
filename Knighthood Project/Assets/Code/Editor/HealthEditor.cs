@@ -67,7 +67,9 @@ public class HealthEditor : Editor
             {
                 EditorGUIUtility.DrawColorSwatch(rectColor, Color.Lerp(Color.green, Color.red, myHealth.statusEffectivenesses[i]/2));
                 EditorGUILayout.LabelField(statusEffects[i], GUILayout.MaxWidth(100f));
-                myHealth.statusEffectivenesses[i] = EditorGUILayout.Slider(myHealth.statusEffectivenesses[i], 0f, 2f);
+                SO.FindProperty("statusEffectivenesses").GetArrayElementAtIndex(i).floatValue =
+                    EditorGUILayout.Slider(
+                        SO.FindProperty("statusEffectivenesses").GetArrayElementAtIndex(i).floatValue, 0f, 2f);
             }
             EditorGUILayout.EndHorizontal();
         }

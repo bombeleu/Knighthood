@@ -31,6 +31,7 @@ GameObject:
   - 114: {fileID: 11400000}
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400002}
+  - 114: {fileID: 11400008}
   m_Layer: 8
   m_Name: Enemy
   m_TagString: Enemy
@@ -56,7 +57,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: .707106829, z: 0, w: -.707106829}
-  m_LocalPosition: {x: 1.65068722, y: -.0315341949, z: -4.48870765e-07}
+  m_LocalPosition: {x: 83.9810944, y: -.0315341949, z: 9.81454832e-06}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_Children:
   - {fileID: 400000}
@@ -112,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ef36455df108df4ab1e396a352e9556, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
+  log: 0
   myStats:
     health: 0
     physicalAttack: 1
@@ -177,8 +178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9ccf49673923fa4295f661697abe769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 0
-  maxHealth: 10
+  log: 1
+  maxHealth: 100
   currentHealth: 0
   invincible: 0
   statusEffectivenesses:
@@ -186,7 +187,24 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  - 0
+  - 1.09000003
+--- !u!114 &11400008
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b91a9357afc0ea648a513e9d03dd61dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 0
+  minAmount: 5
+  maxAmount: 25
+  random: 1
+  force: {x: 5, y: 10}
+  rotation: 5
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

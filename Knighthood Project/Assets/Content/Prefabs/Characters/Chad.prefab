@@ -22,6 +22,7 @@ GameObject:
   - 114: {fileID: 11400016}
   - 114: {fileID: 11400020}
   - 114: {fileID: 11400022}
+  - 114: {fileID: 11400006}
   m_Layer: 8
   m_Name: Chad
   m_TagString: Player
@@ -184,9 +185,51 @@ MonoBehaviour:
   log: 1
   attacks:
   - {fileID: 11400008}
+  - {fileID: 11400006}
   inputs:
   - SuperLight
-  open: 00
+  - SuperHeavy
+  open: 0001
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  attackInput: SuperHeavy
+  attackName: Fireball
+  windUp: 0
+  attackTime: .300000012
+  windDown: 0
+  cooldown: 0
+  showTooltips: 0
+  attackAnimation: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
+  Attack_Prefab: {fileID: 100002, guid: 4530b46cf5c1ea74092d6631af734071, type: 2}
+  hitInfo:
+    baseDamage: 5
+    effect: 0
+    knockBack: {x: 0, y: 0, z: 0}
+  hitboxTime: 3
+  offset: {x: 1, y: 1}
+  parented: 0
+  hitNumber: 1
+  oneShot: 1
+  melee: 0
+  meleeSize: {x: 0, y: 0}
+  magic: 1
+  magicRequired: 10
+  projectile: 1
+  projectileVector: {x: 1, y: 0}
+  projectileSpeed: 25
+  move: 0
+  endVector: {x: 0, y: 0, z: 0}
+  moveTime: 0
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 2

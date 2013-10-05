@@ -59,10 +59,9 @@ MonoBehaviour:
   log: 1
   playerUsernames:
   - yeagz7
-  - mmfane
   allUsernames:
   - 
-  playerCharacters: 0000000001000000
+  playerCharacters: 00000000
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1

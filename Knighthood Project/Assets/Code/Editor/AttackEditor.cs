@@ -41,8 +41,8 @@ public class AttackEditor : Editor
 
         EditorGUILayout.BeginHorizontal();
         {
-            EditorGUILayout.LabelField(attackInput.stringValue, EditorStyles.whiteBoldLabel, GUILayout.MinWidth(0));
-            EditorGUILayout.LabelField(attackName.stringValue, EditorStyles.whiteBoldLabel, GUILayout.MinWidth(0));
+            EditorGUILayout.LabelField(attackInput.stringValue, EditorStyles.boldLabel, GUILayout.MinWidth(0));
+            EditorGUILayout.LabelField(attackName.stringValue, EditorStyles.boldLabel, GUILayout.MinWidth(0));
         }
         EditorGUILayout.EndHorizontal();
     }
