@@ -9,11 +9,17 @@ using System;
 /// </summary>
 public class Health : BaseMono
 {
-    #region Health Fields
+    #region Public Fields
 
     public int maxHealth;
     public int currentHealth;// { get; protected set; }
     public bool invincible;// { get; private set; }
+    public float[] statusEffectivenesses = {1f, 1f, 1f, 1f, 1f};
+
+    #endregion
+
+    #region Private Fields
+
     private int lastHitID;
 
     #endregion

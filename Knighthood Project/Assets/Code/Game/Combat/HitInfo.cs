@@ -15,7 +15,7 @@ public class HitInfo
     /// <summary>Base damage before stats are factored in.</summary>
     public int baseDamage;
     public int damage { get; private set; }
-    public enum Effects { None, Fire, Lightning, Acid, Earth, Ice }
+    public enum Effects { None = -1, Fire = 0, Lightning = 1, Acid = 2, Earth = 3, Ice = 4 }
     public Effects effect;
     public Vector3 knockBack;
 
