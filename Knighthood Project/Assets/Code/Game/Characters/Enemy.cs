@@ -22,6 +22,7 @@ public class Enemy : Character
     public float navBuffer = 0.5f;
     public float navStopRange = 3f;
     private bool fallingThrough;
+    private float gravity;
 
     #endregion
 
@@ -58,6 +59,7 @@ public class Enemy : Character
 
         // set up
         myHealth.Initialize();
+        gravity = myMotor.gravity;
     }
 
 
@@ -75,7 +77,7 @@ public class Enemy : Character
 
     private void IdlingEnter(Dictionary<string, object> info)
     {
-        ClearVelocity();
+        myMotor.ClearVelocity();
 
         PlayAnimation(IdlingState);
 
@@ -138,7 +140,7 @@ public class Enemy : Character
             }
 
             // move
-            SetVelocityX(Mathf.Sign((nodePosition - myTransform.position).x) * moveSpeed);
+            myMotor.MoveX(Mathf.Sign((nodePosition - myTransform.position).x));
             
             // next node
             if (Vector3.Distance(myTransform.position, nodePosition) <= myNavAgent.allowedRadius)
@@ -160,7 +162,7 @@ public class Enemy : Character
 
     private void JumpingEnter(Dictionary<string, object> info)
     {
-        ClearVelocity();
+        myMotor.ClearVelocity();
 
         PlayAnimation(JumpingState);
 
@@ -170,31 +172,20 @@ public class Enemy : Character
 
     private IEnumerator JumpingUpdate(Vector3 target)
     {
-        //float timeX = Mathf.Abs((target.x - myTransform.position.x)/moveSpeed);
-        
-        //float velY = ((target.y - myTransform.position.y) + 0.5f*gravity*timeX*timeX)/timeX; // error?
-        //if (velY >= 200) Debug.Log(timeX);
-        //Vector3 initialVel = new Vector3(Mathf.Sign((target-myTransform.position).x)*moveSpeed, velY, 0f);
-        //Log(initialVel, true, Debugger.LogTypes.Navigation);
-
-
         Vector3 dist = target - myTransform.position;
         
-        float velY0 = Mathf.Sqrt(2*gravity*(dist.y + 1));
-        float timeY = (-velY0 - Mathf.Sqrt(velY0*velY0 - 2*gravity*dist.y))/-gravity;
+        float velIntY = Mathf.Sqrt(2*gravity*(dist.y + 1));
+        float timeY = (-velIntY - Mathf.Sqrt(velIntY*velIntY - 2*gravity*dist.y))/-gravity;
 
         float velX = dist.x/timeY;
 
-        Vector3 initialVel = new Vector3(velX, velY0, 0f);
-
-
-
+        Vector3 initialVel = new Vector3(velX, velIntY, 0f);
 
         while (timeY > 0f)
         {
             Debug.DrawRay(myTransform.position, initialVel);
             timeY -= GameTime.deltaTime;
-            SetVelocity(initialVel);
+            myMotor.SetVelocity(initialVel);
             initialVel += Vector3.down*gravity*GameTime.deltaTime;
 
             yield return null;
@@ -233,13 +224,8 @@ public class Enemy : Character
             }
 
             // move
-            SetVelocityX(Mathf.Clamp((target - myTransform.position).x, -moveSpeed, moveSpeed));
-
-            
-            if (myMotor.velocity.y > -terminalVelocity)
-            {
-                AddVelocityY(-gravity * GameTime.deltaTime);
-            }
+            myMotor.MoveX((target - myTransform.position).x/myMotor.moveSpeed);
+            myMotor.ApplyGravity();
 
             yield return null;
         }

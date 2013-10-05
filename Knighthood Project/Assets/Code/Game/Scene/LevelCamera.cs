@@ -105,10 +105,10 @@ public class LevelCamera : Singleton<LevelCamera>
     #region Movement Methods
 
     /// <summary>
-    /// Move the camera left/right to keep players on screen.
+    /// MoveX the camera left/right to keep players on screen.
     /// </summary>
     /// <param name="speed">Speed to move camera.</param>
-    /// <param name="moveRight">Move camera to the right?</param>
+    /// <param name="moveRight">MoveX camera to the right?</param>
     private void MoveHorizontal(float speed, bool moveRight)
     {
         if (speed == 0) speed = baseSpeed;

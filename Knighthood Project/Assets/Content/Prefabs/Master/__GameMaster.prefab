@@ -59,6 +59,7 @@ MonoBehaviour:
   log: 1
   playerUsernames:
   - yeagz7
+  - mmfane
   allUsernames:
   - 
   playerCharacters: 00000000
@@ -76,9 +77,9 @@ MonoBehaviour:
   log: 1
   Player_Prefabs:
   - {fileID: 100000, guid: bcf3c8837549784408f986a3d284cda3, type: 2}
-  - {fileID: 100000, guid: f09cb0ec2b19a9a4881ddad1d72e1784, type: 2}
-  - {fileID: 100000, guid: 05ee5b991521d94438b50050832a102a, type: 2}
-  - {fileID: 100000, guid: 0f2117e1ea91e7b4fa8f69540d2be539, type: 2}
+  - {fileID: 100000, guid: 14e9de730ee599a4987dc55406278856, type: 2}
+  - {fileID: 100000, guid: 4e0b4521eb1639e4d8960fc34a99e33b, type: 2}
+  - {fileID: 100000, guid: 02ec61d68c2aa944b983fc3849d8a7ee, type: 2}
   DamageIndicator_Prefab: {fileID: 100000, guid: b67f3764dbb6a734d9800090eebdf538,
     type: 2}
   Hitbox_Prefab: {fileID: 100000, guid: 73c37bd95eaf42d4597e295bd2852f0e, type: 2}

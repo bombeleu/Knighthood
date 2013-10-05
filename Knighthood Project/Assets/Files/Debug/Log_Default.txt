@@ -1,2 +1,4 @@
-*** 10/3/2013 10:14:02 PM ***
+*** 10/4/2013 6:01:04 PM ***
 0: Creating JobManager singleton
+0.1253817: gravity?
+0.1253817: GRAVITY

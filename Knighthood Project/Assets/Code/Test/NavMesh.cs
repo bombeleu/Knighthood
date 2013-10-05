@@ -145,7 +145,6 @@ public class NavMesh : Singleton<NavMesh>
         {
             int x = Mathf.FloorToInt(allNodes[i].transform.position.x/gridSpace);
             int y = gridHeight - 1 - Mathf.FloorToInt(allNodes[i].transform.position.y / gridSpace);
-            //int y = Mathf.FloorToInt(allNodes[i].transform.position.y / gridSpace);
             try
             {
                 worldMatrix[y][x].Add(allNodes[i].GetComponent<Node>());
@@ -159,14 +158,7 @@ public class NavMesh : Singleton<NavMesh>
             
         }
 
-        Debug.Log("Done Baking World Matrix: " + (DateTime.Now - start));
-        //for (int i = 0; i < gridHeight; i++)
-        //{
-        //    for (int j = 0; j < gridWidth; j++)
-        //    {
-        //        Debug.Log(worldMatrix[i][j].Count);
-        //    }
-        //}
+        Log("Done Baking World Matrix: " + (DateTime.Now - start));
     }
 
 

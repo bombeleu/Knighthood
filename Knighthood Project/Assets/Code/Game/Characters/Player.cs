@@ -32,6 +32,8 @@ public class Player : Character
     private bool canExtraJump = false;
     private bool prematureJump;
     public float prematureJumpTime;
+    /// <summary>How long the myCharacter can jump.</summary>
+    public float climbTime = 0.3f;
 
     #endregion
 
@@ -211,8 +213,7 @@ public class Player : Character
         PlayAnimation(IdlingState);
 
         // reset values
-        velocity = Vector3.zero;
-        SetVelocity(velocity);
+        myMotor.ClearVelocity();
 
         currentStateJob = new Job(IdlingUpdate());
     }
@@ -340,8 +341,7 @@ public class Player : Character
             myMotor.SetRotation(GetMovingInput().x);
 
             // move
-            velocity.x = moveVector.x * moveSpeed;
-            SetVelocity(velocity);
+            myMotor.MoveX(moveVector.x);
 
             // enter falling state
             if (!myMotor.IsGrounded(true))
@@ -367,7 +367,7 @@ public class Player : Character
 
     private void MovingExit(Dictionary<string, object> info)
     {
-        velocity.y = 0f;
+        myMotor.SetVelocityY(0f);
     }
 
 
@@ -400,8 +400,7 @@ public class Player : Character
 
     private IEnumerator Climb()
     {
-        velocity.y = jumpSpeed;
-
+        float inputX;
         while (GetJumpingInput(true))
         {
             // enter attacking state
@@ -412,9 +411,11 @@ public class Player : Character
                 yield break;
             }
 
-            myMotor.SetRotation(GetMovingInput().x);
-            velocity.x = GetMovingInput().x * moveSpeed;
-            SetVelocity(velocity);
+            inputX = GetMovingInput().x;
+            myMotor.SetRotation(inputX);
+            myMotor.MoveX(inputX);
+            myMotor.SetVelocityY(myMotor.jumpStrength);
+
             yield return null;
         }
     }
@@ -422,7 +423,8 @@ public class Player : Character
 
     private IEnumerator Float()
     {
-        while (velocity.y > 0.1f)
+        float inputX = 0f;
+        while (myMotor.velocity.y > 0.1f)
         {
             // enter attacking state
             AttackTypes attack = GetAttackingInput();
@@ -432,10 +434,16 @@ public class Player : Character
                 yield break;
             }
 
-            myMotor.SetRotation(GetMovingInput().x);
-            velocity.x = GetMovingInput().x * moveSpeed;
-            velocity.y -= gravity * GameTime.deltaTime;
-            SetVelocity(velocity);
+            //myMotor.SetRotation(GetMovingInput().x);
+            //velocity.x = GetMovingInput().x * moveSpeed;
+            //velocity.y -= gravity * GameTime.deltaTime;
+            //SetVelocity(velocity);
+
+            inputX = GetMovingInput().x;
+            myMotor.SetRotation(inputX);
+            myMotor.ApplyGravity();
+            myMotor.MoveX(inputX);
+
             yield return null;
         }
     }
@@ -474,6 +482,7 @@ public class Player : Character
 
     private IEnumerator FallingUpdate()
     {
+        float inputX = 0f;
         while (true)
         {
             // enter idling or jumping state
@@ -515,14 +524,14 @@ public class Player : Character
             // fast fall
             if (GetMovingInput().y < -0.9f)
             {
-                velocity.y -= fastFallSpeed * GameTime.deltaTime;
+                myMotor.AddVelocityY(fastFallSpeed * GameTime.deltaTime);
             }
 
             // move
-            myMotor.SetRotation(GetMovingInput().x);
-            velocity.x = GetMovingInput().x * moveSpeed;
-            Fall();
-            SetVelocity(velocity);
+            inputX = GetMovingInput().x;
+            myMotor.SetRotation(inputX);
+            myMotor.ApplyGravity();
+            myMotor.MoveX(inputX);
 
             yield return null;
         }
@@ -553,13 +562,11 @@ public class Player : Character
 
             if (!myMotor.IsGrounded())
             {
-                velocity.y -= gravity * GameTime.deltaTime;
-                SetVelocity(velocity);
+                myMotor.ApplyGravity();
             }
             else
             {
-                velocity = Vector2.zero;
-                SetVelocity(velocity);
+                myMotor.ClearVelocity();
             }
 
             yield return null;
@@ -589,8 +596,7 @@ public class Player : Character
             // stop movement
             if (myMotor.IsGrounded(true))
             {
-                velocity.x = 0f;
-                SetVelocity(velocity);
+                myMotor.SetVelocityX(0f);
             }
 
             myMotor.SetRotation(GetMovingInput().x);
@@ -864,46 +870,6 @@ public class Player : Character
 
         info.Add("attackTexture", attackTexture);
         SetState(AttackingState, info);
-    }
-
-    #endregion
-
-    #region Movement Methods
-
-    /// <summary>
-    /// Set the CharacterMotor velocity if allow.
-    /// </summary>
-    /// <param name="moveVector">Move vector not multiplied by deltaTime.</param>
-    private void SetVelocity(Vector3 moveVector)
-    {
-        float screenX = LevelManager.Instance.camera.WorldToScreenPoint(myTransform.position).x / Screen.width;
-
-        // screen right
-        if (GetMovingInput().x > 0 && screenX >= (1 - LevelCamera.Instance.boundaryHorizontalOuter))
-        {
-            moveVector.x = 0f;
-        }
-        // screen left
-        else if (GetMovingInput().x < 0 && screenX <= LevelCamera.Instance.boundaryHorizontalOuter)
-        {
-            moveVector.x = 0f;
-        }
-
-        myMotor.velocity = moveVector;
-    }
-
-
-    /// <summary>
-    /// Add gravity to velocity for falling.
-    /// </summary>
-    private void Fall()
-    {
-        velocity.y -= gravity*GameTime.deltaTime;
-        if (velocity.y < -terminalVelocity)
-        {
-            velocity.y = -terminalVelocity;
-        }
-        SetVelocity(velocity);
     }
 
     #endregion

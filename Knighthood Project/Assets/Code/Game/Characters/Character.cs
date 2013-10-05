@@ -39,19 +39,6 @@ public class Character : BaseMono
 
     #endregion
 
-    #region Movement Fields
-
-    public float moveSpeed;
-    protected Vector3 velocity;
-    public float gravity;
-    public float terminalVelocity;
-    /// <summary>How fast the myCharacter moves upward.</summary>
-    public float jumpSpeed = 21;
-    /// <summary>How long the myCharacter can jump.</summary>
-    public float climbTime = 0.3f;
-
-    #endregion
-
     #region Stat Fields
 
     public StatManager myStats;// { get; protected set; }
@@ -129,90 +116,6 @@ public class Character : BaseMono
     {
         currentState = initialState;
         enterMethods[initialState](info);
-    }
-
-    #endregion
-
-    #region Velocity Methods
-
-    /// <summary>
-    /// Set CharacterMotor velocity to zero.
-    /// </summary>
-    protected void ClearVelocity()
-    {
-        myMotor.velocity = Vector3.zero;
-    }
-
-
-    /// <summary>
-    /// Set new velocity for CharacterMotor.
-    /// </summary>
-    /// <param name="velocity">New velocity value.</param>
-    protected void SetVelocity(Vector3 velocity)
-    {
-        myMotor.velocity = velocity;
-    }
-
-
-    /// <summary>
-    /// Set new velocity for CharacterMotor.
-    /// </summary>
-    /// <param name="x">Horizontal speed.</param>
-    /// <param name="y">Vertical speed. Up is positive.</param>
-    protected void SetVelocity(float x, float y)
-    {
-        myMotor.velocity = new Vector3(x, y, 0f);
-    }
-
-
-    /// <summary>
-    /// Set CharacterMotor's velocity's horizontal speed.
-    /// </summary>
-    /// <param name="x">Horizontal speed.</param>
-    protected void SetVelocityX(float x)
-    {
-        myMotor.velocity = new Vector3(x, myMotor.velocity.y, 0f);
-    }
-
-
-    /// <summary>
-    /// Set CharacterMotor's velocity's vertical speed.
-    /// </summary>
-    /// <param name="y">Vertical speed. Up is positive.</param>
-    protected void SetVelocityY(float y)
-    {
-        myMotor.velocity = new Vector3(myMotor.velocity.x, y, 0f);
-    }
-
-
-    /// <summary>
-    /// Add to the CharacterMotor's velocity's vertical speed.
-    /// </summary>
-    /// <param name="x">Horizontal speed.</param>
-    /// <param name="y">Vertical speed. Up is positive.</param>
-    protected void AddVelocity(float x, float y)
-    {
-        myMotor.velocity += new Vector3(x, y, 0f);
-    }
-
-
-    /// <summary>
-    /// Add to the CharacterMotor's velocity's horizontal speed.
-    /// </summary>
-    /// <param name="x">Horizontal speed.</param>
-    protected void AddVelocityX(float x)
-    {
-        myMotor.velocity += new Vector3(x, 0f, 0f);
-    }
-
-
-    /// <summary>
-    /// Add to the CharacterMotor's velocity's vertical speed.
-    /// </summary>
-    /// <param name="y">Vertical speed. Up is positive.</param>
-    protected void AddVelocityY(float y)
-    {
-        myMotor.velocity += new Vector3(0f, y, 0f);
     }
 
     #endregion

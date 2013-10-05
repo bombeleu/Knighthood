@@ -82,7 +82,7 @@ public class DamageIndicator : BaseMono
     }
 
     /// <summary>
-    /// Move up.
+    /// MoveX up.
     /// </summary>
     private IEnumerator Float()
     {

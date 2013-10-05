@@ -1,8 +1,6 @@
 ﻿// Steve Yeager
 // 8.22.2013
 
-using System.Linq;
-using System.Runtime.Serialization.Formatters;
 using UnityEngine;
 
 /// <summary>
@@ -12,16 +10,34 @@ public class CharacterMotor : BaseMono
 {
     #region Reference Fields
 
-    private Transform myTransform;
+    protected Transform myTransform;
     private Rigidbody myRigidbody;
 
     #endregion
 
-    #region Movement Fields
+    #region Public Fields
 
-    private const float GroundedRayDist = 0.5f;
+    public float moveSpeed = 13f;
+    public float gravity = 70f;
+    public float terminalVelocity = 40f;
+    public float jumpStrength = 21f;
+
+    #endregion
+
+    #region Private Fields
+
     private int terrainLayer;
-    public Vector3 velocity { get { return myRigidbody.velocity; } set { myRigidbody.velocity = value; } }
+    private const float GroundedRayDist = 0.5f;
+
+    #endregion
+
+    #region Properties
+
+    public Vector3 velocity
+    {
+        get { return myRigidbody.velocity; }
+        set { myRigidbody.velocity = value; }
+    }
 
     #endregion
 
@@ -49,8 +65,8 @@ public class CharacterMotor : BaseMono
 
     #endregion
 
-    #region Movement Methods
-    
+    #region Public Methods
+
     /// <summary>
     /// If the myCharacter is close enough to the ground to be considered on it. Snaps to ground.
     /// </summary>
@@ -61,7 +77,8 @@ public class CharacterMotor : BaseMono
         if (velocity.y > 0) return false;
 
         RaycastHit rayInfo;
-        if (Physics.Raycast(myTransform.position + Vector3.up * 0.1f, Vector3.down, out rayInfo, GroundedRayDist + 0.1f, terrainLayer))
+        if (Physics.Raycast(myTransform.position + Vector3.up*0.1f, Vector3.down, out rayInfo, GroundedRayDist + 0.1f,
+            terrainLayer))
         {
             if (ground)
             {
@@ -83,7 +100,8 @@ public class CharacterMotor : BaseMono
         if (velocity.y > 0) return false;
 
         RaycastHit rayInfo;
-        if (Physics.Raycast(myTransform.position + Vector3.up * 0.1f, Vector3.down, out rayInfo, GroundedRayDist + 0.1f, terrainLayer))
+        if (Physics.Raycast(myTransform.position + Vector3.up*0.1f, Vector3.down, out rayInfo, GroundedRayDist + 0.1f,
+            terrainLayer))
         {
             return rayInfo.collider.tag == "Translucent";
         }
@@ -106,6 +124,110 @@ public class CharacterMotor : BaseMono
             myTransform.rotation = Quaternion.Euler(0f, 270f, 0f);
             myTransform.Align();
         }
+    }
+
+
+    /// <summary>
+    /// Increase gravity if not at terminal velocity.
+    /// </summary>
+    public void ApplyGravity()
+    {
+        if (velocity.y > -terminalVelocity)
+        {
+            AddVelocityY(-gravity * GameTime.deltaTime);
+        }
+    }
+
+
+    /// <summary>
+    /// MoveX character by fraction of moveSpeed.
+    /// </summary>
+    /// <param name="input">[-1, 1]</param>
+    public virtual void MoveX(float input)
+    {
+        input = Mathf.Clamp(input, -1f, 1f);
+        velocity = new Vector3(moveSpeed*input, velocity.y, 0f);
+    }
+
+
+    /// <summary>
+    /// Set CharacterMotor velocity to zero.
+    /// </summary>
+    public void ClearVelocity()
+    {
+        velocity = Vector3.zero;
+    }
+
+
+    /// <summary>
+    /// Set new velocity for CharacterMotor.
+    /// </summary>
+    /// <param name="velocity">New velocity value.</param>
+    public virtual void SetVelocity(Vector3 velocity)
+    {
+        this.velocity = velocity;
+    }
+
+
+    /// <summary>
+    /// Set new velocity for CharacterMotor.
+    /// </summary>
+    /// <param name="x">Horizontal speed.</param>
+    /// <param name="y">Vertical speed. Up is positive.</param>
+    public virtual void SetVelocity(float x, float y)
+    {
+        velocity = new Vector3(x, y, 0f);
+    }
+
+
+    /// <summary>
+    /// Set CharacterMotor's velocity's horizontal speed.
+    /// </summary>
+    /// <param name="x">Horizontal speed.</param>
+    public virtual void SetVelocityX(float x)
+    {
+        velocity = new Vector3(x, velocity.y, 0f);
+    }
+
+
+    /// <summary>
+    /// Set CharacterMotor's velocity's vertical speed.
+    /// </summary>
+    /// <param name="y">Vertical speed. Up is positive.</param>
+    public void SetVelocityY(float y)
+    {
+        velocity = new Vector3(velocity.x, y, 0f);
+    }
+
+
+    /// <summary>
+    /// Add to the CharacterMotor's velocity's vertical speed.
+    /// </summary>
+    /// <param name="x">Horizontal speed.</param>
+    /// <param name="y">Vertical speed. Up is positive.</param>
+    public virtual void AddVelocity(float x, float y)
+    {
+        velocity += new Vector3(x, y, 0f);
+    }
+
+
+    /// <summary>
+    /// Add to the CharacterMotor's velocity's horizontal speed.
+    /// </summary>
+    /// <param name="x">Horizontal speed.</param>
+    public virtual void AddVelocityX(float x)
+    {
+        velocity += new Vector3(x, 0f, 0f);
+    }
+
+
+    /// <summary>
+    /// Add to the CharacterMotor's velocity's vertical speed.
+    /// </summary>
+    /// <param name="y">Vertical speed. Up is positive.</param>
+    public void AddVelocityY(float y)
+    {
+        velocity += new Vector3(0f, y, 0f);
     }
 
     #endregion
