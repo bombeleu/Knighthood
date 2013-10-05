@@ -33,6 +33,9 @@ public class HealthEditor : Editor
         EditorGUIUtility.LookLikeInspector();
         SO.Update();
 
+        // log
+        EditorGUILayout.PropertyField(SO.FindProperty("log"), new GUIContent("Log"));
+
         // max health
         int maxHealth = EditorGUILayout.IntField("Max Health", myHealth.maxHealth);
         if (maxHealth < 1) maxHealth = 1;

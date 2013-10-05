@@ -181,6 +181,12 @@ MonoBehaviour:
   maxHealth: 10
   currentHealth: 0
   invincible: 0
+  statusEffectivenesses:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

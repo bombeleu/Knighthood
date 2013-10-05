@@ -210,7 +210,7 @@ MonoBehaviour:
   Attack_Prefab: {fileID: 100000, guid: 14610f11a1edb1a4eb1a2d32a745568e, type: 2}
   hitInfo:
     baseDamage: 5
-    effect: 5
+    effect: 4
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: 3
   offset: {x: 1, y: 1}
@@ -432,9 +432,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
-  maxHealth: 0
-  currentHealth: 0
+  maxHealth: 100
+  currentHealth: 100
   invincible: 0
+  statusEffectivenesses:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

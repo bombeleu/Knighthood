@@ -139,6 +139,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &2397800
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 7.16388988, y: .61392349}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &17817098
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,6 +373,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &53417972
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 3.50045347, y: .964556575}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &62265290
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,31 +544,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &64177227
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 6.5, y: .5}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &83442956
 GameObject:
   m_ObjectHideFlags: 0
@@ -801,7 +826,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &166677402
+--- !u!21 &151259707
 Material:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -818,7 +843,7 @@ Material:
           name: _MainTex
         second:
           m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 14.6273232, y: .5}
+          m_Scale: {x: 5, y: .5}
           m_Offset: {x: 0, y: 0}
     m_Floats: {}
     m_Colors:
@@ -1160,7 +1185,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 1941878122}
+  - {fileID: 780782128}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -1302,7 +1327,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 1451683524}
+  - {fileID: 2014419761}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -1381,7 +1406,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 1157471403}
+  - {fileID: 2018042891}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -1460,7 +1485,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 365693314}
+  - {fileID: 429674518}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -1485,50 +1510,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 221112975}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &225091506
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 400002, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 1.65068722
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -.0315341949
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: -4.48870765e-07
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: .707106829
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: -.707106829
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
-      propertyPath: log
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
-  m_RootGameObject: {fileID: 1714611955}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
 --- !u!1 &228006279
 GameObject:
   m_ObjectHideFlags: 0
@@ -1646,7 +1627,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 673435157}
+  - {fileID: 1518980138}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -1878,7 +1859,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &277329117
+--- !u!21 &281068709
 Material:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -2183,56 +2164,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &354750385
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 5, y: .5}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: .5, g: .5, b: .5, a: 1}
---- !u!21 &365693314
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 11.6315336, y: .5}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: .5, g: .5, b: .5, a: 1}
 --- !u!1 &376455838
 GameObject:
   m_ObjectHideFlags: 0
@@ -2287,7 +2218,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 166677402}
+  - {fileID: 1666601748}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -2539,7 +2470,7 @@ SphereCollider:
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 100000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
-  m_PrefabInternal: {fileID: 1913080545}
+  m_PrefabInternal: {fileID: 719651725}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 413647905}
@@ -2559,7 +2490,7 @@ GameObject:
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
-  m_PrefabInternal: {fileID: 1913080545}
+  m_PrefabInternal: {fileID: 719651725}
   m_GameObject: {fileID: 413647904}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -2571,7 +2502,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400004, guid: 675bd46718aefea42b9b229709b7ba6e,
     type: 2}
-  m_PrefabInternal: {fileID: 1913080545}
+  m_PrefabInternal: {fileID: 719651725}
   m_GameObject: {fileID: 413647904}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -2594,7 +2525,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400002, guid: 675bd46718aefea42b9b229709b7ba6e,
     type: 2}
-  m_PrefabInternal: {fileID: 1913080545}
+  m_PrefabInternal: {fileID: 719651725}
   m_GameObject: {fileID: 413647904}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -2613,7 +2544,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400000, guid: 675bd46718aefea42b9b229709b7ba6e,
     type: 2}
-  m_PrefabInternal: {fileID: 1913080545}
+  m_PrefabInternal: {fileID: 719651725}
   m_GameObject: {fileID: 413647904}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -2628,7 +2559,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400008, guid: 675bd46718aefea42b9b229709b7ba6e,
     type: 2}
-  m_PrefabInternal: {fileID: 1913080545}
+  m_PrefabInternal: {fileID: 719651725}
   m_GameObject: {fileID: 413647904}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -2637,13 +2568,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   log: 1
   overwrite: 1
-  logFlags: 010101
+  logFlags: 000001
 --- !u!114 &413647910
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 11400006, guid: 675bd46718aefea42b9b229709b7ba6e,
     type: 2}
-  m_PrefabInternal: {fileID: 1913080545}
+  m_PrefabInternal: {fileID: 719651725}
   m_GameObject: {fileID: 413647904}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -2716,6 +2647,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &429674518
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 11.6315336, y: .5}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .5, g: .5, b: .5, a: 1}
 --- !u!1 &439666632
 GameObject:
   m_ObjectHideFlags: 0
@@ -2856,31 +2812,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &443250599
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 7.16388988, y: .61392349}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &460309040
 GameObject:
   m_ObjectHideFlags: 0
@@ -3128,7 +3059,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 354750385}
+  - {fileID: 1928277080}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -3374,7 +3305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9ccf49673923fa4295f661697abe769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 0
+  log: 1
   maxHealth: 10
   currentHealth: 0
   invincible: 0
@@ -3718,6 +3649,10 @@ Prefab:
       propertyPath: log
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400006, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
+      propertyPath: log
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
   m_RootGameObject: {fileID: 549410502}
@@ -3932,6 +3867,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &605748664
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 6.5, y: .5}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &609667289
 GameObject:
   m_ObjectHideFlags: 0
@@ -4204,31 +4164,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &637380828
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 3.50045347, y: .964556515}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &649201259
 GameObject:
   m_ObjectHideFlags: 0
@@ -4300,7 +4235,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &673435157
+--- !u!21 &660874883
 Material:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -4317,14 +4252,14 @@ Material:
           name: _MainTex
         second:
           m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 11.6315336, y: .5}
+          m_Scale: {x: 7.16388988, y: .61392349}
           m_Offset: {x: 0, y: 0}
     m_Floats: {}
     m_Colors:
       data:
         first:
           name: _Color
-        second: {r: .5, g: .5, b: .5, a: 1}
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &678767854
 GameObject:
   m_ObjectHideFlags: 0
@@ -4379,7 +4314,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 637380828}
+  - {fileID: 802874178}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -4590,7 +4525,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 750279689}
+  - {fileID: 1545782669}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -4615,6 +4550,46 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 705833486}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &719651725
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+  m_RootGameObject: {fileID: 413647904}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!1 &723793897
 GameObject:
   m_ObjectHideFlags: 0
@@ -4669,7 +4644,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 831004079}
+  - {fileID: 53417972}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -4759,7 +4734,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &750279689
+--- !u!21 &760531896
 Material:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -4776,32 +4751,7 @@ Material:
           name: _MainTex
         second:
           m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 11.6315336, y: .5}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: .5, g: .5, b: .5, a: 1}
---- !u!21 &753822427
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 7.16388988, y: .61392349}
+          m_Scale: {x: 7.16388988, y: .613923252}
           m_Offset: {x: 0, y: 0}
     m_Floats: {}
     m_Colors:
@@ -4884,7 +4834,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &769818199
+--- !u!21 &780782128
 Material:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -5030,7 +4980,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 1625544619}
+  - {fileID: 1819140618}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -5226,61 +5176,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &790000290
-GameObject:
+--- !u!21 &802874178
+Material:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100000, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
-  m_PrefabInternal: {fileID: 225091506}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 790000291}
-  - 33: {fileID: 790000293}
-  - 23: {fileID: 790000292}
-  m_Layer: 8
-  m_Name: Body
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &790000291
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400000, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
-  m_PrefabInternal: {fileID: 225091506}
-  m_GameObject: {fileID: 790000290}
-  m_LocalRotation: {x: 0, y: .707106829, z: 0, w: -.707106829}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
-  m_LocalScale: {x: 6, y: 3, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1714611959}
---- !u!23 &790000292
-Renderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 2300000, guid: 53d65c72a68b04348a3fdda914346898,
-    type: 2}
-  m_PrefabInternal: {fileID: 225091506}
-  m_GameObject: {fileID: 790000290}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_LightmapIndex: 255
-  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
-  m_Materials:
-  - {fileID: 2100000, guid: 94c0f31413025ec4196c4c6879fc366c, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 0
-  m_LightProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
---- !u!33 &790000293
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 3300000, guid: 53d65c72a68b04348a3fdda914346898,
-    type: 2}
-  m_PrefabInternal: {fileID: 225091506}
-  m_GameObject: {fileID: 790000290}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 3.50045347, y: .964556515}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &805881174
 GameObject:
   m_ObjectHideFlags: 0
@@ -5346,31 +5266,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &831004079
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 3.50045347, y: .964556575}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &836420919
 GameObject:
   m_ObjectHideFlags: 0
@@ -5581,7 +5476,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 1097299041}
+  - {fileID: 2397800}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -5741,7 +5636,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 1092662117}
+  - {fileID: 1364477493}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -5845,6 +5740,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &911464518
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 55, y: 5}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &915922847
 GameObject:
   m_ObjectHideFlags: 0
@@ -5899,7 +5819,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 1680933885}
+  - {fileID: 151259707}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -6425,7 +6345,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 753822427}
+  - {fileID: 1779992992}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -6571,7 +6491,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 1292921433}
+  - {fileID: 281068709}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -7022,56 +6942,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &1092662117
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 3.50045347, y: .964556515}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
---- !u!21 &1097299041
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 7.16388988, y: .61392349}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1121686137
 GameObject:
   m_ObjectHideFlags: 0
@@ -7263,31 +7133,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &1157471403
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 6.5, y: .5}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1172259305
 GameObject:
   m_ObjectHideFlags: 0
@@ -7760,7 +7605,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 1845098158}
+  - {fileID: 1825503838}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -7929,31 +7774,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &1275188754
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 55, y: 5}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1291048204
 GameObject:
   m_ObjectHideFlags: 0
@@ -8017,31 +7837,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &1292921433
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 6.5, y: .5}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1313626666
 GameObject:
   m_ObjectHideFlags: 0
@@ -8387,6 +8182,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &1364477493
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 3.50045347, y: .964556515}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1385535299
 GameObject:
   m_ObjectHideFlags: 0
@@ -8587,7 +8407,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 443250599}
+  - {fileID: 660874883}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -8683,6 +8503,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &1406724429
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 3.50045347, y: .964556515}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1409074682
 GameObject:
   m_ObjectHideFlags: 0
@@ -9089,31 +8934,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &1451683524
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 6.5, y: .5}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1454724222
 GameObject:
   m_ObjectHideFlags: 0
@@ -9373,7 +9193,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 769818199}
+  - {fileID: 2015939574}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -9523,7 +9343,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 1682684426}
+  - {fileID: 605748664}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -9680,6 +9500,56 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &1518980138
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 11.6315336, y: .5}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .5, g: .5, b: .5, a: 1}
+--- !u!21 &1545782669
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 11.6315336, y: .5}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .5, g: .5, b: .5, a: 1}
 --- !u!1 &1549868461
 GameObject:
   m_ObjectHideFlags: 0
@@ -9803,7 +9673,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 1852772855}
+  - {fileID: 760531896}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -9882,7 +9752,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2080004832}
+  - {fileID: 1406724429}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -10238,31 +10108,6 @@ MonoBehaviour:
   gridWidth: 21
   drawNodeConnections: 0
   drawWorldMatrix: 0
---- !u!21 &1625544619
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 6.5, y: .5}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1628829423
 GameObject:
   m_ObjectHideFlags: 0
@@ -10877,7 +10722,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 1275188754}
+  - {fileID: 911464518}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -10914,7 +10759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CheckerMaterial: {fileID: 2100000, guid: 07cb9ee9f0fc4d441af12d95d3fd5372, type: 2}
---- !u!21 &1680933885
+--- !u!21 &1666601748
 Material:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -10931,7 +10776,7 @@ Material:
           name: _MainTex
         second:
           m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 5, y: .5}
+          m_Scale: {x: 14.6273232, y: .5}
           m_Offset: {x: 0, y: 0}
     m_Floats: {}
     m_Colors:
@@ -10990,31 +10835,6 @@ Transform:
   - {fileID: 1906593782}
   - {fileID: 1921449218}
   m_Father: {fileID: 1781787849}
---- !u!21 &1682684426
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 6.5, y: .5}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1691868910
 GameObject:
   m_ObjectHideFlags: 0
@@ -11080,199 +10900,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &1714611955
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 100002, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
-  m_PrefabInternal: {fileID: 225091506}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1714611959}
-  - 54: {fileID: 1714611960}
-  - 136: {fileID: 1714611957}
-  - 114: {fileID: 1714611961}
-  - 114: {fileID: 1714611956}
-  - 114: {fileID: 1714611962}
-  - 114: {fileID: 1714611958}
-  - 114: {fileID: 1714611963}
-  - 114: {fileID: 1714611964}
-  m_Layer: 8
-  m_Name: Enemy
-  m_TagString: Enemy
-  m_Icon: {fileID: -1003283189, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1714611956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400000, guid: 53d65c72a68b04348a3fdda914346898,
-    type: 2}
-  m_PrefabInternal: {fileID: 225091506}
-  m_GameObject: {fileID: 1714611955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ef36455df108df4ab1e396a352e9556, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  log: 0
-  myStats:
-    health: 0
-    physicalAttack: 1
-    physicalDefense: 1
-    magicAttack: 1
-    magicDefense: 1
-    magicMax: 0
-    attackSpeed: 0
-  animationNames:
-  - Idling
-  - Moving
-  - Jumping
-  - Falling
-  animationTex:
-  - {fileID: 2800000, guid: 0e5999ff83efc6f459f61cb19b2e4a01, type: 3}
-  - {fileID: 2800000, guid: 6cebf2eb05df4b24eb2bfc14f9cdec29, type: 3}
-  - {fileID: 2800000, guid: b76e982ed2fb82f4b8d0cb0a5cfacda1, type: 3}
-  - {fileID: 2800000, guid: cb4e16837103d614eb9de021cfceffb9, type: 3}
-  navBuffer: .5
-  navStopRange: 3
-  enemType: 0
-  experience: 500
---- !u!136 &1714611957
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 13600000, guid: 53d65c72a68b04348a3fdda914346898,
-    type: 2}
-  m_PrefabInternal: {fileID: 225091506}
-  m_GameObject: {fileID: 1714611955}
-  m_Material: {fileID: 13400000, guid: fe473a4aee47dff4bbf86ea3364a9f2e, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: .699999988
-  m_Height: 2.0999999
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.04999995, z: 0}
---- !u!114 &1714611958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400002, guid: 53d65c72a68b04348a3fdda914346898,
-    type: 2}
-  m_PrefabInternal: {fileID: 225091506}
-  m_GameObject: {fileID: 1714611955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab276106447ce2244bf6fb4f380128f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  log: 0
-  drawPath: 1
-  allowedRadius: .25
-  stepHeight: .5
---- !u!4 &1714611959
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 400002, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
-  m_PrefabInternal: {fileID: 225091506}
-  m_GameObject: {fileID: 1714611955}
-  m_LocalRotation: {x: 0, y: .707106829, z: 0, w: -.707106829}
-  m_LocalPosition: {x: 1.65068722, y: -.0315341949, z: -4.48870765e-07}
-  m_LocalScale: {x: -1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 790000291}
-  m_Father: {fileID: 0}
---- !u!54 &1714611960
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 5400000, guid: 53d65c72a68b04348a3fdda914346898,
-    type: 2}
-  m_PrefabInternal: {fileID: 225091506}
-  m_GameObject: {fileID: 1714611955}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: .0500000007
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 120
-  m_CollisionDetection: 0
---- !u!114 &1714611961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400004, guid: 53d65c72a68b04348a3fdda914346898,
-    type: 2}
-  m_PrefabInternal: {fileID: 225091506}
-  m_GameObject: {fileID: 1714611955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa913999fa132274492beb5485c373f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  log: 0
-  moveSpeed: 13
-  gravity: 70
-  terminalVelocity: 40
-  jumpStrength: 21
---- !u!114 &1714611962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11400006, guid: 53d65c72a68b04348a3fdda914346898,
-    type: 2}
-  m_PrefabInternal: {fileID: 225091506}
-  m_GameObject: {fileID: 1714611955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9ccf49673923fa4295f661697abe769, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  log: 0
-  maxHealth: 10
-  currentHealth: 0
-  invincible: 0
-  statusEffectivenesses: []
---- !u!114 &1714611963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1714611955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b91a9357afc0ea648a513e9d03dd61dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  log: 0
-  minAmount: 5
-  maxAmount: 25
-  random: 1
-  force: {x: 5, y: 10}
-  rotation: 5
---- !u!114 &1714611964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1714611955}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57a1995f2ef1ade43a256907a2f91dd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  log: 1
-  myStats:
-    health: 0
-    physicalAttack: 1
-    physicalDefense: 1
-    magicAttack: 1
-    magicDefense: 1
-    magicMax: 0
-    attackSpeed: 0
-  animationNames: []
-  animationTex: []
-  navBuffer: .5
-  navStopRange: 3
-  enemType: 0
-  experience: 0
 --- !u!1 &1722044946
 GameObject:
   m_ObjectHideFlags: 0
@@ -11817,6 +11444,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &1779992992
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 7.16388988, y: .61392349}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1781716674
 GameObject:
   m_ObjectHideFlags: 0
@@ -12125,6 +11777,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &1819140618
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 6.5, y: .5}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1822857326
 GameObject:
   m_ObjectHideFlags: 0
@@ -12187,6 +11864,31 @@ Light:
   m_ShadowAngle: 0
   m_IndirectIntensity: 1
   m_AreaSize: {x: 1, y: 1}
+--- !u!21 &1825503838
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 6.5, y: .5}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1841010302
 GameObject:
   m_ObjectHideFlags: 0
@@ -12252,56 +11954,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &1845098158
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 6.5, y: .5}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
---- !u!21 &1852772855
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 7.16388988, y: .613923252}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1863979539
 GameObject:
   m_ObjectHideFlags: 0
@@ -12561,7 +12213,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 64177227}
+  - {fileID: 2037194934}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -12586,54 +12238,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1906593781}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &1913080545
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 11400002, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
-      propertyPath: playerCharacters.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400002, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
-      propertyPath: playerCharacters.Array.data[1]
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
-  m_RootGameObject: {fileID: 413647904}
-  m_IsPrefabParent: 0
-  m_IsExploded: 1
 --- !u!1 &1921449217
 GameObject:
   m_ObjectHideFlags: 0
@@ -12688,7 +12292,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 277329117}
+  - {fileID: 1940825415}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -12782,7 +12386,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &1941878122
+--- !u!21 &1928277080
 Material:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -12807,6 +12411,31 @@ Material:
         first:
           name: _Color
         second: {r: .5, g: .5, b: .5, a: 1}
+--- !u!21 &1940825415
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 6.5, y: .5}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1942589496
 GameObject:
   m_ObjectHideFlags: 0
@@ -13158,6 +12787,56 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &2014419761
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 6.5, y: .5}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
+--- !u!21 &2015939574
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 5, y: .5}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .5, g: .5, b: .5, a: 1}
 --- !u!1 &2017578839
 GameObject:
   m_ObjectHideFlags: 0
@@ -13221,6 +12900,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &2018042891
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 6.5, y: .5}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2033754517
 GameObject:
   m_ObjectHideFlags: 0
@@ -13292,6 +12996,31 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!21 &2037194934
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: Checker_Mat
+  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
+          m_Scale: {x: 6.5, y: .5}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2037557470
 GameObject:
   m_ObjectHideFlags: 0
@@ -13556,31 +13285,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &2080004832
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: Checker_Mat
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: b443754038815b6439664bf14a113cdb, type: 3}
-          m_Scale: {x: 3.50045347, y: .964556515}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2080806630
 GameObject:
   m_ObjectHideFlags: 0

@@ -86,8 +86,16 @@ public class Health : BaseMono
         if (hitID == lastHitID) return;
         lastHitID = hitID;
 
-        ChangeHealth(-hitInfo.damage);
-        GameResources.Instance.DamageIndicator_Pool.nextFree.GetComponent<DamageIndicator>().Initiate(transform, hitInfo.damage);
+        var damage = hitInfo.damage;
+
+        // status effect
+        if (hitInfo.effect != HitInfo.Effects.None)
+        {
+            damage = Mathf.CeilToInt(damage*statusEffectivenesses[(int)hitInfo.effect]);
+        }
+
+        ChangeHealth(-damage);
+        GameResources.Instance.DamageIndicator_Pool.nextFree.GetComponent<DamageIndicator>().Initiate(transform, damage);
 
         if (HitEvent != null)
         {

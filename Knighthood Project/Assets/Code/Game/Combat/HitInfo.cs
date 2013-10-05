@@ -21,6 +21,12 @@ public class HitInfo
 
     #endregion
 
+    #region Const Fields
+
+    private const float ATTACKMODIFIER = 0.5f;
+
+    #endregion
+
 
     #region Public Methods
 
@@ -32,11 +38,11 @@ public class HitInfo
     {
         if (effect == Effects.None)
         {
-            damage = baseDamage * statManager.physicalAttack;
+            damage = Mathf.CeilToInt(baseDamage * statManager.physicalAttack*ATTACKMODIFIER);
         }
         else
         {
-            damage = baseDamage * statManager.magicAttack;
+            damage = Mathf.CeilToInt(baseDamage * statManager.magicAttack*ATTACKMODIFIER);
         }
     }
 
