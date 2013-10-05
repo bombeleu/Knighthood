@@ -2,6 +2,7 @@
 // 9.16.2013
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,6 +35,8 @@ public class NavAgent : BaseMono
     public float allowedRadius = 0.5f;
     // make into a method
     public float stepHeight = 0.5f;
+    /// <summary>Time between calculating new paths.</summary>
+    public float navBuffer = 0.5f;
 
     #endregion
 
@@ -60,9 +63,9 @@ public class NavAgent : BaseMono
     #region Public Methods
 
     /// <summary>
-    /// 
+    /// Find a path to target.
     /// </summary>
-    /// <param name="targetPosition"></param>
+    /// <param name="targetPosition">Position of the target.</param>
     public void FindPath(Vector3 targetPosition)
     {
         DateTime start = DateTime.Now;
@@ -133,9 +136,9 @@ public class NavAgent : BaseMono
 
 
     /// <summary>
-    /// 
+    /// Start navigating towards next node.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>False, if there are no more nodes.</returns>
     public bool Continue()
     {
         if (path.Count == 0) return false;
@@ -147,9 +150,10 @@ public class NavAgent : BaseMono
 
 
     /// <summary>
-    /// 
+    /// Start navigating towards next node.
     /// </summary>
-    /// <returns></returns>
+    /// <param name="nodePosition">Position of the next node.</param>
+    /// <returns>False, if there are no more nodes.</returns>
     public bool Continue(out Vector3 nodePosition)
     {
         if (path.Count == 0)
@@ -166,10 +170,10 @@ public class NavAgent : BaseMono
 
 
     /// <summary>
-    /// 
+    /// Gets the position of the next node in the path.
     /// </summary>
-    /// <param name="nodePosition"></param>
-    /// <returns></returns>
+    /// <param name="nodePosition">Position to be set for the next node.</param>
+    /// <returns>False, if there are no more nodes.</returns>
     public bool GetNextNodePosition(out Vector3 nodePosition)
     {
         if (path.Count > 0)
@@ -182,6 +186,25 @@ public class NavAgent : BaseMono
             nodePosition = currentNode.position;
             return false;
         }
+    }
+
+
+    /// <summary>
+    /// Start path calculations.
+    /// </summary>
+    /// <param name="Target">Transform of the target.</param>
+    public void StartNav(Transform Target)
+    {
+        StartCoroutine("CalculatePath", Target);
+    }
+
+
+    /// <summary>
+    /// Stop path calculations.
+    /// </summary>
+    public void EndNav()
+    {
+        StopCoroutine("CalculatePath");
     }
 
     #endregion
@@ -211,6 +234,21 @@ public class NavAgent : BaseMono
         for (int i = 0; i < path.Count - 1; i++)
         {
             Debug.DrawLine(path[i].transform.position, path[i + 1].transform.position, Color.blue);
+        }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="Target"></param>
+    /// <returns></returns>
+    public IEnumerator CalculatePath(Transform Target)
+    {
+        while (true)
+        {
+            FindPath(Target.position);
+            yield return WaitForTime(navBuffer);
         }
     }
 
