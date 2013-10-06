@@ -22,7 +22,6 @@ public class Singleton<T> : BaseMono where T : MonoBehaviour
 
                 if (instance == null)
                 {
-                    Debugger.Log("Creating " + typeof(T) + " singleton");
                     GameObject i = new GameObject(typeof(T).ToString());
                     i.AddComponent<T>();
                     instance = i.GetComponent<T>();

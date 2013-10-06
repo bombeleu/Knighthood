@@ -63,6 +63,9 @@ public class Player : Character
     public ExperienceManager myExperience;
     public MoneyManager myMoney;
     public PerformanceManager myPerformance;
+    public ScoreManager myScore;
+    private const float SCOREEXPMODIFIER = 1.5f;
+    private const float SCOREMONEYMODIFIER = 5.5f;
 
     #endregion
 
@@ -98,7 +101,9 @@ public class Player : Character
 
         // set up
         myExperience.Load(0);
-        myMoney.Load(playerInfo.username);
+        myMoney = new MoneyManager(playerInfo.username);
+        myPerformance = new PerformanceManager(playerInfo.username);
+        myScore = new ScoreManager(playerInfo.username);
     }
 
 
@@ -162,6 +167,7 @@ public class Player : Character
     {
         myExperience.Increase(experience);
         myPerformance.IncreaseKill(enemy.ToString());
+        myScore.IncreaseScore(Mathf.CeilToInt(experience*SCOREEXPMODIFIER));
     }
 
     #endregion
@@ -175,6 +181,7 @@ public class Player : Character
     {
         myMoney.Transaction(args.worth);
         myPerformance.IncreaseMoney(args.worth);
+        myScore.IncreaseScore(Mathf.CeilToInt(args.worth*SCOREMONEYMODIFIER));
     }
 
     #endregion

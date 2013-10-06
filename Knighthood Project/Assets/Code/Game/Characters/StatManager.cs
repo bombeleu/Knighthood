@@ -37,7 +37,7 @@ public class StatManager
     #region Public Methods
 
     /// <summary>
-    /// Load NPC stats.
+    /// LoadHighscore NPC stats.
     /// </summary>
     /// <param name="name">Name of the NPC</param>
     [Obsolete]

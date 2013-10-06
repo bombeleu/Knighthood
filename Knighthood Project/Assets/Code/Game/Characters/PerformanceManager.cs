@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -19,13 +20,9 @@ public class PerformanceManager
     #region Properties
 
     public Dictionary<string, int> kills { get; private set; }
-    public Dictionary<string, int> tempKills { get; private set; }
     public int deaths { get; private set; }
-    public int tempDeaths { get; private set; }
     public int totalMoney { get; private set; }
-    public int tempTotalMoney { get; private set; }
     public float timePlayed { get; private set; }
-    public float tempTimePlayed { get; private set; }
 
     #endregion
 
@@ -41,68 +38,70 @@ public class PerformanceManager
 
     #region Public Methods
 
-    public void IncreaseKill(string enemy)
+    public PerformanceManager(string username)
     {
-        tempKills[enemy]++;
-        kills[enemy]++;
+        this.username = username;
     }
 
 
-    public void IncreaseDeaths()
+    public int IncreaseKill(string enemy)
     {
-        tempDeaths++;
-        deaths++;
+        return kills[enemy]++;
     }
 
 
-    public void IncreaseMoney(int amount)
+    public int IncreaseDeaths()
     {
-        tempTotalMoney += amount;
+        return deaths++;
+    }
+
+
+    public int IncreaseMoney(int amount)
+    {
         totalMoney += amount;
+        return totalMoney;
     }
 
 
-    public void IncreaseTimePlayed(float seconds)
+    public float IncreaseTimePlayed(float seconds)
     {
-        tempTimePlayed += seconds;
         timePlayed += seconds;
-    }
-
-
-    public void Load(string username)
-    {
-        kills = new Dictionary<string, int>();
-        foreach (var enemy in Enum.GetNames(typeof (Enemy.EnemyTypes)))
-        {
-            kills.Add(enemy, PlayerPrefs.GetInt(username + KILLSPATH + enemy));
-        }
-        deaths = PlayerPrefs.GetInt(username + DEATHSPATH);
-        totalMoney = PlayerPrefs.GetInt(username + TOTALMONEYPATH);
-        timePlayed = PlayerPrefs.GetFloat(username + TIMEPLAYEDPATH);
+        return timePlayed;
     }
 
 
     /// <summary>
-    /// Saves the current totals.
+    /// 
     /// </summary>
-    /// <param name="clearTemp">Should the temp values be cleared?</param>
-    public void Save(bool clearTemp = true)
+    /// <returns></returns>
+    public Dictionary<string, object> GetTotals()
     {
-        if (clearTemp)
-        {
-            tempKills.Clear();
-            tempDeaths = 0;
-            tempTotalMoney = 0;
-            tempTimePlayed = 0f;
-        }
+        if (string.IsNullOrEmpty(username)) Debugger.LogError("Username can't be empty. Initialize first.");
 
+        var data = new Dictionary<string, object>();
+
+        var totalKills = Enum.GetNames(typeof (Enemy.EnemyTypes)).ToDictionary(enemy => enemy, enemy => PlayerPrefs.GetInt(username + KILLSPATH + enemy));
+        data.Add("Kills", totalKills);
+        data.Add("Deaths", PlayerPrefs.GetInt(username + DEATHSPATH));
+        data.Add("Total Money", PlayerPrefs.GetInt(username + TOTALMONEYPATH));
+        data.Add("Time Played", PlayerPrefs.GetInt(username + TIMEPLAYEDPATH));
+
+        return data;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void Save()
+    {
         foreach (var enemy in Enum.GetNames(typeof (Enemy.EnemyTypes)))
         {
-            PlayerPrefs.SetInt(username + KILLSPATH + enemy, kills[enemy]);
+            PlayerPrefs.SetInt(username + KILLSPATH + enemy, PlayerPrefs.GetInt(username + KILLSPATH + enemy) + kills[enemy]);
         }
-        PlayerPrefs.SetInt(username + DEATHSPATH, deaths);
-        PlayerPrefs.SetInt(username + TOTALMONEYPATH, totalMoney);
-        PlayerPrefs.SetFloat(username + TIMEPLAYEDPATH, timePlayed);
+        PlayerPrefs.SetInt(username + DEATHSPATH, PlayerPrefs.GetInt(username + DEATHSPATH) + deaths);
+        PlayerPrefs.SetInt(username + TOTALMONEYPATH, PlayerPrefs.GetInt(username + TOTALMONEYPATH) + totalMoney);
+        PlayerPrefs.SetFloat(username + TIMEPLAYEDPATH, PlayerPrefs.GetInt(username + TIMEPLAYEDPATH) + timePlayed);
     }
 
     #endregion

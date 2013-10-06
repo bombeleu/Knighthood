@@ -2,6 +2,7 @@
 // 8.18.2013
 
 using System;
+using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -12,7 +13,6 @@ public class LevelManager : Singleton<LevelManager>
 {
     #region Player Fields
 
-    protected List<string> playerUsernames = new List<string>();
     public List<Transform> PlayerTransforms { get; private set; }
 
     #endregion
@@ -49,9 +49,32 @@ public class LevelManager : Singleton<LevelManager>
     {
         if (FinishedEvent != null) FinishedEvent(this, new FinishedLevelEventArgs());
 
-        // get player stats and if they leveled up and score
+        var levelData = new Dictionary<string, object>();
+        foreach (var player in PlayerTransforms)
+        {
+            Player cont = player.GetComponent<Player>();
+            Dictionary<string, object> playerData = new Dictionary<string, object>();
+            
+            // score
+            playerData.Add("Score", cont.myScore.score);
+            playerData.Add("New Highscore", cont.myScore.Save());
 
-        InvokeAction(() => GameData.Instance.LoadScene("Level Overview Screen", true), 5f);
+            // money
+            playerData.Add("Money", cont.myMoney.money);
+            cont.myMoney.Save();
+
+            // kills
+            var killData = Enum.GetNames(typeof (Enemy.EnemyTypes)).ToDictionary(enemy => enemy, enemy => cont.myPerformance.kills[enemy]);
+            playerData.Add("Kills", killData);
+
+            // deaths
+            playerData.Add("Deaths", cont.myPerformance.deaths);
+            cont.myPerformance.Save();
+
+            levelData.Add(cont.playerInfo.username, playerData);
+        }
+        
+        InvokeAction(() => GameData.Instance.LoadScene("Level Overview Screen", levelData), 5f);
     }
 
     #endregion
@@ -73,7 +96,6 @@ public class LevelManager : Singleton<LevelManager>
             GameObject player = (GameObject)Instantiate(GameResources.Instance.Player_Prefabs[GameData.Instance.playerCharacters[i]],
                                                         new Vector3(10f + 2f * i, 0.5f, 0f),
                                                         Quaternion.Euler(0f, 90f, 0f));
-            playerUsernames.Add(GameData.Instance.playerUsernames[i]);
             PlayerTransforms.Add(player.transform);
             player.GetSafeComponent<Player>().Initialize(GameData.Instance.playerUsernames[i], i);
             player.transform.parent = playerParent;

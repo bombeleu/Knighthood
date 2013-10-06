@@ -44,7 +44,7 @@ public class ExperienceManager
     #region Public Methods
 
     /// <summary>
-    /// Load total exp and calculate level.
+    /// LoadHighscore total exp and calculate level.
     /// </summary>
     /// <param name="username">Player's username.</param>
     public void Load(string username)

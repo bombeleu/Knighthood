@@ -1,6 +1,1 @@
-*** 10/5/2013 11:49:21 PM ***
-0: Done Baking World Matrix: 00:00:00.0010001
-0: Creating JobManager singleton
-0.02: Enemy Entering: Moving - 0.02
-0.5851048: Done Baking World Matrix: 00:00:00
-0: Done Baking World Matrix: 00:00:00
+*** 10/6/2013 1:35:31 PM ***

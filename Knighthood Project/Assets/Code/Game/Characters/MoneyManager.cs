@@ -18,7 +18,7 @@ public class MoneyManager
 
     #region Public Fields
 
-    public int money;
+    public int money { get; private set; }
 
     #endregion
 
@@ -30,6 +30,12 @@ public class MoneyManager
 
 
     #region Public Methods
+
+    public MoneyManager(string username)
+    {
+        this.username = username;
+    }
+
 
     /// <summary>
     /// Does the player have enough money?
@@ -53,22 +59,23 @@ public class MoneyManager
 
 
     /// <summary>
-    /// Load saved money amount for a player.
+    /// 
     /// </summary>
-    /// <param name="username"></param>
-    public void Load(string username)
+    /// <returns></returns>
+    public int Load()
     {
-        this.username = username;
-        money = PlayerPrefs.GetInt(username + MONEYPATH);
+        if (string.IsNullOrEmpty(username)) Debugger.LogError("Needs username. Initialize first.");
+        return PlayerPrefs.GetInt(username + MONEYPATH);
     }
 
 
     /// <summary>
-    /// Save current money amount.
+    /// Adds the current money to the saved money and saves the new value. Clears current money.
     /// </summary>
     public void Save()
     {
-        PlayerPrefs.SetInt(username + MONEYPATH, money);
+        PlayerPrefs.SetInt(username + MONEYPATH, Load() + money);
+        money = 0;
     }
 
     #endregion

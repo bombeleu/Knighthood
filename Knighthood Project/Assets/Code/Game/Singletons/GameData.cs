@@ -100,7 +100,7 @@ public class GameData : Singleton<GameData>
     #region Loading Methods
 
     /// <summary>
-    /// Load the next scene.
+    /// LoadHighscore the next scene.
     /// </summary>
     /// <param name="nextScene">Name of next scene.</param>
     /// <param name="load">Should the Loading Screen be loaded first?</param>
@@ -119,7 +119,7 @@ public class GameData : Singleton<GameData>
 
 
     /// <summary>
-    /// Load the next scene and cache data.
+    /// LoadHighscore the next scene and cache data.
     /// </summary>
     /// <param name="nextScene">Name of next scene.</param>
     /// <param name="levelData">Data to save for the next scene.</param>
