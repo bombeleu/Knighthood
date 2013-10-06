@@ -139,7 +139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   log: 0
   myStats:
-    health: 0
+    health: 100
     physicalAttack: 1
     physicalDefense: 1
     magicAttack: 1
@@ -189,10 +189,10 @@ MonoBehaviour:
   inputs:
   - SuperLight
   - SuperHeavy
-  open: 0001
+  open: 0000
 --- !u!114 &11400006
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}

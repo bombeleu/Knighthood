@@ -1,6 +1,7 @@
 ﻿// Steve Yeager
 // 8.18.2013
 
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -22,6 +23,12 @@ public class LevelManager : Singleton<LevelManager>
 
     #endregion
 
+    #region Events
+
+    public EventHandler<FinishedLevelEventArgs> FinishedEvent;
+
+    #endregion
+
 
     #region MonoBehaviour Overrides
 
@@ -33,7 +40,20 @@ public class LevelManager : Singleton<LevelManager>
 
     #endregion
 
-    #region Spawn Methods
+    #region Public Methods
+
+    public void FinishLevel()
+    {
+        if (FinishedEvent != null) FinishedEvent(this, new FinishedLevelEventArgs());
+
+        // get player stats and if they leveled up and score
+
+        InvokeAction(() => GameData.Instance.LoadScene("Level Overview Screen", true), 5f);
+    }
+
+    #endregion
+
+    #region Protected Methods
 
     /// <summary>
     /// Create the players at the beginning of the level.

@@ -34,6 +34,12 @@ public class GameData : Singleton<GameData>
 
     #endregion
 
+    #region Level Fields
+
+    private Dictionary<string, object> levelData; 
+
+    #endregion
+
     #region Events
 
     /// <summary>When a new scene is being loaded.</summary>
@@ -76,7 +82,7 @@ public class GameData : Singleton<GameData>
             }
         }
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         // test
         if (Input.GetKeyDown(KeyCode.KeypadEnter))
         {
@@ -86,7 +92,7 @@ public class GameData : Singleton<GameData>
             MethodInfo method = type.GetMethod("Clear");
             method.Invoke(new object(), null);
         }
-#endif
+        #endif
     }
 
     #endregion
@@ -109,6 +115,18 @@ public class GameData : Singleton<GameData>
         }
 
         Application.LoadLevel(load ? "Loading Screen" : nextScene);
+    }
+
+
+    /// <summary>
+    /// Load the next scene and cache data.
+    /// </summary>
+    /// <param name="nextScene">Name of next scene.</param>
+    /// <param name="levelData">Data to save for the next scene.</param>
+    public void LoadScene(string nextScene, Dictionary<string, object> levelData)
+    {
+        this.levelData = levelData;
+        LoadScene(nextScene, true);
     }
 
 

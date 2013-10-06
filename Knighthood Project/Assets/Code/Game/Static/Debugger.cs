@@ -69,7 +69,7 @@ public class Debugger : Singleton<Debugger>
     #region Public Methods
 
     [System.Diagnostics.Conditional("LOG")]
-    public new static void Log(object message, bool save = true, LogTypes logType = LogTypes.Default)
+    public static void Log(object message, bool save = true, LogTypes logType = LogTypes.Default)
     {
         if (Instance.logFlags[(int) logType])
         {

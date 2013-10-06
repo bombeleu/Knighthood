@@ -62,6 +62,7 @@ public class Player : Character
 
     public ExperienceManager myExperience;
     public MoneyManager myMoney;
+    public PerformanceManager myPerformance;
 
     #endregion
 
@@ -160,6 +161,7 @@ public class Player : Character
     public void RecieveKill(Enemy.EnemyTypes enemy, int experience)
     {
         myExperience.Increase(experience);
+        myPerformance.IncreaseKill(enemy.ToString());
     }
 
     #endregion
@@ -172,6 +174,7 @@ public class Player : Character
     private void CollectMoney(object collector, MoneyEventAgs args)
     {
         myMoney.Transaction(args.worth);
+        myPerformance.IncreaseMoney(args.worth);
     }
 
     #endregion

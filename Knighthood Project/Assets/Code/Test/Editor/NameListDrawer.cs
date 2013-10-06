@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof (NameListAttribute))]
+[CustomPropertyDrawer(typeof(NameListAttribute))]
 public class NameListDrawer : PropertyDrawer
 {
     private NameListAttribute nameListAttribute { get { return ((NameListAttribute) attribute); }}
@@ -24,6 +24,7 @@ public class NameListDrawer : PropertyDrawer
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
+        position.height = 16f;
         foldout = EditorGUI.Foldout(position, foldout, label);
         if (foldout)
         {

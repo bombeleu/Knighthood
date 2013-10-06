@@ -21,6 +21,12 @@ public class ExperienceManager
 
     #endregion
 
+    #region Properties
+
+    public int levelPoints { get; private set; }
+
+    #endregion
+
     #region Const Fields
 
     private const string TOTALEXPERIENCEPATH = ": Total Experience";
@@ -89,6 +95,7 @@ public class ExperienceManager
         currentEXP += amount;
         while (currentEXP >= neededEXP)
         {
+            // increase level points
             level++;
             currentEXP -= neededEXP;
             neededEXP = CalculateNeededEXP(level + 1);
