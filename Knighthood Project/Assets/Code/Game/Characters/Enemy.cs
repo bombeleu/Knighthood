@@ -30,7 +30,6 @@ public class Enemy : Character
     #region Nav Fields
 
     public float navBuffer = 0.5f;
-    //public float navStopRange = 3f;
 
     #endregion
 

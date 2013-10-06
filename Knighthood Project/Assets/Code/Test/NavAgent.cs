@@ -25,6 +25,7 @@ public class NavAgent : BaseMono
     private Dictionary<Node, Node> parentDict = new Dictionary<Node, Node>();
     private Dictionary<Node, float> costDict = new Dictionary<Node, float>();
     private Node currentNode;
+    private Job calculatePath = null;
 
     #endregion
 
@@ -70,15 +71,19 @@ public class NavAgent : BaseMono
     {
         DateTime start = DateTime.Now;
 
+        // ending node
+        Node endNode = NavMesh.Instance.ClosestNode(targetPosition);
+        if (path.Count > 0 && endNode == path[path.Count - 1])
+        {
+            return;
+        }
+
         // reset
         ClearSearchData();
 
-        // ending node
-        Node endNode = NavMesh.Instance.ClosestNode(targetPosition);
-
         // starting node
+        //Node startNode = path.Count == 0 ? NavMesh.Instance.ClosestNode(myTransform.position) : path[0];
         Node startNode = NavMesh.Instance.ClosestNode(myTransform.position);
-            //path.Count == 0 ? NavMesh.Instance.ClosestNode(myTransform.position) : path[0];
         if (endNode == null || startNode == null) return;
         openList.Enqueue(0f, startNode);
         closedDict.Add(startNode, false);
@@ -195,7 +200,18 @@ public class NavAgent : BaseMono
     /// <param name="Target">Transform of the target.</param>
     public void StartNav(Transform Target)
     {
-        StartCoroutine("CalculatePath", Target);
+        Log("StartNav", Debugger.LogTypes.Navigation);
+        //StopCoroutine("CalculatePath");
+        //StartCoroutine("CalculatePath", Target);
+
+        if (calculatePath == null)
+        {
+            calculatePath = new Job(CalculatePath(Target));
+        }
+        else
+        {
+            calculatePath.UnPause();
+        }
     }
 
 
@@ -204,7 +220,10 @@ public class NavAgent : BaseMono
     /// </summary>
     public void EndNav()
     {
-        StopCoroutine("CalculatePath");
+        Log("EndNav", Debugger.LogTypes.Navigation);
+        //StopCoroutine("CalculatePath");
+
+        calculatePath.Pause();
     }
 
     #endregion
@@ -212,7 +231,7 @@ public class NavAgent : BaseMono
     #region Private Methods
 
     /// <summary>
-    /// 
+    /// Clear everything except path.
     /// </summary>
     private void ClearSearchData()
     {
@@ -224,7 +243,7 @@ public class NavAgent : BaseMono
 
 
     /// <summary>
-    /// 
+    /// Debug. Draw path.
     /// </summary>
     private void DrawPath()
     {
@@ -239,10 +258,9 @@ public class NavAgent : BaseMono
 
 
     /// <summary>
-    /// 
+    /// Continuously recalculate path.
     /// </summary>
-    /// <param name="Target"></param>
-    /// <returns></returns>
+    /// <param name="Target">Target agent is chasing.</param>
     public IEnumerator CalculatePath(Transform Target)
     {
         while (true)

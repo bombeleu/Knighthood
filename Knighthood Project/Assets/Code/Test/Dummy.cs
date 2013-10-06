@@ -158,9 +158,20 @@ public sealed class Dummy : Enemy
 
         Vector3 initialVel = new Vector3(velX, velIntY, 0f);
 
-        while (timeY > 0f)
+        //while (timeY > 0f)
+        //{
+        //    timeY -= GameTime.deltaTime;
+        //    myMotor.SetVelocity(initialVel);
+        //    initialVel += Vector3.down * gravity * GameTime.deltaTime;
+
+        //    yield return null;
+        //}
+
+        //myNavAgent.Continue();
+        //SetState(MovingState, new Dictionary<string, object> { { "Target", LevelManager.Instance.PlayerTransforms[0] } });
+
+        while (initialVel.y > 0)
         {
-            Debug.DrawRay(myTransform.position, initialVel);
             timeY -= GameTime.deltaTime;
             myMotor.SetVelocity(initialVel);
             initialVel += Vector3.down * gravity * GameTime.deltaTime;
@@ -169,7 +180,7 @@ public sealed class Dummy : Enemy
         }
 
         myNavAgent.Continue();
-        SetState(MovingState, new Dictionary<string, object> { { "Target", LevelManager.Instance.PlayerTransforms[0] } });
+        SetState(FallingState, new Dictionary<string, object> { { "target", target }, { "speed", velX } });
 
         yield return null;
     }
@@ -185,12 +196,18 @@ public sealed class Dummy : Enemy
             InvokeAction(() => fallingThrough = false, 0.2f);
         }
 
-        currentStateJob = new Job(FallingUpdate((Vector3)info["target"]));
+        currentStateJob = new Job(FallingUpdate((Vector3)info["target"], info.ContainsKey("speed") ? (float)info["speed"] : -1f));
     }
 
 
-    private IEnumerator FallingUpdate(Vector3 target)
+    private IEnumerator FallingUpdate(Vector3 target, float speedX)
     {
+        if (speedX == -1f)
+        {
+            
+        }
+        myMotor.SetVelocityX(speedX);
+
         while (true)
         {
             // land
@@ -201,7 +218,7 @@ public sealed class Dummy : Enemy
             }
 
             // move
-            myMotor.MoveX((target - myTransform.position).x / myMotor.moveSpeed);
+            //myMotor.MoveX((target - myTransform.position).x / myMotor.moveSpeed);
             myMotor.ApplyGravity();
 
             yield return null;

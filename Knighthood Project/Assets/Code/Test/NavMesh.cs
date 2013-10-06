@@ -2,7 +2,6 @@
 // 9.16.2013
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -25,9 +24,17 @@ public class NavMesh : Singleton<NavMesh>
     public bool drawNodeConnections;
     public bool drawWorldMatrix;
 
+    #region Private Fields
+
+    private int nodeLayer;
+
+    #endregion
+
 
     private void Awake()
     {
+        nodeLayer = 1 << LayerMask.NameToLayer("NavMeshNode");
+        
         BakeWorldMatrix(gridSpace, gridHeight, gridWidth);
     }
 
@@ -47,10 +54,10 @@ public class NavMesh : Singleton<NavMesh>
             
             // left edge
             node = CreateNode(new Vector3(startXPos, yPos, 0f), true);
-            node.position = node.transform.position + Vector3.down*yBuffer;
+            node.position = node.transform.position + Vector3.down*yBuffer + Vector3.right*1f;
             // right edge
             node = CreateNode(new Vector3(terrain.collider.bounds.center.x + terrain.collider.bounds.extents.x, yPos, 0f), true);
-            node.position = node.transform.position + Vector3.down * yBuffer;
+            node.position = node.transform.position + Vector3.down * yBuffer + Vector3.left * 1f;
 
             int num = Mathf.FloorToInt(terrain.collider.bounds.size.x / horDist);
             float aveHorDist = terrain.collider.bounds.size.x / num;
@@ -162,28 +169,29 @@ public class NavMesh : Singleton<NavMesh>
     }
 
 
-    [Obsolete]
-    public void Simplify()
-    {
-        DateTime start = DateTime.Now;
-        int deleted = 0;
-
-        Node[] allNodes = GetComponentsInChildren<Node>();
-
-        foreach (var node in allNodes)
-        {
-            if (!node.edge && node.neighbors.Length <= 2)
-            {
-                DestroyImmediate(node.gameObject, true);
-            }
-        }
-
-        Debug.Log("Done Simplify: " + (DateTime.Now - start) + " Deleted: " + deleted);
-    }
-
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
     public Node ClosestNode(Vector3 position)
     {
+        //Collider[] nodeCast = Physics.OverlapSphere(position, gridSpace, nodeLayer);
+        //if (nodeCast.Length > 0)
+        //{
+        //    float dist = 100f;
+        //    Collider closestNode = null;
+        //    foreach (var node in nodeCast)
+        //    {
+        //        if (Vector3.Distance(position, node.transform.position) <= dist)
+        //        {
+        //            closestNode = node;
+        //        }
+        //    }
+
+        //    return closestNode.GetComponent<Node>();
+        //}
+
         List<Node> nodes = new List<Node>();
 
         int x = Mathf.FloorToInt(position.x / gridSpace);
@@ -194,9 +202,9 @@ public class NavMesh : Singleton<NavMesh>
         nodes = worldMatrix[y][x];
 
         // check above
-        if (nodes.Count == 0 && y > 0)
+        if (y > 0)
         {
-            nodes = worldMatrix[y - 1][x];
+            nodes.AddRange(worldMatrix[y - 1][x]);
         }
 
         float closestDist = gridSpace+1;
