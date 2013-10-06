@@ -41,10 +41,6 @@ public class PerformanceManager
 
     #region Public Methods
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="enemy"></param>
     public void IncreaseKill(string enemy)
     {
         tempKills[enemy]++;
@@ -52,9 +48,6 @@ public class PerformanceManager
     }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void IncreaseDeaths()
     {
         tempDeaths++;
@@ -62,10 +55,6 @@ public class PerformanceManager
     }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="amount"></param>
     public void IncreaseMoney(int amount)
     {
         tempTotalMoney += amount;
@@ -73,10 +62,6 @@ public class PerformanceManager
     }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="seconds"></param>
     public void IncreaseTimePlayed(float seconds)
     {
         tempTimePlayed += seconds;
@@ -84,10 +69,6 @@ public class PerformanceManager
     }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="username"></param>
     public void Load(string username)
     {
         kills = new Dictionary<string, int>();
@@ -102,9 +83,9 @@ public class PerformanceManager
 
 
     /// <summary>
-    /// 
+    /// Saves the current totals.
     /// </summary>
-    /// <param name="clearTemp"></param>
+    /// <param name="clearTemp">Should the temp values be cleared?</param>
     public void Save(bool clearTemp = true)
     {
         if (clearTemp)

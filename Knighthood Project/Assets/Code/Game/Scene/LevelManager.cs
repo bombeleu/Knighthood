@@ -42,6 +42,9 @@ public class LevelManager : Singleton<LevelManager>
 
     #region Public Methods
 
+    /// <summary>
+    /// Players have successfully finished the level. Fires FinishedEvent and load overview screen.
+    /// </summary>
     public void FinishLevel()
     {
         if (FinishedEvent != null) FinishedEvent(this, new FinishedLevelEventArgs());

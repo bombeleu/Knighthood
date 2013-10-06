@@ -4,26 +4,33 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// Manages a player's experience and leveling up while playing a level.
+/// </summary>
 [Serializable]
 public class ExperienceManager
 {
     #region Public Fields
-
+    /// <summary>How much exp the player currently has.</summary>
     public int currentEXP;
+    /// <summary>How much exp needed to get to the next level.</summary>
     public int neededEXP;
+    /// <summary>Player's current level.</summary>
     public int level;
 
     #endregion
 
     #region Private Fields
 
+    /// <summary>Total exp player has ever accumulated. Used for saving/loading.</summary>
     private int totalEXP;
 
     #endregion
 
     #region Properties
 
-    public int levelPoints { get; private set; }
+    /// <summary>How many points the player has gotten towards stat progression by leveling up in the current level.</summary>
+    public int statPoints { get; private set; }
 
     #endregion
 
@@ -37,7 +44,7 @@ public class ExperienceManager
     #region Public Methods
 
     /// <summary>
-    /// 
+    /// Load total exp and calculate level.
     /// </summary>
     /// <param name="username">Player's username.</param>
     public void Load(string username)
@@ -57,7 +64,7 @@ public class ExperienceManager
 
 
     /// <summary>
-    /// 
+    /// Give the player a set amount of exp. For Debugging.
     /// </summary>
     /// <param name="experience"></param>
     public void Load(int experience)
@@ -77,7 +84,7 @@ public class ExperienceManager
 
 
     /// <summary>
-    /// 
+    /// Save the total exp.
     /// </summary>
     /// <param name="username">Player's username.</param>
     public void Save(string username)
@@ -87,7 +94,7 @@ public class ExperienceManager
 
 
     /// <summary>
-    /// 
+    /// Add exp. Levels up if necessary.
     /// </summary>
     /// <param name="amount">Amount of experience to add.</param>
     public void Increase(int amount)
@@ -107,10 +114,10 @@ public class ExperienceManager
     #region Private Methods
 
     /// <summary>
-    /// 
+    /// Caculates how much exp is needed to pass a level.
     /// </summary>
-    /// <param name="level"></param>
-    /// <returns></returns>
+    /// <param name="level">Level to pass.</param>
+    /// <returns>How much exp is needed to pass level.</returns>
     private int CalculateNeededEXP(int level)
     {
         level--;
@@ -120,7 +127,7 @@ public class ExperienceManager
 
 
     /// <summary>
-    /// 
+    /// Debug. Shows exp needed for range of levels.
     /// </summary>
     private void TestCurve()
     {
