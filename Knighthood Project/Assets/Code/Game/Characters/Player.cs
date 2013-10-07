@@ -98,12 +98,6 @@ public class Player : Character
         comboManager = GetComponent<ComboManager>();
         comboManager.Initialize(this);
         tauntManager = GetComponent<TauntManager>();
-
-        // set up
-        myExperience.Load(0);
-        myMoney = new MoneyManager(playerInfo.username);
-        myPerformance = new PerformanceManager(playerInfo.username);
-        myScore = new ScoreManager(playerInfo.username);
     }
 
 
@@ -153,6 +147,12 @@ public class Player : Character
     {
         playerInfo = new PlayerInfo(username, playerNumber);
         name = username;
+
+        // set up
+        myExperience.Load(0);
+        myMoney = new MoneyManager(playerInfo.username);
+        myPerformance = new PerformanceManager(playerInfo.username);
+        myScore = new ScoreManager(playerInfo.username);
 
         StartInitialState(null);
     }

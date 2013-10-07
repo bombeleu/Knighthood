@@ -18,6 +18,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Content/Scenes/Options Menu.unity
   - enabled: 1
+    path: Assets/Content/Scenes/Overview Screen.unity
+  - enabled: 1
     path: Assets/Content/Scenes/Loading Screen.unity
   - enabled: 1
     path: Assets/Content/Test/Test Room.unity
+  - enabled: 1
+    path: Assets/Content/Test/Level 0.unity

@@ -169,8 +169,6 @@ MonoBehaviour:
     currentEXP: 0
     neededEXP: 0
     level: 0
-  myMoney:
-    money: 0
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1

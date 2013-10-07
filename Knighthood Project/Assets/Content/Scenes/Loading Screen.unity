@@ -245,7 +245,7 @@ MonoBehaviour:
   tips: {fileID: 4900000, guid: 0b327850095ee86469c3f4fcc606dfed, type: 3}
   tip: {fileID: 294192023}
   nextScene: {fileID: 2022834656}
-  loadTime: 3
+  loadTime: 1
 --- !u!1 &1973778096
 GameObject:
   m_ObjectHideFlags: 0

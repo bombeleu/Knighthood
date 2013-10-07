@@ -41,6 +41,11 @@ public class PerformanceManager
     public PerformanceManager(string username)
     {
         this.username = username;
+        kills = new Dictionary<string, int>();
+        foreach (var enemy in LevelManager.Instance.enemyTypes)
+        {
+            kills.Add(enemy.ToString(), 0);
+        }
     }
 
 
@@ -95,9 +100,9 @@ public class PerformanceManager
     /// </summary>
     public void Save()
     {
-        foreach (var enemy in Enum.GetNames(typeof (Enemy.EnemyTypes)))
+        foreach (var enemy in LevelManager.Instance.enemyTypes)
         {
-            PlayerPrefs.SetInt(username + KILLSPATH + enemy, PlayerPrefs.GetInt(username + KILLSPATH + enemy) + kills[enemy]);
+            PlayerPrefs.SetInt(username + KILLSPATH + enemy, PlayerPrefs.GetInt(username + KILLSPATH + enemy) + kills[enemy.ToString()]);
         }
         PlayerPrefs.SetInt(username + DEATHSPATH, PlayerPrefs.GetInt(username + DEATHSPATH) + deaths);
         PlayerPrefs.SetInt(username + TOTALMONEYPATH, PlayerPrefs.GetInt(username + TOTALMONEYPATH) + totalMoney);

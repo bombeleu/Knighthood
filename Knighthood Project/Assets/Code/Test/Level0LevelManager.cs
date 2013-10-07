@@ -1,13 +1,10 @@
 ﻿// Steve Yeager
-// 8.18.2013
-
-using UnityEngine;
-using System.Collections;
+// 10.6.2013
 
 /// <summary>
-/// Level manager for the Test Room.
+/// 
 /// </summary>
-public class TestRoomLevelManager : LevelManager
+public class Level0LevelManager : LevelManager
 {
     #region MonoBehaviour Overrides
 

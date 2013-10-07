@@ -17,6 +17,12 @@ public class LevelManager : Singleton<LevelManager>
 
     #endregion
 
+    #region Enemy Fields
+
+    public Enemy.EnemyTypes[] enemyTypes;
+
+    #endregion
+
     #region Camera Fields
 
     public new Camera camera { get; private set; }
@@ -64,7 +70,7 @@ public class LevelManager : Singleton<LevelManager>
             cont.myMoney.Save();
 
             // kills
-            var killData = Enum.GetNames(typeof (Enemy.EnemyTypes)).ToDictionary(enemy => enemy, enemy => cont.myPerformance.kills[enemy]);
+            var killData = enemyTypes.ToDictionary(enemy => enemy, enemy => cont.myPerformance.kills[enemy.ToString()]);
             playerData.Add("Kills", killData);
 
             // deaths
@@ -74,7 +80,7 @@ public class LevelManager : Singleton<LevelManager>
             levelData.Add(cont.playerInfo.username, playerData);
         }
         
-        InvokeAction(() => GameData.Instance.LoadScene("Level Overview Screen", levelData), 5f);
+        InvokeAction(() => GameData.Instance.LoadScene("Overview Screen", levelData), 5f);
     }
 
     #endregion
