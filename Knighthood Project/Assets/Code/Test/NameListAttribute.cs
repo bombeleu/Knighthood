@@ -5,17 +5,10 @@ using UnityEngine;
 
 public class NameListAttribute : PropertyAttribute
 {
-    public readonly Type names;
-    public readonly IEnumerable list;
+    public readonly Type enumType;
 
-    //public NameListAttribute(Type names)
-    //{
-    //    this.names = names;
-    //}
-
-
-    public NameListAttribute(object obj, string listName)
+    public NameListAttribute(Type enumType)
     {
-        list = (IEnumerable)obj.GetType().GetProperty(listName).GetValue(obj, null);
+        this.enumType = enumType;
     }
 }

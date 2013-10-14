@@ -12,8 +12,26 @@ public class Level0LevelManager : LevelManager
     {
         base.Awake();
 
+        managerType = GetType();
+
         CreatePlayers();
     }
+
+    #endregion
+
+    #region LevelManager Overrides
+
+    public override void RecieveTrigger(string method)
+    {
+        Log(method);
+        Invoke(method, 0f);
+    }
+
+    #endregion
+
+    #region Trigger Methods
+
+    
 
     #endregion
 }

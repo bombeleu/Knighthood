@@ -14,7 +14,7 @@ public class NameListDrawer : PropertyDrawer
     {
         if (foldout)
         {
-            return base.GetPropertyHeight(property, label) + ITEMSIZE * Enum.GetNames(nameListAttribute.names).Length;
+            return base.GetPropertyHeight(property, label) + ITEMSIZE * Enum.GetNames(nameListAttribute.enumType).Length;
         }
         else
         {
@@ -39,7 +39,7 @@ public class NameListDrawer : PropertyDrawer
             //    property.
             //}
 
-            string[] names = Enum.GetNames(nameListAttribute.names);
+            string[] names = Enum.GetNames(nameListAttribute.enumType);
             Rect rect = EditorGUI.IndentedRect(position);
             //rect.height = GetPropertyHeight()
             for (int i = 0; i < names.Length; i++)

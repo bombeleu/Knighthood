@@ -1,1 +1,66 @@
-*** 10/6/2013 8:47:33 PM ***
+*** 10/13/2013 7:55:22 PM ***
+1.046741: StartNav
+1.063308: Path time: 00:00:00.0040002
+1.582866: Path time: 00:00:00
+2.096433: Path time: 00:00:00
+2.61: Path time: 00:00:00
+3.0076: EndNav
+3.488034: StartNav
+3.5046: EndNav
+4.581433: StartNav
+4.598: Path time: 00:00:00
+5.111567: Path time: 00:00:00.0010001
+5.625134: Path time: 00:00:00
+6.1387: Path time: 00:00:00
+6.4866: EndNav
+7.034634: StartNav
+7.051201: Path time: 00:00:00
+7.564767: Path time: 00:00:00
+8.078334: Path time: 00:00:00
+8.591901: Path time: 00:00:00
+8.8901: EndNav
+9.436801: StartNav
+9.469934: EndNav
+10.6155: StartNav
+10.63206: Path time: 00:00:00
+10.93026: EndNav
+11.47696: StartNav
+11.49353: Path time: 00:00:00
+11.8083: EndNav
+12.28873: StartNav
+12.3053: Path time: 00:00:00
+12.8023: EndNav
+13.53483: StartNav
+13.55139: Path time: 00:00:00
+14.06496: Path time: 00:00:00
+14.57853: Path time: 00:00:00
+15.09209: Path time: 00:00:00
+15.60566: Path time: 00:00:00
+15.80446: EndNav
+16.35116: StartNav
+16.36773: Path time: 00:00:00
+16.66593: EndNav
+17.59366: StartNav
+17.61023: Path time: 00:00:00
+18.12379: Path time: 00:00:00
+18.45513: EndNav
+19.00183: StartNav
+19.01839: Path time: 00:00:00
+19.28346: EndNav
+19.87986: StartNav
+19.90438: Path time: 00:00:00
+20.16945: EndNav
+20.73271: StartNav
+20.74928: Path time: 00:00:00
+21.26285: Path time: 00:00:00
+21.77641: Path time: 00:00:00
+22.28998: Path time: 00:00:00
+22.35625: EndNav
+22.90294: StartNav
+22.91951: Path time: 00:00:00
+23.20115: EndNav
+23.96548: StartNav
+23.98205: Path time: 00:00:00
+24.49562: Path time: 00:00:00
+25.00918: Path time: 00:00:00
+25.52275: Path time: 00:00:00

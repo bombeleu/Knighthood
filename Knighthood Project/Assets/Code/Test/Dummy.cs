@@ -5,10 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 
-
-/// <summary>
-/// 
-/// </summary>
 public sealed class Dummy : Enemy
 {
     #region State Fields
@@ -16,6 +12,7 @@ public sealed class Dummy : Enemy
     public const string JumpingState = "Jumping";
     private bool fallingThrough;
     private float gravity;
+    public float attackDistance = 3f;
 
     #endregion
 
@@ -32,6 +29,7 @@ public sealed class Dummy : Enemy
         CreateState(MovingState, MovingEnter, MovingExit);
         CreateState(JumpingState, JumpingEnter, info => { });
         CreateState(FallingState, FallingEnter, FallingExit);
+        CreateState(AttackState, AttackingEnter, info => { });
         CreateState(DyingState, DyingEnter, info => { });
 
         initialState = IdlingState;
@@ -67,11 +65,27 @@ public sealed class Dummy : Enemy
         Transform player = LevelManager.Instance.PlayerTransforms[0];
         while (true)
         {
-            if (Vector3.Distance(myTransform.position, player.position) > 5f)
+            // attacking
+            if (Mathf.Abs((player.position - myTransform.position).x) <= attackDistance)
             {
+                if (attackManager.CanActivate(0))
+                {
+                    SetState(AttackState, new Dictionary<string, object> {{"Target", player}});
+                    yield break;
+                }
+
+                yield return null;
+            }
+
+            // moving
+            if (Mathf.Abs((player.position - myTransform.position).x) > attackDistance)
+            {
+                // and path is greater than one
+                Log("Idling->Moving: Outside attackDist.");
                 SetState(MovingState, new Dictionary<string, object> { { "Target", player } });
                 yield break;
             }
+
             yield return null;
         }
     }
@@ -83,20 +97,38 @@ public sealed class Dummy : Enemy
 
         PlayAnimation(MovingState);
 
-        currentStateJob = new Job(MovingUpdate());
+        currentStateJob = new Job(MovingUpdate((Transform)info["Target"]));
     }
 
 
-    private IEnumerator MovingUpdate()
+    private IEnumerator MovingUpdate(Transform Target)
     {
         Vector3 nodePosition;
         while (true)
         {
+            // attack
+            if (Mathf.Abs((Target.position - myTransform.position).x) <= attackDistance)
+            {
+                if (attackManager.CanActivate(0))
+                {
+                    SetState(AttackState, new Dictionary<string, object> {{"Target", Target}});
+                    yield break;
+                }
+                else
+                {
+                    Log("Moving->Idling: Within attackDist but can't attack.");
+                    SetState(IdlingState, new Dictionary<string, object>());
+                    yield break;
+                }
+            }
+
             // idle
             if (!myNavAgent.GetNextNodePosition(out nodePosition))
             {
-                SetState(IdlingState, new Dictionary<string, object>());
-                yield break;
+                Log("Moving->Idling: No more nodes in path.");
+                //SetState(IdlingState, new Dictionary<string, object>());
+                nodePosition = Target.position;
+                //yield break;
             }
 
             // rotate
@@ -158,18 +190,6 @@ public sealed class Dummy : Enemy
 
         Vector3 initialVel = new Vector3(velX, velIntY, 0f);
 
-        //while (timeY > 0f)
-        //{
-        //    timeY -= GameTime.deltaTime;
-        //    myMotor.SetVelocity(initialVel);
-        //    initialVel += Vector3.down * gravity * GameTime.deltaTime;
-
-        //    yield return null;
-        //}
-
-        //myNavAgent.Continue();
-        //SetState(MovingState, new Dictionary<string, object> { { "Target", LevelManager.Instance.PlayerTransforms[0] } });
-
         while (initialVel.y > 0)
         {
             timeY -= GameTime.deltaTime;
@@ -229,6 +249,17 @@ public sealed class Dummy : Enemy
     private void FallingExit(Dictionary<string, object> info)
     {
         fallingThrough = false;
+    }
+
+
+    private void AttackingEnter(Dictionary<string, object> info)
+    {
+        // stop
+        myMotor.ClearVelocity();
+
+        // attack
+        Texture attack = attackManager.Activate(0);
+        PlayAnimation(attack);
     }
 
 

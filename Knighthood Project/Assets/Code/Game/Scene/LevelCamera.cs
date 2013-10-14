@@ -47,6 +47,8 @@ public class LevelCamera : Singleton<LevelCamera>
 
     private void Update()
     {
+        if (locked) return;
+
         float speed = 0f;
         bool moveLeft = false, moveRight = false;
         float minX = 0f, maxX = 0f;

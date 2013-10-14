@@ -55,7 +55,7 @@ public class MoneyContainer : BaseMono
             {
                 var money = GameResources.Instance.Money_Pool.nextFree;
                 money.transform.position = myTransform.position + Vector3.up;
-                money.rigidbody.velocity = new Vector3(Random.Range(-force.x, force.x), Random.Range(0f, force.y), 0f);
+                money.rigidbody.velocity = new Vector3(0f, Random.Range(0f, force.y), Random.Range(-force.x, force.x));
                 money.rigidbody.angularVelocity = new Vector3(Random.Range(-rotation, rotation), Random.Range(-rotation, rotation), Random.Range(-rotation, rotation));
                 amount--;
             }

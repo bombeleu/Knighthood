@@ -13,6 +13,7 @@ public class Enemy : Character
     #region Reference Fields
 
     protected NavAgent myNavAgent;
+    protected AttackManager attackManager;
 
     #endregion
 
@@ -24,6 +25,12 @@ public class Enemy : Character
     }
     public EnemyTypes enemyType;
     public int experience;
+
+    #endregion
+
+    #region State Fields
+
+    protected const string AttackState = "Attacking";
 
     #endregion
 
@@ -42,6 +49,8 @@ public class Enemy : Character
 
         // get references
         myNavAgent = GetComponent<NavAgent>();
+        attackManager = GetComponent<AttackManager>();
+        attackManager.Initialize(this);
 
         // set up
         myHealth.Initialize();

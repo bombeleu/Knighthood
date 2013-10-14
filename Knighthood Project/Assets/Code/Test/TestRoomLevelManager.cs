@@ -19,4 +19,13 @@ public class TestRoomLevelManager : LevelManager
     }
 
     #endregion
+
+    #region LevelManager Overrides
+
+    public override void RecieveTrigger(string method)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    #endregion
 }

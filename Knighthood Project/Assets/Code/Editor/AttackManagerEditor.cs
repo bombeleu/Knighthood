@@ -71,7 +71,7 @@ public class AttackManagerEditor : Editor
             EditorGUILayout.LabelField("Attack Name", GUILayout.MinWidth(0));
 
             // close all
-            if (GUILayout.Button(new GUIContent(@"\", "Close All"), GUILayout.Width(30)))
+            if (GUILayout.Button(new GUIContent("||", "Close All"), GUILayout.Width(30)))
             {
                 for (int i = 0; i < open.arraySize; i++)
                 {

@@ -15,7 +15,7 @@ public class NavMesh : Singleton<NavMesh>
 {
     public GameObject Node_Prefab;
     public float yBuffer = 0.5f;
-    public float nodeRadius = 0.5f;
+    public float nodeRadius = 0.45f;
     public List<Node>[][] worldMatrix;
     public int gridSpace;
     public int gridHeight;
@@ -54,10 +54,10 @@ public class NavMesh : Singleton<NavMesh>
             
             // left edge
             node = CreateNode(new Vector3(startXPos, yPos, 0f), true);
-            node.position = node.transform.position + Vector3.down*yBuffer + Vector3.right*1f;
+            if (node) node.position = node.transform.position + Vector3.down*yBuffer + Vector3.right*1f;
             // right edge
             node = CreateNode(new Vector3(terrain.collider.bounds.center.x + terrain.collider.bounds.extents.x, yPos, 0f), true);
-            node.position = node.transform.position + Vector3.down * yBuffer + Vector3.left * 1f;
+            if (node) node.position = node.transform.position + Vector3.down * yBuffer + Vector3.left * 1f;
 
             int num = Mathf.FloorToInt(terrain.collider.bounds.size.x / horDist);
             float aveHorDist = terrain.collider.bounds.size.x / num;
@@ -113,7 +113,7 @@ public class NavMesh : Singleton<NavMesh>
 
     private Node CreateNode(Vector3 position, bool edge = false)
     {
-        if (Physics.OverlapSphere(position, nodeRadius).Length == 0)
+        if (Physics.OverlapSphere(position, nodeRadius, nodeLayer).Length == 0)
         {
             GameObject node = (GameObject)Instantiate(Node_Prefab, position, Quaternion.identity);
             node.transform.parent = transform;
@@ -218,6 +218,25 @@ public class NavMesh : Singleton<NavMesh>
             }
         }
 
+        // check below
+        if (closest == null)
+        {
+            for (int i = 1; y+i < worldMatrix.Length; i++)
+            {
+                nodes = worldMatrix[y+i][x];
+                foreach (var node in nodes)
+                {
+                    if (Vector3.Distance(position, node.transform.position) <= closestDist)
+                    {
+                        closestDist = Vector3.Distance(position, node.transform.position);
+                        closest = node;
+                    }
+                }
+
+                if (closest != null) break;
+            }
+        }
+
         return closest;
     }
 
@@ -255,7 +274,6 @@ public class NavMesh : Singleton<NavMesh>
         {
             node.drawConnections = drawNodeConnections;
         }
-
 
         SceneView.RepaintAll();
     }

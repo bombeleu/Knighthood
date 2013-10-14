@@ -29,6 +29,18 @@ public class NavAgent : BaseMono
 
     #endregion
 
+    #region Properties
+
+    public int pathLength
+    {
+        get
+        {
+            return path.Count;
+        }
+    }
+
+    #endregion
+
     #region Public Fields
 
     public bool drawPath;
@@ -62,83 +74,6 @@ public class NavAgent : BaseMono
     #endregion
 
     #region Public Methods
-
-    /// <summary>
-    /// Find a path to target.
-    /// </summary>
-    /// <param name="targetPosition">Position of the target.</param>
-    public void FindPath(Vector3 targetPosition)
-    {
-        DateTime start = DateTime.Now;
-
-        // ending node
-        Node endNode = NavMesh.Instance.ClosestNode(targetPosition);
-        if (path.Count > 0 && endNode == path[path.Count - 1])
-        {
-            return;
-        }
-
-        // reset
-        ClearSearchData();
-
-        // starting node
-        //Node startNode = path.Count == 0 ? NavMesh.Instance.ClosestNode(myTransform.position) : path[0];
-        Node startNode = NavMesh.Instance.ClosestNode(myTransform.position);
-        if (endNode == null || startNode == null) return;
-        openList.Enqueue(0f, startNode);
-        closedDict.Add(startNode, false);
-        parentDict.Add(startNode, null);
-        costDict.Add(startNode, 0f);
-
-        // main loop
-        while (openList.Count > 0)
-        {
-            Node node = openList.DequeueValue();
-
-            // goal?
-            if (node == endNode)
-            {
-                path.Clear();
-                while (node != startNode)
-                {
-                    path.Add(node);
-                    node = parentDict[node];
-                }
-
-                if (path.Count > 0)
-                {
-                    path.Reverse();
-                    currentNode = path[0];
-                }
-                Log("Path time: " + (DateTime.Now - start));
-                return;
-            }
-
-            // process current node
-            closedDict[node] = true;
-
-            // look at all of current node's neighbors
-            for (int i = 0; i < node.neighbors.Length; i++) // maybe cache size
-            {
-                // cache neighbor
-                Node neighbor = node.neighbors[i];
-
-                // get cost of whole path to neighbor
-                float cost = costDict[node] + node.distances[i];
-
-                // see if already open or closed
-                if (!closedDict.ContainsKey(neighbor))
-                {
-                    // add to open
-                    openList.Enqueue(cost + Vector3.Distance(neighbor.position, endNode.position), neighbor);
-                    closedDict.Add(neighbor, false);
-                    parentDict.Add(neighbor, node);
-                    costDict.Add(neighbor, cost);
-                }
-            }
-        }
-    }
-
 
     /// <summary>
     /// Start navigating towards next node.
@@ -201,8 +136,6 @@ public class NavAgent : BaseMono
     public void StartNav(Transform Target)
     {
         Log("StartNav", Debugger.LogTypes.Navigation);
-        //StopCoroutine("CalculatePath");
-        //StartCoroutine("CalculatePath", Target);
 
         if (calculatePath == null)
         {
@@ -221,7 +154,6 @@ public class NavAgent : BaseMono
     public void EndNav()
     {
         Log("EndNav", Debugger.LogTypes.Navigation);
-        //StopCoroutine("CalculatePath");
 
         calculatePath.Pause();
     }
@@ -229,6 +161,83 @@ public class NavAgent : BaseMono
     #endregion
 
     #region Private Methods
+
+    /// <summary>
+    /// Find a path to target.
+    /// </summary>
+    /// <param name="targetPosition">Position of the target.</param>
+    private void FindPath(Vector3 targetPosition)
+    {
+        DateTime start = DateTime.Now;
+
+        // ending node
+        Node endNode = NavMesh.Instance.ClosestNode(targetPosition);
+        if (path.Count > 0 && endNode == path[path.Count - 1])
+        {
+            return;
+        }
+
+        // reset
+        ClearSearchData();
+
+        // starting node
+        //Node startNode = path.Count == 0 ? NavMesh.Instance.ClosestNode(myTransform.position) : path[0];
+        Node startNode = NavMesh.Instance.ClosestNode(myTransform.position + Mathf.Sign((targetPosition - myTransform.position).x) * Vector3.right);
+        if (endNode == null || startNode == null) return;
+        openList.Enqueue(0f, startNode);
+        closedDict.Add(startNode, false);
+        parentDict.Add(startNode, null);
+        costDict.Add(startNode, 0f);
+
+        // main loop
+        while (openList.Count > 0)
+        {
+            Node node = openList.DequeueValue();
+
+            // goal?
+            if (node == endNode)
+            {
+                path.Clear();
+                while (node != startNode)
+                {
+                    path.Add(node);
+                    node = parentDict[node];
+                }
+
+                if (path.Count > 0)
+                {
+                    path.Reverse();
+                    currentNode = path[0];
+                }
+                Log("Path time: " + (DateTime.Now - start), Debugger.LogTypes.Navigation);
+                return;
+            }
+
+            // process current node
+            closedDict[node] = true;
+
+            // look at all of current node's neighbors
+            for (int i = 0; i < node.neighbors.Length; i++) // maybe cache size
+            {
+                // cache neighbor
+                Node neighbor = node.neighbors[i];
+
+                // get cost of whole path to neighbor
+                float cost = costDict[node] + node.distances[i];
+
+                // see if already open or closed
+                if (!closedDict.ContainsKey(neighbor))
+                {
+                    // add to open
+                    openList.Enqueue(cost + Vector3.Distance(neighbor.position, endNode.position), neighbor);
+                    closedDict.Add(neighbor, false);
+                    parentDict.Add(neighbor, node);
+                    costDict.Add(neighbor, cost);
+                }
+            }
+        }
+    }
+
 
     /// <summary>
     /// Clear everything except path.
@@ -261,7 +270,7 @@ public class NavAgent : BaseMono
     /// Continuously recalculate path.
     /// </summary>
     /// <param name="Target">Target agent is chasing.</param>
-    public IEnumerator CalculatePath(Transform Target)
+    private IEnumerator CalculatePath(Transform Target)
     {
         while (true)
         {

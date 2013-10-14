@@ -20,6 +20,22 @@ public abstract class CombatManager : BaseMono
     /// <summary>
     /// Checks the status of the corresponding attack.
     /// </summary>
+    /// <param name="attack">Index of attack to activate</param>
+    /// <returns>True, if the attack can activate.</returns>
+    public virtual bool CanActivate(int attack)
+    {
+        if (attacks[attack] != null)
+        {
+            return attacks[attack].CanActivate();
+        }
+
+        return false;
+    }
+
+
+    /// <summary>
+    /// Checks the status of the corresponding attack.
+    /// </summary>
     /// <param name="attackInput">Input pressed.</param>
     /// <returns>True, if the attack can activate.</returns>
     public virtual bool CanActivate(string attackInput)

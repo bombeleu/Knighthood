@@ -1,1 +1,181 @@
-*** 10/6/2013 8:47:33 PM ***
+*** 10/13/2013 7:55:22 PM ***
+0: Done Baking World Matrix: 00:00:00
+1.046741: Idling->Moving: Outside attackDist.
+1.046741: Dummy(Clone) Entering: Moving - 1.046741
+1.328374: Moving->Idling: No more nodes in path.
+1.344941: Moving->Idling: No more nodes in path.
+1.361508: Moving->Idling: No more nodes in path.
+1.378074: Moving->Idling: No more nodes in path.
+1.394642: Moving->Idling: No more nodes in path.
+1.411207: Moving->Idling: No more nodes in path.
+1.427774: Moving->Idling: No more nodes in path.
+1.444341: Moving->Idling: No more nodes in path.
+1.460907: Moving->Idling: No more nodes in path.
+1.477474: Moving->Idling: No more nodes in path.
+1.494041: Moving->Idling: No more nodes in path.
+1.510608: Moving->Idling: No more nodes in path.
+1.527174: Moving->Idling: No more nodes in path.
+1.543741: Moving->Idling: No more nodes in path.
+1.5663: Moving->Idling: No more nodes in path.
+2.030167: Moving->Idling: No more nodes in path.
+2.046733: Moving->Idling: No more nodes in path.
+2.0633: Moving->Idling: No more nodes in path.
+2.079866: Moving->Idling: No more nodes in path.
+2.477467: Moving->Idling: No more nodes in path.
+2.494033: Moving->Idling: No more nodes in path.
+2.5106: Moving->Idling: No more nodes in path.
+2.527166: Moving->Idling: No more nodes in path.
+2.543733: Moving->Idling: No more nodes in path.
+2.5603: Moving->Idling: No more nodes in path.
+2.576867: Moving->Idling: No more nodes in path.
+2.593433: Moving->Idling: No more nodes in path.
+2.941333: Moving->Idling: No more nodes in path.
+2.9579: Moving->Idling: No more nodes in path.
+2.974466: Moving->Idling: No more nodes in path.
+2.991033: Moving->Idling: No more nodes in path.
+3.0076: Moving->Idling: No more nodes in path.
+3.0076: Dummy(Clone) Entering: Jumping - 3.0076
+3.2561: Dummy(Clone) Entering: Falling - 3.2561
+3.488034: Dummy(Clone) Entering: Moving - 3.488034
+3.5046: Moving->Idling: No more nodes in path.
+3.5046: Dummy(Clone) Entering: Jumping - 3.5046
+4.0513: Dummy(Clone) Entering: Falling - 4.0513
+4.581433: Dummy(Clone) Entering: Moving - 4.581433
+6.4866: Dummy(Clone) Entering: Attacking - 6.4866
+7.018067: Dummy(Clone) Entering: Idling - 7.018067
+7.034634: Idling->Moving: Outside attackDist.
+7.034634: Dummy(Clone) Entering: Moving - 7.034634
+7.283134: Moving->Idling: No more nodes in path.
+7.299701: Moving->Idling: No more nodes in path.
+7.316268: Moving->Idling: No more nodes in path.
+7.332834: Moving->Idling: No more nodes in path.
+7.349401: Moving->Idling: No more nodes in path.
+7.365967: Moving->Idling: No more nodes in path.
+7.382534: Moving->Idling: No more nodes in path.
+7.399101: Moving->Idling: No more nodes in path.
+7.415668: Moving->Idling: No more nodes in path.
+7.432234: Moving->Idling: No more nodes in path.
+7.448801: Moving->Idling: No more nodes in path.
+7.465367: Moving->Idling: No more nodes in path.
+7.481934: Moving->Idling: No more nodes in path.
+7.498501: Moving->Idling: No more nodes in path.
+7.515068: Moving->Idling: No more nodes in path.
+7.531634: Moving->Idling: No more nodes in path.
+7.548201: Moving->Idling: No more nodes in path.
+7.564767: Moving->Idling: No more nodes in path.
+7.581334: Moving->Idling: No more nodes in path.
+7.5979: Moving->Idling: No more nodes in path.
+7.614467: Moving->Idling: No more nodes in path.
+7.631034: Moving->Idling: No more nodes in path.
+7.647601: Moving->Idling: No more nodes in path.
+7.664167: Moving->Idling: No more nodes in path.
+7.680734: Moving->Idling: No more nodes in path.
+7.6973: Moving->Idling: No more nodes in path.
+7.713867: Moving->Idling: No more nodes in path.
+7.730434: Moving->Idling: No more nodes in path.
+7.747001: Moving->Idling: No more nodes in path.
+7.763567: Moving->Idling: No more nodes in path.
+7.780134: Moving->Idling: No more nodes in path.
+7.7967: Moving->Idling: No more nodes in path.
+7.813267: Moving->Idling: No more nodes in path.
+7.829834: Moving->Idling: No more nodes in path.
+7.846401: Moving->Idling: No more nodes in path.
+7.862967: Moving->Idling: No more nodes in path.
+7.879534: Moving->Idling: No more nodes in path.
+7.896101: Moving->Idling: No more nodes in path.
+7.912667: Moving->Idling: No more nodes in path.
+7.929234: Moving->Idling: No more nodes in path.
+7.945801: Moving->Idling: No more nodes in path.
+7.962368: Moving->Idling: No more nodes in path.
+7.978934: Moving->Idling: No more nodes in path.
+7.995501: Moving->Idling: No more nodes in path.
+8.012068: Moving->Idling: No more nodes in path.
+8.028634: Moving->Idling: No more nodes in path.
+8.0452: Moving->Idling: No more nodes in path.
+8.061768: Moving->Idling: No more nodes in path.
+8.442801: Moving->Idling: No more nodes in path.
+8.459368: Moving->Idling: No more nodes in path.
+8.475934: Moving->Idling: No more nodes in path.
+8.4925: Moving->Idling: No more nodes in path.
+8.509068: Moving->Idling: No more nodes in path.
+8.525634: Moving->Idling: No more nodes in path.
+8.542201: Moving->Idling: No more nodes in path.
+8.558767: Moving->Idling: No more nodes in path.
+8.575335: Moving->Idling: No more nodes in path.
+8.8901: Dummy(Clone) Entering: Attacking - 8.8901
+9.420234: Dummy(Clone) Entering: Idling - 9.420234
+9.436801: Idling->Moving: Outside attackDist.
+9.436801: Dummy(Clone) Entering: Moving - 9.436801
+9.469934: Moving->Idling: No more nodes in path.
+9.469934: Dummy(Clone) Entering: Jumping - 9.469934
+10.03566: Dummy(Clone) Entering: Falling - 10.03566
+10.6155: Dummy(Clone) Entering: Moving - 10.6155
+10.93026: Dummy(Clone) Entering: Attacking - 10.93026
+11.4604: Dummy(Clone) Entering: Idling - 11.4604
+11.47696: Idling->Moving: Outside attackDist.
+11.47696: Dummy(Clone) Entering: Moving - 11.47696
+11.72546: Moving->Idling: No more nodes in path.
+11.74203: Moving->Idling: No more nodes in path.
+11.7586: Moving->Idling: No more nodes in path.
+11.77516: Moving->Idling: No more nodes in path.
+11.79173: Moving->Idling: No more nodes in path.
+11.8083: Moving->Idling: No more nodes in path.
+11.8083: Dummy(Clone) Entering: Jumping - 11.8083
+12.0568: Dummy(Clone) Entering: Falling - 12.0568
+12.28873: Dummy(Clone) Entering: Moving - 12.28873
+12.8023: Moving->Idling: No more nodes in path.
+12.8023: Dummy(Clone) Entering: Jumping - 12.8023
+13.18693: Dummy(Clone) Entering: Falling - 13.18693
+13.53483: Dummy(Clone) Entering: Moving - 13.53483
+15.05896: Moving->Idling: No more nodes in path.
+15.07553: Moving->Idling: No more nodes in path.
+15.80446: Dummy(Clone) Entering: Attacking - 15.80446
+16.33459: Dummy(Clone) Entering: Idling - 16.33459
+16.35116: Idling->Moving: Outside attackDist.
+16.35116: Dummy(Clone) Entering: Moving - 16.35116
+16.66593: Moving->Idling: No more nodes in path.
+16.66593: Dummy(Clone) Entering: Jumping - 16.66593
+17.12979: Dummy(Clone) Entering: Falling - 17.12979
+17.59366: Dummy(Clone) Entering: Moving - 17.59366
+18.45513: Dummy(Clone) Entering: Attacking - 18.45513
+18.98526: Dummy(Clone) Entering: Idling - 18.98526
+19.00183: Idling->Moving: Outside attackDist.
+19.00183: Dummy(Clone) Entering: Moving - 19.00183
+19.28346: Moving->Idling: Within attackDist but can't attack.
+19.28346: Dummy(Clone) Entering: Idling - 19.28346
+19.33316: Dummy(Clone) Entering: Attacking - 19.33316
+19.86329: Dummy(Clone) Entering: Idling - 19.86329
+19.87986: Idling->Moving: Outside attackDist.
+19.87986: Dummy(Clone) Entering: Moving - 19.87986
+20.16945: Moving->Idling: Within attackDist but can't attack.
+20.16945: Dummy(Clone) Entering: Idling - 20.16945
+20.18601: Dummy(Clone) Entering: Attacking - 20.18601
+20.71614: Dummy(Clone) Entering: Idling - 20.71614
+20.73271: Idling->Moving: Outside attackDist.
+20.73271: Dummy(Clone) Entering: Moving - 20.73271
+21.14688: Moving->Idling: No more nodes in path.
+21.16345: Moving->Idling: No more nodes in path.
+21.18001: Moving->Idling: No more nodes in path.
+21.19658: Moving->Idling: No more nodes in path.
+21.21315: Moving->Idling: No more nodes in path.
+21.22971: Moving->Idling: No more nodes in path.
+21.24628: Moving->Idling: No more nodes in path.
+21.61074: Moving->Idling: No more nodes in path.
+21.62731: Moving->Idling: No more nodes in path.
+21.64388: Moving->Idling: No more nodes in path.
+21.66044: Moving->Idling: No more nodes in path.
+21.67701: Moving->Idling: No more nodes in path.
+21.69358: Moving->Idling: No more nodes in path.
+21.71015: Moving->Idling: No more nodes in path.
+21.72671: Moving->Idling: No more nodes in path.
+21.74328: Moving->Idling: No more nodes in path.
+21.75985: Moving->Idling: No more nodes in path.
+22.35625: Dummy(Clone) Entering: Attacking - 22.35625
+22.88638: Dummy(Clone) Entering: Idling - 22.88638
+22.90294: Idling->Moving: Outside attackDist.
+22.90294: Dummy(Clone) Entering: Moving - 22.90294
+23.20115: Moving->Idling: No more nodes in path.
+23.20115: Dummy(Clone) Entering: Jumping - 23.20115
+23.58445: Dummy(Clone) Entering: Falling - 23.58445
+23.96548: Dummy(Clone) Entering: Moving - 23.96548
+25.58901: Done Baking World Matrix: 00:00:00.0010001

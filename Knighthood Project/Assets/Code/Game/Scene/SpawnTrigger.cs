@@ -1,19 +1,20 @@
 ﻿// Steve Yeager
-// 10.6.2013
+// 10.8.2013
 
 using UnityEngine;
 
 /// <summary>
-/// Triggers in the level that call methods on the LevelManager when touched by a character.
+/// 
 /// </summary>
-public class LevelTrigger : BaseMono
+public class SpawnTrigger : BaseMono
 {
     #region Public Fields
 
-    public string method;
+    public EnemySpawnPoint[] spawnPoints;
+    public string startMethod;
+    public string clearMethod;
 
     #endregion
-
 
     #region MonoBehaviour Overrides
 
@@ -21,7 +22,7 @@ public class LevelTrigger : BaseMono
     {
         if (other.tag != "Player") return;
 
-        LevelManager.Instance.RecieveTrigger(method);
+        LevelManager.Instance.SpawnEnemies(spawnPoints, startMethod, clearMethod);
         Destroy(gameObject);
     }
 

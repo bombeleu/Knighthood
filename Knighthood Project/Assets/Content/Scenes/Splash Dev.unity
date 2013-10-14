@@ -160,9 +160,17 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 11400004, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: Enemy_Prefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 11400002, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
       propertyPath: playerCharacters.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400004, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: EnemyPrefabTypes.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
       propertyPath: m_LocalPosition.x
@@ -196,6 +204,10 @@ Prefab:
       propertyPath: log
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11400004, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: Enemy_Prefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 100002, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
   m_RootGameObject: {fileID: 1930441093}
@@ -417,6 +429,9 @@ MonoBehaviour:
   - {fileID: 100000, guid: 14e9de730ee599a4987dc55406278856, type: 2}
   - {fileID: 100000, guid: 4e0b4521eb1639e4d8960fc34a99e33b, type: 2}
   - {fileID: 100000, guid: 02ec61d68c2aa944b983fc3849d8a7ee, type: 2}
+  EnemyPrefabTypes: 00000000
+  Enemy_Prefabs:
+  - {fileID: 100002, guid: 53d65c72a68b04348a3fdda914346898, type: 2}
   DamageIndicator_Prefab: {fileID: 100000, guid: b67f3764dbb6a734d9800090eebdf538,
     type: 2}
   Hitbox_Prefab: {fileID: 100000, guid: 73c37bd95eaf42d4597e295bd2852f0e, type: 2}

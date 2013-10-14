@@ -32,8 +32,10 @@ GameObject:
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400008}
   - 114: {fileID: 11400000}
+  - 114: {fileID: 11400010}
+  - 114: {fileID: 11400012}
   m_Layer: 8
-  m_Name: Enemy
+  m_Name: Dummy
   m_TagString: Enemy
   m_Icon: {fileID: -1003283189, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -135,6 +137,7 @@ MonoBehaviour:
   enemyType: 0
   experience: 500
   navBuffer: .5
+  attackDistance: 3
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -146,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab276106447ce2244bf6fb4f380128f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 0
+  log: 1
   drawPath: 1
   allowedRadius: .25
   stepHeight: .5
@@ -179,7 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
-  maxHealth: 100
+  maxHealth: 50
   currentHealth: 0
   invincible: 0
   statusEffectivenesses:
@@ -203,8 +206,65 @@ MonoBehaviour:
   minAmount: 5
   maxAmount: 25
   random: 1
-  force: {x: 5, y: 10}
-  rotation: 5
+  force: {x: 5, y: 3}
+  rotation: 3
+--- !u!114 &11400010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4890e7c83b0da74e9079e27cc7c33a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  attacks:
+  - {fileID: 11400012}
+  inputs:
+  - Melee0
+  open: 00
+--- !u!114 &11400012
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  attackInput: Melee0
+  attackName: Punch
+  windUp: .200000003
+  attackTime: .200000003
+  windDown: .100000001
+  cooldown: .300000012
+  showTooltips: 0
+  attackAnimation: {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
+  Attack_Prefab: {fileID: 0}
+  hitInfo:
+    baseDamage: 5
+    effect: -1
+    knockBack: {x: 0, y: 0, z: 0}
+  hitboxTime: .200000003
+  offset: {x: 2, y: 1.5}
+  parented: 0
+  hitNumber: 1
+  oneShot: 0
+  melee: 1
+  meleeSize: {x: 2, y: 2}
+  magic: 0
+  magicRequired: 0
+  projectile: 0
+  projectileVector: {x: 0, y: 0}
+  projectileSpeed: 0
+  move: 0
+  endVector: {x: 0, y: 0, z: 0}
+  moveTime: 0
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

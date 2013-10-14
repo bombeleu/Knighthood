@@ -1,6 +1,8 @@
 ﻿// Steve Yeager
 // 8.18.2013
 
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -11,6 +13,13 @@ public class GameResources : Singleton<GameResources>
     #region Player Fields
 
     public GameObject[] Player_Prefabs;
+
+    #endregion
+
+    #region Enemy Fields
+
+    public Enemy.EnemyTypes[] EnemyPrefabTypes;
+    public GameObject[] Enemy_Prefabs;
 
     #endregion
 
@@ -68,6 +77,20 @@ public class GameResources : Singleton<GameResources>
         {
             Hitbox_Pool.Clear();
         }
+    }
+
+    #endregion
+
+    #region Public Methods
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="enemy"></param>
+    /// <returns></returns>
+    public GameObject EnemyPrefab(Enemy.EnemyTypes enemy)
+    {
+        return Enemy_Prefabs[Array.IndexOf(EnemyPrefabTypes, enemy)];
     }
 
     #endregion
