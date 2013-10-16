@@ -47,5 +47,11 @@ public abstract class Attack : BaseMono
         this.manager = manager;
     }
 
+
+    public HitInfo TransformKnockBack()
+    {
+        return new HitInfo();
+    }
+
     #endregion
 }

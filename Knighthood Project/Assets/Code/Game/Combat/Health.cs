@@ -30,7 +30,6 @@ public class Health : BaseMono
 
     /// <summary>Triggered when the owner recieves a hit and not invincible.</summary>
     public EventHandler<HitEventArgs> HitEvent;
-
     public EventHandler<StatusEffectEventArgs> FireEvent;
     public EventHandler<StatusEffectEventArgs> LightningEvent;
     public EventHandler<StatusEffectEventArgs> AcidEvent;
@@ -113,7 +112,7 @@ public class Health : BaseMono
             damage = Mathf.CeilToInt(damage*statusEffectivenesses[(int)hitInfo.effect]);
             if (damage > 0)
             {
-                Log(hitInfo.effect.ToString() + ":" + (int) hitInfo.effect, Debugger.LogTypes.Combat);
+                Log(hitInfo.effect + ":" + (int) hitInfo.effect, Debugger.LogTypes.Combat);
                 StopAllCoroutines();
                 StartCoroutine(statusMethods[(int)hitInfo.effect], damage);
             }

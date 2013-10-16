@@ -137,7 +137,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086fdd72e7824a0479a940111cc43c35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 0
+  log: 1
+  flinchTimeBase: .25
+  knockBackMultiplier: .0500000007
+  knockBackRecoverySpeed: 1
+  flinchInvincibleTime: .5
   myStats:
     health: 100
     physicalAttack: 1
@@ -151,11 +155,17 @@ MonoBehaviour:
   - Moving
   - Jumping
   - Falling
+  - Stand Flinch
+  - Fall Flinch
+  - Splat
   animationTex:
   - {fileID: 2800000, guid: 0e5999ff83efc6f459f61cb19b2e4a01, type: 3}
   - {fileID: 2800000, guid: 6cebf2eb05df4b24eb2bfc14f9cdec29, type: 3}
   - {fileID: 2800000, guid: b76e982ed2fb82f4b8d0cb0a5cfacda1, type: 3}
   - {fileID: 2800000, guid: cb4e16837103d614eb9de021cfceffb9, type: 3}
+  - {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
+  - {fileID: 2800000, guid: cb4e16837103d614eb9de021cfceffb9, type: 3}
+  - {fileID: 2800000, guid: fdb604bebe40ac34cbebb2a72e1b622e, type: 3}
   spawnTime: 0
   fastFallSpeed: 50
   extraJumpTime: .0199999996

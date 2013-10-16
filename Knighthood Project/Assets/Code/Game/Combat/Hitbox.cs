@@ -49,7 +49,7 @@ public class Hitbox : BaseMono
         Health opponentHealth = other.GetComponent<Health>();
         if (opponentHealth != null)
         {
-            opponentHealth.RecieveHit(sender, hitID, hitInfo);
+            opponentHealth.RecieveHit(sender, hitID, hitInfo.TransformKnockBack(opponentHealth.transform.position, sender.transform.position));
             if (oneShot)
             {
                 gameObject.SetActive(false);

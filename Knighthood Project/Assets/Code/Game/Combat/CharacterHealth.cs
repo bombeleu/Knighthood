@@ -42,8 +42,7 @@ public class CharacterHealth : Health
 
     public override void RecieveHit(object sender, int hitID, HitInfo hitInfo)
     {
-        hitInfo.FactorDefendStats(statManager);
-        base.RecieveHit(sender, hitID, hitInfo);
+        base.RecieveHit(sender, hitID, hitInfo.LocalizeDamage(statManager));
     }
 
     #endregion

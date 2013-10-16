@@ -1,6 +1,7 @@
 ﻿// Steve Yeager
 // 8.18.2013
 
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 using System;
@@ -36,6 +37,11 @@ public class Character : BaseMono
     private readonly Dictionary<string, Action<Dictionary<string, object>>> enterMethods = new Dictionary<string, Action<Dictionary<string, object>>>();
     private readonly Dictionary<string, Action<Dictionary<string, object>>> exitMethods = new Dictionary<string, Action<Dictionary<string, object>>>();
     protected Job currentStateJob;
+
+    public float flinchTimeBase;
+    public float knockBackMultiplier;
+    public float knockBackRecoverySpeed;
+    public float flinchInvincibleTime;
 
     #endregion
 
@@ -142,7 +148,7 @@ public class Character : BaseMono
 
     #endregion
 
-    #region Animation Methods
+    #region Protected Methods
 
     /// <summary>
     /// 
@@ -161,6 +167,18 @@ public class Character : BaseMono
     protected void PlayAnimation(Texture animationTexure)
     {
         myMaterial.mainTexture = animationTexure;
+    }
+
+
+    /// <summary>
+    /// Make character invincible for set time.
+    /// </summary>
+    /// <param name="time">Invincible duration.</param>
+    protected IEnumerator Invincible(float time)
+    {
+        myHealth.invincible = true;
+        yield return WaitForTime(time);
+        myHealth.invincible = false;
     }
 
     #endregion

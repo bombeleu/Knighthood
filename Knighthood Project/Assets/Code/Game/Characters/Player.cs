@@ -23,6 +23,7 @@ public class Player : Character
 
     private const string JumpingState = "Jumping";
     private const string DefendingState = "Defending";
+    private const string FlinchingState = "Flinching";
 
     public float spawnTime;
     public float fastFallSpeed;
@@ -90,6 +91,7 @@ public class Player : Character
         CreateState(FallingState, FallingEnter, FallingExit);
         CreateState(AttackingState, AttackingEnter, info => {});
         CreateState(DefendingState, DefendingEnter, DefendingExit);
+        CreateState(FlinchingState, FlinchingEnter, FlinchingExit);
         initialState = SpawningState;
 
         // combat
@@ -109,6 +111,7 @@ public class Player : Character
 
         // events
         MoneyEvent += CollectMoney;
+        myHealth.HitEvent += HitHandler;
     }
 
 
@@ -191,15 +194,6 @@ public class Player : Character
     private void SpawningEnter(Dictionary<string, object> info)
     {
         SetState(IdlingState, new Dictionary<string, object>());
-        //currentStateJob = new Job(SpawningUpdate());
-    }
-
-
-    private IEnumerator SpawningUpdate()
-    {
-        yield return WaitForTime(spawnTime);
-
-        SetState(IdlingState, null);
     }
 
 
@@ -621,6 +615,78 @@ public class Player : Character
         myHealth.invincible = false;
     }
 
+
+    private void FlinchingEnter(Dictionary<string, object> info)
+    {
+        var knockBack = (Vector3)info["knockBack"];
+
+        if (myMotor.IsGrounded() && knockBack.y == 0f)
+        {
+            PlayAnimation("Stand Flinch");
+        }
+        else
+        {
+            PlayAnimation("Fall Flinch");            
+        }
+
+        currentStateJob = new Job(FlinchingUpdate(knockBack, flinchTimeBase + knockBack.magnitude*knockBackMultiplier));
+    }
+
+
+    private IEnumerator FlinchingUpdate(Vector3 knockBack, float flinchTime)
+    {
+        Log(flinchTime);
+        bool falling = !myMotor.IsGrounded();
+        float time = flinchTime;
+        float fallSpeed = 0;
+
+        while (time > 0f)
+        {
+            time -= GameTime.deltaTime;
+            bool grounded = myMotor.IsGrounded();
+            myMotor.ClearVelocity();
+
+            // hit the floor
+            if (grounded && falling)
+            {
+                myMotor.Ground();
+                PlayAnimation("Splat");
+                yield return WaitForTime(1f);
+                break;
+            }
+
+            // start falling
+            if (!grounded && !falling)
+            {
+                falling = true;
+                PlayAnimation("Fall Flinch");
+            }
+
+            // fall
+            if (!grounded)
+            {
+                fallSpeed -= myMotor.gravity*GameTime.deltaTime;
+                myMotor.SetVelocityY(fallSpeed);
+            }
+
+            // knockback
+            myMotor.AddVelocity(knockBack);
+
+            // recover
+            knockBack.x -= Mathf.Sign(knockBack.x) * knockBackRecoverySpeed*GameTime.deltaTime;
+
+            yield return null;
+        }
+
+        SetState(myMotor.IsGrounded(true) ? IdlingState : FallingState, new Dictionary<string, object>());
+    }
+
+
+    private void FlinchingExit(Dictionary<string, object> info)
+    {
+        StartCoroutine("Invincible", flinchInvincibleTime);
+    }
+
     #endregion
 
     #region Input Methods
@@ -880,6 +946,20 @@ public class Player : Character
 
         info.Add("attackTexture", attackTexture);
         SetState(AttackingState, info);
+    }
+
+    #endregion
+
+    #region Event Handlers
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    private void HitHandler(object sender, HitEventArgs args)
+    {
+        SetState(FlinchingState, new Dictionary<string, object>{{"knockBack", args.hitInfo.knockBack}});
     }
 
     #endregion

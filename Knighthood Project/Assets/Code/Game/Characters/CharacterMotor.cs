@@ -92,6 +92,20 @@ public class CharacterMotor : BaseMono
 
 
     /// <summary>
+    /// Ground the character if close to terrain.
+    /// </summary>
+    public void Ground()
+    {
+        RaycastHit rayInfo;
+        if (Physics.Raycast(myTransform.position + Vector3.up * 0.1f, Vector3.down, out rayInfo, GroundedRayDist + 0.1f, terrainLayer))
+        {
+            velocity = new Vector3(velocity.x, 0f, 0f);
+            myTransform.position += Vector3.down * (rayInfo.distance - 0.1f);
+        }
+    }
+
+
+    /// <summary>
     /// If the character is on top of a Translucent platform.
     /// </summary>
     /// <returns>True, if on a platform and it is Translucent.</returns>
@@ -201,13 +215,23 @@ public class CharacterMotor : BaseMono
 
 
     /// <summary>
-    /// Add to the CharacterMotor's velocity's vertical speed.
+    /// Add to the CharacterMotor's velocity.
     /// </summary>
     /// <param name="x">Horizontal speed.</param>
     /// <param name="y">Vertical speed. Up is positive.</param>
     public virtual void AddVelocity(float x, float y)
     {
         velocity += new Vector3(x, y, 0f);
+    }
+
+
+    /// <summary>
+    /// Add to the CharacterMotor's velocity.
+    /// </summary>
+    /// <param name="velocity">Velocity to add to current velocity.</param>
+    public virtual void AddVelocity(Vector3 velocity)
+    {
+        this.velocity += velocity;
     }
 
 
