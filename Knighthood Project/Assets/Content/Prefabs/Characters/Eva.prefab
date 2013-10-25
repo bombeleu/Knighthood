@@ -22,6 +22,7 @@ GameObject:
   - 114: {fileID: 11400016}
   - 114: {fileID: 11400020}
   - 114: {fileID: 11400022}
+  - 114: {fileID: 11400006}
   m_Layer: 8
   m_Name: Eva
   m_TagString: Player
@@ -120,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5ee576712861124f9b95202cacabe05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
+  log: 0
   moveSpeed: 13
   gravity: 70
   terminalVelocity: 40
@@ -137,8 +138,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 0
+  flinchTimeBase: .200000003
+  knockBackMultiplier: .0500000007
+  knockBackRecoverySpeed: 1
+  flinchInvincibleTime: .5
   myStats:
-    health: 0
+    health: 100
     physicalAttack: 1
     physicalDefense: 1
     magicAttack: 1
@@ -150,11 +155,17 @@ MonoBehaviour:
   - Moving
   - Jumping
   - Falling
+  - Stand Flinch
+  - Fall Flinch
+  - Splat
   animationTex:
   - {fileID: 2800000, guid: 0e5999ff83efc6f459f61cb19b2e4a01, type: 3}
   - {fileID: 2800000, guid: 6cebf2eb05df4b24eb2bfc14f9cdec29, type: 3}
   - {fileID: 2800000, guid: b76e982ed2fb82f4b8d0cb0a5cfacda1, type: 3}
   - {fileID: 2800000, guid: cb4e16837103d614eb9de021cfceffb9, type: 3}
+  - {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
+  - {fileID: 2800000, guid: cb4e16837103d614eb9de021cfceffb9, type: 3}
+  - {fileID: 2800000, guid: fdb604bebe40ac34cbebb2a72e1b622e, type: 3}
   spawnTime: 0
   fastFallSpeed: 50
   extraJumpTime: .0199999996
@@ -168,8 +179,6 @@ MonoBehaviour:
     currentEXP: 0
     neededEXP: 0
     level: 0
-  myMoney:
-    money: 0
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -184,9 +193,52 @@ MonoBehaviour:
   log: 1
   attacks:
   - {fileID: 11400008}
+  - {fileID: 11400006}
   inputs:
   - SuperLight
-  open: 00
+  - SuperHeavy
+  open: 0000
+--- !u!114 &11400006
+MonoBehaviour:
+  m_ObjectHideFlags: 2
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 0
+  attackInput: SuperHeavy
+  attackName: Fireball
+  windUp: 0
+  attackTime: .300000012
+  windDown: 0
+  cooldown: 0
+  attackArmor: 0
+  showTooltips: 0
+  attackAnimation: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
+  Attack_Prefab: {fileID: 100002, guid: 4530b46cf5c1ea74092d6631af734071, type: 2}
+  hitInfo:
+    baseDamage: 5
+    effect: 0
+    knockBack: {x: 0, y: 0, z: 0}
+  hitboxTime: 3
+  offset: {x: 1, y: 1}
+  parented: 0
+  hitNumber: 1
+  oneShot: 1
+  melee: 0
+  meleeSize: {x: 0, y: 0}
+  magic: 1
+  magicRequired: 10
+  projectile: 1
+  projectileVector: {x: 1, y: 0}
+  projectileSpeed: 25
+  move: 0
+  endVector: {x: 0, y: 0, z: 0}
+  moveTime: 0
 --- !u!114 &11400008
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -198,19 +250,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
+  log: 0
   attackInput: SuperLight
   attackName: Icicle Blast
   windUp: 0
   attackTime: .200000003
   windDown: 0
   cooldown: .100000001
+  attackArmor: 0
   showTooltips: 0
   attackAnimation: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
   Attack_Prefab: {fileID: 100000, guid: 14610f11a1edb1a4eb1a2d32a745568e, type: 2}
   hitInfo:
     baseDamage: 5
-    effect: 5
+    effect: 4
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: 3
   offset: {x: 1, y: 1}
@@ -277,13 +330,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
+  log: 0
   attackInput: 0
-  attackName: 
+  attackName: Punch
   windUp: 0
   attackTime: .200000003
   windDown: 0
   cooldown: 0
+  attackArmor: 0
   showTooltips: 0
   attackAnimation: {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
   Attack_Prefab: {fileID: 0}
@@ -292,12 +346,12 @@ MonoBehaviour:
     effect: 0
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: .200000003
-  offset: {x: 1, y: 1}
+  offset: {x: 2, y: 1.5}
   parented: 0
   hitNumber: 1
   oneShot: 0
   melee: 1
-  meleeSize: {x: 2, y: 1.5}
+  meleeSize: {x: 3, y: 2}
   magic: 0
   magicRequired: 0
   projectile: 0
@@ -317,20 +371,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
+  log: 0
   attackInput: 01
-  attackName: 
+  attackName: Explosion
   windUp: 0
   attackTime: .400000006
   windDown: 0
   cooldown: 0
+  attackArmor: 0
   showTooltips: 0
   attackAnimation: {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
   Attack_Prefab: {fileID: 0}
   hitInfo:
     baseDamage: 3
     effect: 0
-    knockBack: {x: 0, y: 0, z: 0}
+    knockBack: {x: 5, y: 20, z: 0}
   hitboxTime: .400000006
   offset: {x: 0, y: 2}
   parented: 0
@@ -369,13 +424,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
+  log: 0
   attackInput: 1
-  attackName: 
+  attackName: Slash
   windUp: 0
   attackTime: .5
   windDown: 0
   cooldown: 0
+  attackArmor: 0
   showTooltips: 0
   attackAnimation: {fileID: 2800000, guid: fdb604bebe40ac34cbebb2a72e1b622e, type: 3}
   Attack_Prefab: {fileID: 0}
@@ -432,9 +488,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
-  maxHealth: 0
-  currentHealth: 0
+  maxHealth: 100
+  currentHealth: 100
   invincible: 0
+  statusEffectivenesses:
+  - 2
+  - 1
+  - 1
+  - 1
+  - 1
+  attackArmor: 0
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

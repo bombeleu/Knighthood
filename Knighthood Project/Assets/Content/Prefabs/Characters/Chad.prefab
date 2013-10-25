@@ -23,6 +23,7 @@ GameObject:
   - 114: {fileID: 11400020}
   - 114: {fileID: 11400022}
   - 114: {fileID: 11400006}
+  - 114: {fileID: 11400026}
   m_Layer: 8
   m_Name: Chad
   m_TagString: Player
@@ -137,8 +138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086fdd72e7824a0479a940111cc43c35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
-  flinchTimeBase: .25
+  log: 0
+  flinchTimeBase: .200000003
   knockBackMultiplier: .0500000007
   knockBackRecoverySpeed: 1
   flinchInvincibleTime: .5
@@ -175,6 +176,7 @@ MonoBehaviour:
   attackDeadZone: .699999988
   superModifierDeadZone: .800000012
   moveBuffer: 0
+  character: 0
   myExperience:
     currentEXP: 0
     neededEXP: 0
@@ -209,13 +211,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
+  log: 0
   attackInput: SuperHeavy
   attackName: Fireball
   windUp: 0
   attackTime: .300000012
   windDown: 0
   cooldown: 0
+  attackArmor: 0
   showTooltips: 0
   attackAnimation: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
   Attack_Prefab: {fileID: 100002, guid: 4530b46cf5c1ea74092d6631af734071, type: 2}
@@ -249,13 +252,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
+  log: 0
   attackInput: SuperLight
   attackName: Icicle Blast
   windUp: 0
   attackTime: .200000003
   windDown: 0
   cooldown: .100000001
+  attackArmor: 0
   showTooltips: 0
   attackAnimation: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
   Attack_Prefab: {fileID: 100000, guid: 14610f11a1edb1a4eb1a2d32a745568e, type: 2}
@@ -328,13 +332,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
+  log: 0
   attackInput: 0
-  attackName: 
+  attackName: Punch
   windUp: 0
   attackTime: .200000003
   windDown: 0
   cooldown: 0
+  attackArmor: 0
   showTooltips: 0
   attackAnimation: {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
   Attack_Prefab: {fileID: 0}
@@ -343,12 +348,12 @@ MonoBehaviour:
     effect: 0
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: .200000003
-  offset: {x: 1, y: 1}
+  offset: {x: 2, y: 1.5}
   parented: 0
   hitNumber: 1
   oneShot: 0
   melee: 1
-  meleeSize: {x: 2, y: 1.5}
+  meleeSize: {x: 3, y: 2}
   magic: 0
   magicRequired: 0
   projectile: 0
@@ -368,20 +373,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
+  log: 0
   attackInput: 01
-  attackName: 
+  attackName: Explosion
   windUp: 0
   attackTime: .400000006
   windDown: 0
   cooldown: 0
+  attackArmor: 0
   showTooltips: 0
   attackAnimation: {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
   Attack_Prefab: {fileID: 0}
   hitInfo:
     baseDamage: 3
     effect: 0
-    knockBack: {x: 0, y: 0, z: 0}
+    knockBack: {x: 5, y: 20, z: 0}
   hitboxTime: .400000006
   offset: {x: 0, y: 2}
   parented: 0
@@ -420,13 +426,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa869c7bf31f54e40909731af22ddac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
+  log: 0
   attackInput: 1
-  attackName: 
+  attackName: Slash
   windUp: 0
   attackTime: .5
   windDown: 0
   cooldown: 0
+  attackArmor: 0
   showTooltips: 0
   attackAnimation: {fileID: 2800000, guid: fdb604bebe40ac34cbebb2a72e1b622e, type: 3}
   Attack_Prefab: {fileID: 0}
@@ -487,11 +494,57 @@ MonoBehaviour:
   currentHealth: 100
   invincible: 0
   statusEffectivenesses:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  - 1
+  - 1
+  - 1
+  - 1
+  - 2
+  attackArmor: 0
+--- !u!114 &11400026
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8caa4851bf1f2514bb5d822773a775ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  acceptAnim: {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
+  positions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: -4, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  attackAnimations:
+  - {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
