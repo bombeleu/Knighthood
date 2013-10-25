@@ -36,7 +36,7 @@ public class GameData : Singleton<GameData>
 
     #region Level Fields
 
-    private Dictionary<string, object> levelData; 
+    private object levelData; 
 
     #endregion
 
@@ -123,7 +123,7 @@ public class GameData : Singleton<GameData>
     /// </summary>
     /// <param name="nextScene">Name of next scene.</param>
     /// <param name="levelData">Data to save for the next scene.</param>
-    public void LoadScene(string nextScene, Dictionary<string, object> levelData)
+    public void LoadScene(string nextScene, object levelData)
     {
         this.levelData = levelData;
         LoadScene(nextScene, true);

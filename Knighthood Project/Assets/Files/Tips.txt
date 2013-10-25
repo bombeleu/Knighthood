@@ -1,2 +1,3 @@
 ﻿Killing bad guys helps beat the levels.
 Money can be used to buy things.
+Ultimate Attack's average the attack strength of all the participants.

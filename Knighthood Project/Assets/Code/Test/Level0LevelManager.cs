@@ -1,6 +1,8 @@
 ﻿// Steve Yeager
 // 10.6.2013
 
+using UnityEngine;
+
 /// <summary>
 /// 
 /// </summary>
@@ -15,6 +17,15 @@ public class Level0LevelManager : LevelManager
         managerType = GetType();
 
         CreatePlayers();
+    }
+
+    
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            RetagPlayers();
+        }
     }
 
     #endregion

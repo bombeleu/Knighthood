@@ -2,6 +2,7 @@
 // 8.18.2013
 
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
@@ -40,6 +41,16 @@ public abstract class LevelManager : Singleton<LevelManager>
 
     #endregion
 
+    #region Overview Fields
+
+    public bool displayOverview;
+    public float overviewDelay = 3f;
+    public Vector2 panelSizePercent;
+    public float panelYPosPercent;
+    public float usernameHeightPercent;
+
+    #endregion
+
     #region Events
 
     public EventHandler<FinishedLevelEventArgs> FinishedEvent;
@@ -64,6 +75,29 @@ public abstract class LevelManager : Singleton<LevelManager>
         }
     }
 
+
+    protected void OnGUI()
+    {
+        if (!displayOverview) return;
+
+        float W = Screen.width;
+        float H = Screen.height;
+        float xSpace = (W - panelSizePercent.x*W*4f)/5f;
+
+        for (int i = 0; i < 4; i++)
+        {
+            GUI.BeginGroup(new Rect(xSpace * (i + 1) + (panelSizePercent.x*W*i), panelYPosPercent * H, panelSizePercent.x * W, panelSizePercent.y * H));
+            {
+                // username
+                GUI.Label(new Rect(0, 0, panelSizePercent.x*W, usernameHeightPercent*H), "yeagz7");
+
+                // sheet
+                GUI.Box(new Rect(0, usernameHeightPercent * H, panelSizePercent.x * W, (panelSizePercent.y - usernameHeightPercent) * H), "");
+            }
+            GUI.EndGroup();
+        }
+    }
+
     #endregion
 
     #region Public Methods
@@ -76,18 +110,16 @@ public abstract class LevelManager : Singleton<LevelManager>
         if (FinishedEvent != null) FinishedEvent(this, new FinishedLevelEventArgs());
 
         var levelData = new Dictionary<string, object>();
+        levelData.Add("userData", new Dictionary<string, object>());
+        levelData.Add("statPoints", new int[] { 0, 0, 0, 0 });
         foreach (var player in PlayerTransforms)
         {
             Player cont = player.GetComponent<Player>();
             Dictionary<string, object> playerData = new Dictionary<string, object>();
             
             // score
-            playerData.Add("Score", cont.myScore.score);
-            playerData.Add("New Highscore", cont.myScore.Save());
-
-            // money
-            playerData.Add("Money", cont.myMoney.money);
-            cont.myMoney.Save();
+            //playerData.Add("Score", cont.myScore.score);
+            //playerData.Add("New Highscore", cont.myScore.Save());
 
             // kills
             var killData = enemyTypes.ToDictionary(enemy => enemy, enemy => cont.myPerformance.kills[enemy.ToString()]);
@@ -97,18 +129,26 @@ public abstract class LevelManager : Singleton<LevelManager>
             playerData.Add("Deaths", cont.myPerformance.deaths);
             cont.myPerformance.Save();
 
-            levelData.Add(cont.playerInfo.username, playerData);
+            // money
+            playerData.Add("Money", cont.myMoney.money);
+            cont.myMoney.Save();
+
+            // exp
+            ((int[])levelData["statPoints"])[cont.playerInfo.zeroNumber] = cont.myExperience.statPoints;
+
+            ((Dictionary<string, object>)levelData["userData"]).Add(cont.playerInfo.username, playerData);
         }
         
-        InvokeAction(() => GameData.Instance.LoadScene("Overview Screen", levelData), 5f);
+        //InvokeAction(() => GameData.Instance.LoadScene("Overview Screen", levelData), 5f);
+        StartCoroutine(LevelOverview(levelData));
     }
 
 
     /// <summary>
-    /// 
+    /// Recieve spawn call from Spawn Trigger.
     /// </summary>
-    /// <param name="spawnPoints"></param>
-    /// <param name="clearMethod"></param>
+    /// <param name="spawnPoints">List of spawnpoints.</param>
+    /// <param name="clearMethod">Method to call once all the enemies are killed.</param>
     public void SpawnEnemies(EnemySpawnPoint[] spawnPoints, string startMethod, string clearMethod)
     {
         Invoke(string.IsNullOrEmpty(startMethod) ? "LockCamera" : startMethod, 0f);
@@ -142,6 +182,18 @@ public abstract class LevelManager : Singleton<LevelManager>
         levelCamera.locked = false;
     }
 
+
+    /// <summary>
+    /// Change the tag for every player for PvP.
+    /// </summary>
+    public void RetagPlayers()
+    {
+        for (int i = 0; i < PlayerTransforms.Count; i++)
+        {
+            PlayerTransforms[i].GetComponent<Player>().Retag(i);
+        }
+    }
+
     #endregion
 
     #region Protected Methods
@@ -164,6 +216,30 @@ public abstract class LevelManager : Singleton<LevelManager>
             PlayerTransforms.Add(player.transform);
             player.GetSafeComponent<Player>().Initialize(GameData.Instance.playerUsernames[i], i);
             player.transform.parent = playerParent;
+        }
+    }
+
+    #endregion
+
+    #region Private Methods
+
+    private IEnumerator LevelOverview(Dictionary<string, object> levelData)
+    {
+        yield return WaitForTime(overviewDelay);
+
+        displayOverview = true;
+
+        yield return WaitForTime(3f);
+
+        int[] statPoints = (int[])levelData["statPoints"];
+        if (statPoints.Max() > 0)
+        {
+            // load level up screen
+            GameData.Instance.LoadScene("Levelup Menu", statPoints);
+        }
+        else
+        {
+            GameData.Instance.LoadScene("Level Selection Menu", true);
         }
     }
 

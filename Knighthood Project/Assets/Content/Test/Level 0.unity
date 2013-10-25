@@ -173,7 +173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   log: 1
   overwrite: 1
-  logFlags: 010001
+  logFlags: 010000
 --- !u!114 &37058448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,9 +204,10 @@ MonoBehaviour:
   log: 1
   playerUsernames:
   - yeagz7
+  - mmfane
   allUsernames:
   - 
-  playerCharacters: 00000000
+  playerCharacters: 0000000002000000
 --- !u!114 &37058450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,8 +223,8 @@ MonoBehaviour:
   log: 1
   Player_Prefabs:
   - {fileID: 100000, guid: bcf3c8837549784408f986a3d284cda3, type: 2}
-  - {fileID: 100000, guid: 14e9de730ee599a4987dc55406278856, type: 2}
-  - {fileID: 100000, guid: 4e0b4521eb1639e4d8960fc34a99e33b, type: 2}
+  - {fileID: 100000, guid: ca5c12640e5788f4c898b0657cc7cb13, type: 2}
+  - {fileID: 100000, guid: c6c2de9ebfd0a5b4d968e33d1c5cc48b, type: 2}
   - {fileID: 100000, guid: 02ec61d68c2aa944b983fc3849d8a7ee, type: 2}
   EnemyPrefabTypes: 00000000
   Enemy_Prefabs:
@@ -387,6 +388,115 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &167056711
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 167056712}
+  - 114: {fileID: 167056713}
+  - 114: {fileID: 167056714}
+  - 114: {fileID: 167056715}
+  m_Layer: 0
+  m_Name: _UltimateAttacks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &167056712
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 167056711}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &167056713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 167056711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b9d981e6612b9b48b7df81d3ab89933, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  attacks:
+  - {fileID: 167056714}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 167056715}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &167056714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 167056711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29233bfd0ac755b4e941c3fd3cac434b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  attackName: Ice Spear
+  attackTime: 2
+  IceSpear_Prefab: {fileID: 100002, guid: a65115db838757945b9abd1495bb0b3c, type: 2}
+  offset: {x: 6, y: 1.5}
+  hitInfo:
+    baseDamage: 10
+    effect: 4
+    knockBack: {x: 0, y: 0, z: 0}
+--- !u!114 &167056715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 167056711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bcec1e5d6731334bb67c9aa906c4c65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  attackName: Ice Shotgun
+  attackTime: 2
+  Wall_Prefab: {fileID: 100000, guid: 52b044f918697e742a3bdfd064e44ae6, type: 2}
+  Shard_Prefab: {fileID: 100000, guid: 4c2581d15aa5b8f46bb4ac34e519fd72, type: 2}
+  shardCount: 20
+  maxYRot: -25
+  minYRot: 10
+  shardSpeed: 30
+  shardTime: 3
+  hitInfo:
+    baseDamage: 5
+    effect: 4
+    knockBack: {x: 0, y: 0, z: 0}
+  wallTime: 1
+  punchTime: .5
+  wallCenter: 1.5
+  HaroldX: -2
+  HaroldPunchAnim: {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
+  ChadX: -4
+  ChadConjureAnim: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
 --- !u!1 &194417804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1732,9 +1842,17 @@ Prefab:
       propertyPath: Enemy_Prefabs.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: playerUsernames.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 11400004, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
       propertyPath: EnemyPrefabTypes.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: playerCharacters.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
       propertyPath: m_LocalPosition.x
@@ -1780,6 +1898,26 @@ Prefab:
       propertyPath: logFlags.Array.data[1]
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400008, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: logFlags.Array.data[2]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: playerUsernames.Array.data[1]
+      value: mmfane
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: playerCharacters.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: playerCharacters.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400004, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
+      propertyPath: Player_Prefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 100000, guid: c6c2de9ebfd0a5b4d968e33d1c5cc48b, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
   m_RootGameObject: {fileID: 37058446}
@@ -2252,7 +2390,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1347832035}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15, y: 0, z: 0}
+  m_LocalPosition: {x: 5.3970871, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1794208085}
@@ -2664,7 +2802,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1689187940
 Transform:
   m_ObjectHideFlags: 0
@@ -2794,7 +2932,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1901715098}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 20, y: 5, z: 0}
+  m_LocalPosition: {x: 25.5165424, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 1794208085}
@@ -3061,6 +3199,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   log: 1
   enemyTypes: 00000000
+  displayOverview: 0
+  overviewDelay: 3
+  panelSizePercent: {x: .219999999, y: .699999988}
+  panelYPosPercent: .150000006
+  usernameHeightPercent: .0500000007
 --- !u!1 &2100888395
 GameObject:
   m_ObjectHideFlags: 0
