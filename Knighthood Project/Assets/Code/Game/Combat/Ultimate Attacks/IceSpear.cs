@@ -15,6 +15,7 @@ public class IceSpear : UltimateAttack
     public GameObject IceSpear_Prefab;
     public Vector2 offset;
     public HitInfo hitInfo;
+    public Texture SpearAnim;
 
     #endregion
 
@@ -23,6 +24,7 @@ public class IceSpear : UltimateAttack
 
     public override void Activate()
     {
+        UltimateAttacks.participants[0].PlayAnimation(SpearAnim);
         var spear = (GameObject)Instantiate(IceSpear_Prefab, UltimateAttacks.attackPivot.position + UltimateAttacks.participants[0].transform.TransformDirection(0f, offset.y, offset.x), UltimateAttacks.participants[0].transform.rotation);
         spear.transform.Align();
         spear.GetComponent<Hitbox>().Initialize(UltimateAttacks.participants[0].GetComponent<Player>(), hitInfo, attackTime, 1);
