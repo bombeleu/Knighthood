@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Enemy_Mat
+  m_Name: Soldier_Mat
   m_Shader: {fileID: 4800000, guid: 5b5b301eee021eb41856e6a4efb3bbe3, type: 3}
   m_ShaderKeywords: []
   m_SavedProperties:

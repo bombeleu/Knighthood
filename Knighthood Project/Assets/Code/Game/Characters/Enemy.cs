@@ -21,7 +21,9 @@ public class Enemy : Character
 
     public enum EnemyTypes
     {
-        Dummy
+        Soldier,
+        Magician,
+
     }
     public EnemyTypes enemyType;
     public int experience;
@@ -37,6 +39,7 @@ public class Enemy : Character
     #region Nav Fields
 
     public float navBuffer = 0.5f;
+    protected Transform currentTarget;
 
     #endregion
 
@@ -57,17 +60,16 @@ public class Enemy : Character
     }
 
 
-    protected virtual void Start()
+    protected override void Start()
     {
-        // register events
-        myHealth.HitEvent += HitHandler;
+        base.Start();
     }
 
     #endregion
 
     #region Event Handlers
 
-    private void HitHandler(object sender, HitEventArgs args)
+    protected override void HitHandler(object sender, HitEventArgs args)
     {
         if (args.dead)
         {
@@ -77,6 +79,11 @@ public class Enemy : Character
             player.RecieveKill(enemyType, experience);
 
             SetState(DyingState, new Dictionary<string, object>());
+        }
+        else
+        {
+            currentTarget = ((Character)sender).transform;
+            SetState(FlinchingState, new Dictionary<string, object> { { "knockBack", args.hitInfo.knockBack } });
         }
     }
 

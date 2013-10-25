@@ -31,11 +31,10 @@ GameObject:
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400002}
   - 114: {fileID: 11400008}
-  - 114: {fileID: 11400000}
   - 114: {fileID: 11400010}
   - 114: {fileID: 11400012}
   m_Layer: 8
-  m_Name: Dummy
+  m_Name: Magician
   m_TagString: Enemy
   m_Icon: {fileID: -1003283189, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -76,7 +75,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 94c0f31413025ec4196c4c6879fc366c, type: 2}
+  - {fileID: 2100000, guid: a549d9f541934854f8ccc2639e16b72f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -104,44 +103,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57a1995f2ef1ade43a256907a2f91dd2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  log: 0
-  flinchTimeBase: 0
-  knockBackMultiplier: 0
-  knockBackRecoverySpeed: 0
-  flinchInvincibleTime: 0
-  myStats:
-    health: 0
-    physicalAttack: 1
-    physicalDefense: 1
-    magicAttack: 1
-    magicDefense: 1
-    magicMax: 0
-    attackSpeed: 0
-  animationNames:
-  - Idling
-  - Moving
-  - Jumping
-  - Falling
-  animationTex:
-  - {fileID: 2800000, guid: 0e5999ff83efc6f459f61cb19b2e4a01, type: 3}
-  - {fileID: 2800000, guid: 6cebf2eb05df4b24eb2bfc14f9cdec29, type: 3}
-  - {fileID: 2800000, guid: b76e982ed2fb82f4b8d0cb0a5cfacda1, type: 3}
-  - {fileID: 2800000, guid: cb4e16837103d614eb9de021cfceffb9, type: 3}
-  enemyType: 0
-  experience: 500
-  navBuffer: .5
-  attackDistance: 3
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -228,10 +189,10 @@ MonoBehaviour:
   - {fileID: 11400012}
   inputs:
   - Melee0
-  open: 01
+  open: 00
 --- !u!114 &11400012
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
