@@ -9,19 +9,40 @@ using UnityEngine;
 /// </summary>
 public abstract class CombatManager : BaseMono
 {
+    #region References
+
     protected Character myCharacter;
+
+    #endregion
+
+    #region Public Fields
+
     public Attack[] attacks = new Attack[0];
     public string[] inputs = new string[0];
     public bool[] open = new bool[0];
+
+    #endregion
+
+    #region Private Fields
+
+    private int activated = -1;
+
+    #endregion
+
+    #region Events
+
+    public EventHandler<AttackOverArgs> OnAttackOver;
+
+    #endregion
 
 
     #region Virtual Methods
 
     /// <summary>
-    /// Checks the status of the corresponding attack.
+    /// Checks the status of the corresponding attackValue.
     /// </summary>
-    /// <param name="attack">Index of attack to activate</param>
-    /// <returns>True, if the attack can activate.</returns>
+    /// <param name="attackValue">Index of attackValue to activate</param>
+    /// <returns>True, if the attackValue can activate.</returns>
     public virtual bool CanActivate(int attack)
     {
         if (attacks[attack] != null)
@@ -34,10 +55,10 @@ public abstract class CombatManager : BaseMono
 
 
     /// <summary>
-    /// Checks the status of the corresponding attack.
+    /// Checks the status of the corresponding attackValue.
     /// </summary>
     /// <param name="attackInput">Input pressed.</param>
-    /// <returns>True, if the attack can activate.</returns>
+    /// <returns>True, if the attackValue can activate.</returns>
     public virtual bool CanActivate(string attackInput)
     {
         int index = Array.IndexOf(inputs, attackInput);
@@ -51,14 +72,15 @@ public abstract class CombatManager : BaseMono
     
 
     /// <summary>
-    /// Activates the correct attack.
+    /// Activates the correct attackValue.
     /// </summary>
-    /// <param name="attack">Index of the attack to activate.</param>
-    /// <returns>Texture corresponding to the attack. Null if nothing activated.</returns>
+    /// <param name="attackValue">Index of the attackValue to activate.</param>
+    /// <returns>Texture corresponding to the attackValue. Null if nothing activated.</returns>
     public virtual Texture Activate(int attack)
     {
         if (attack < attacks.Length && attacks[attack] != null)
         {
+            activated = attack;
             return attacks[attack].Activate();
         }
 
@@ -67,15 +89,16 @@ public abstract class CombatManager : BaseMono
 
 
     /// <summary>
-    /// Activates an attack corresponding to the attack input.
+    /// Activates an attackValue corresponding to the attackValue input.
     /// </summary>
-    /// <param name="attackInput">Name of the attack input.</param>
-    /// <returns>Texture corresponding to the attack. Null if nothing activated.</returns>
+    /// <param name="attackInput">Name of the attackValue input.</param>
+    /// <returns>Texture corresponding to the attackValue. Null if nothing activated.</returns>
     public virtual Texture Activate(string attackInput)
     {
         int index = Array.IndexOf(inputs, attackInput);
         if (index != -1 && attacks[index] != null)
         {
+            activated = index;
             return attacks[index].Activate();
         }
 
@@ -84,11 +107,13 @@ public abstract class CombatManager : BaseMono
 
 
     /// <summary>
-    /// Relays to the character that the attack has ended.
+    /// 
     /// </summary>
-    public virtual void EndAttack()
+    /// <param name="cancelled"></param>
+    public virtual void EndAttack(bool cancelled)
     {
-        myCharacter.EndAttack();
+        activated = -1;
+        if (OnAttackOver != null) OnAttackOver(this, new AttackOverArgs(cancelled));
     }
 
     #endregion
@@ -106,6 +131,16 @@ public abstract class CombatManager : BaseMono
         {
             attack.Initialize(this);
         }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public virtual void Cancel()
+    {
+        if (activated == -1) return;
+        attacks[activated].Cancel();
     }
 
     #endregion

@@ -11,46 +11,49 @@ public abstract class Attack : BaseMono
     public string attackInput;
     public string attackName;
     protected CombatManager manager;
+    protected CharacterHealth myHealth;
 
     public float windUp;
     public float attackTime;
     public float windDown;
     public float cooldown;
     protected bool canActivate = true;
+    public CharacterHealth.AttackArmor attackArmor;
+    protected Job attackJob;
 
 
     #region Abstract Methods
 
     /// <summary>
-    /// Can the attack be activated?
+    /// Can the attackValue be activated?
     /// </summary>
-    /// <returns>True, if the attack can be activated at this time.</returns>
+    /// <returns>True, if the attackValue can be activated at this time.</returns>
     public abstract bool CanActivate();
 
     /// <summary>
-    /// Start the attack.
+    /// Start the attackValue.
     /// </summary>
-    /// <returns>True, if the attack was successfully started.</returns>
+    /// <returns>True, if the attackValue was successfully started.</returns>
     public abstract Texture Activate();
 
-    #endregion
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public abstract void Cancel();
+
+    #endregion
 
     #region Public Methods
 
     /// <summary>
-    /// Get attack ready for combat for specific character.
+    /// Get attackValue ready for combat for specific character.
     /// </summary>
     /// <param name="manager"></param>
     public void Initialize(CombatManager manager)
     {
         this.manager = manager;
-    }
-
-
-    public HitInfo TransformKnockBack()
-    {
-        return new HitInfo();
+        myHealth = manager.GetComponent<CharacterHealth>();
     }
 
     #endregion

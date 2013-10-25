@@ -101,6 +101,7 @@ public class GenericAttack : Attack
         return canActivate;
     }
 
+
     public override Texture Activate()
     {
         if (!canActivate) return null;
@@ -110,8 +111,24 @@ public class GenericAttack : Attack
             return null;
         }
 
-        StartCoroutine(Attack());
+        attackJob = new Job(Attack());
+
         return attackAnimation;
+    }
+
+
+    public override void Cancel()
+    {
+        attackJob.Kill();
+
+        if (currentAttack != null && (parented || melee))
+        {
+            currentAttack.GetComponent<Hitbox>().End();
+        }
+
+        manager.EndAttack(true);
+
+        InvokeAction(() => canActivate = true, cooldown);
     }
 
     #endregion
@@ -125,6 +142,9 @@ public class GenericAttack : Attack
     private IEnumerator Attack()
     {
         canActivate = false;
+
+        myHealth.attackArmor = attackArmor;
+
         yield return WaitForTime(windUp);
 
         if (melee)
@@ -141,7 +161,9 @@ public class GenericAttack : Attack
         }
 
         yield return WaitForTime(attackTime + windDown);
-        manager.EndAttack();
+        manager.EndAttack(false);
+
+        myHealth.attackArmor = CharacterHealth.AttackArmor.None;
 
         yield return WaitForTime(cooldown);
         canActivate = true;
@@ -162,7 +184,7 @@ public class GenericAttack : Attack
     private void ProjectileAttack()
     {
         currentAttack = Attack_Pool.nextFree;
-        currentAttack.transform.position = myTransform.position + new Vector3(0f, offset.y, offset.x);
+        currentAttack.transform.localPosition = myTransform.position + myTransform.TransformDirection(0f, offset.y, offset.x);
         currentAttack.transform.rotation = myTransform.rotation;
         currentAttack.transform.Align();
         currentAttack.GetComponent<Hitbox>().Initialize(myCharacter, hitInfo, hitboxTime, hitNumber, myTransform.forward * projectileSpeed, oneShot);

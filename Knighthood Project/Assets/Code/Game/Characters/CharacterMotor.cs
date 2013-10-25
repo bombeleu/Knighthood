@@ -254,5 +254,15 @@ public class CharacterMotor : BaseMono
         velocity += new Vector3(0f, y, 0f);
     }
 
+
+    /// <summary>
+    /// Set x velocity in the forward direction.
+    /// </summary>
+    /// <param name="x">Forward speed.</param>
+    public void SetVelocityForward(float x)
+    {
+        velocity = myTransform.forward * x;
+    }
+
     #endregion
 }

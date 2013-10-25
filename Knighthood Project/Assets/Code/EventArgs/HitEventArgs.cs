@@ -10,7 +10,7 @@ public class HitEventArgs : EventArgs
 {
   /// <summary>Hit info to be passed.</summary>
   public readonly HitInfo hitInfo;
-  /// <summary>If the attack killed the object.</summary>
+  /// <summary>If the attackValue killed the object.</summary>
   public readonly bool dead;
 
 
@@ -18,7 +18,7 @@ public class HitEventArgs : EventArgs
   /// Constructor.
   /// </summary>
   /// <param name="hitInfo">Hit info to be passed.</param>
-  /// <param name="dead">If the attack killed the object.</param>
+  /// <param name="dead">If the attackValue killed the object.</param>
   public HitEventArgs(HitInfo hitInfo, bool dead)
   {
     this.hitInfo = hitInfo;

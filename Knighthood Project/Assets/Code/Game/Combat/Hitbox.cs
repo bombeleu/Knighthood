@@ -76,7 +76,7 @@ public class Hitbox : BaseMono
     /// <summary>
     /// Create a new hitbox with new data.
     /// </summary>
-    /// <param name="sender">Character who sent the attack.</param>
+    /// <param name="sender">Character who sent the attackValue.</param>
     /// <param name="hitInfo">HitInfo to pass along to the reciever's Health.</param>
     /// <param name="time">How long the hitbox should last.</param>
     /// <param name="hitNumber">How many hits to perform. Usually 1.</param>
@@ -87,14 +87,14 @@ public class Hitbox : BaseMono
         this.hitInfo = hitInfo;
         this.oneShot = oneShot;
 
-        gameObject.tag = sender.gameObject.tag;
+        tag = sender.gameObject.tag;
         SetHitID();
         if (hitNumber > 1)
         {
             StartCoroutine(MultiHit(time, hitNumber));
         }
 
-        // physical/magic attack
+        // physical/magic attackValue
         hitInfo.FactorAttackStats(sender.myStats);
 
         InvokeMethod("End", time);
@@ -104,7 +104,7 @@ public class Hitbox : BaseMono
     /// <summary>
     /// Create a new hitbox with new data.
     /// </summary>
-    /// <param name="sender">Character who sent the attack.</param>
+    /// <param name="sender">Character who sent the attackValue.</param>
     /// <param name="hitInfo">HitInfo to pass along to the reciever's Health.</param>
     /// <param name="time">How long the hitbox should last.</param>
     /// <param name="hitNumber">How many hits to perform. Usually 1.</param>
@@ -118,7 +118,7 @@ public class Hitbox : BaseMono
 
 
     /// <summary>
-    /// End the current attack.
+    /// End the current attackValue.
     /// </summary>
     public void End()
     {

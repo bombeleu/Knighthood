@@ -31,6 +31,7 @@ public class Character : BaseMono
     public const string FallingState = "Falling";
     public const string AttackingState = "Attacking";
     public const string DyingState = "Dying";
+    public const string FlinchingState = "Flinching";
 
     protected string currentState;
     protected string initialState;
@@ -70,6 +71,13 @@ public class Character : BaseMono
         myRigidbody = rigidbody;
         myHealth = GetComponent<CharacterHealth>();
         myMaterial = myTransform.FindChild("Body").renderer.materials[0];
+    }
+
+
+    protected virtual void Start()
+    {
+        // events
+        myHealth.HitEvent += HitHandler;
     }
 
     #endregion
@@ -129,32 +137,10 @@ public class Character : BaseMono
     #region Public Methods
 
     /// <summary>
-    /// Change the character to Attacking state.
-    /// </summary>
-    /// <param name="attackTexture">Texture corresponding to the attack being performed.</param>
-    public void Attack(Texture attackTexture)
-    {
-        SetState(AttackingState, new Dictionary<string, object> { { "attackTexture", attackTexture } });
-    }
-
-
-    /// <summary>
-    /// End the current attack state. Set to Idle.
-    /// </summary>
-    public void EndAttack()
-    {
-        SetState(IdlingState, null);
-    }
-
-    #endregion
-
-    #region Protected Methods
-
-    /// <summary>
     /// 
     /// </summary>
     /// <param name="animationName"></param>
-    protected void PlayAnimation(string animationName)
+    public void PlayAnimation(string animationName)
     {
         myMaterial.mainTexture = animationTex[Array.IndexOf(animationNames, animationName)];
     }
@@ -164,11 +150,24 @@ public class Character : BaseMono
     /// 
     /// </summary>
     /// <param name="animationTexure"></param>
-    protected void PlayAnimation(Texture animationTexure)
+    public void PlayAnimation(Texture animationTexure)
     {
         myMaterial.mainTexture = animationTexure;
     }
 
+
+    /// <summary>
+    /// Change the character to Attacking state.
+    /// </summary>
+    /// <param name="attackTexture">Texture corresponding to the attackValue being performed.</param>
+    public void Attack(Texture attackTexture)
+    {
+        SetState(AttackingState, new Dictionary<string, object> { { "attackTexture", attackTexture } });
+    }
+
+    #endregion
+
+    #region Protected Methods
 
     /// <summary>
     /// Make character invincible for set time.
@@ -179,6 +178,32 @@ public class Character : BaseMono
         myHealth.invincible = true;
         yield return WaitForTime(time);
         myHealth.invincible = false;
+    }
+
+    #endregion
+
+    #region Event Handlers
+
+    /// <summary>
+    /// Start flinching after being hit.
+    /// </summary>
+    protected virtual void HitHandler(object sender, HitEventArgs args)
+    {
+        SetState(FlinchingState, new Dictionary<string, object> { { "knockBack", args.hitInfo.knockBack } });
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    protected void OnAttackOver(object sender, AttackOverArgs args)
+    {
+        if (!args.cancelled && currentState == AttackingState)
+        {
+            SetState(IdlingState, new Dictionary<string, object>());
+        }
     }
 
     #endregion

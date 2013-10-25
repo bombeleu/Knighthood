@@ -195,7 +195,7 @@ public class ComboManagerEditor : Editor
                 confirmAdd = false;
             }
         }
-        // add new attack
+        // add new attackValue
         else
         {
             if (GUILayout.Button("Add New Attack"))

@@ -16,6 +16,7 @@ public class Player : Character
     private ComboManager comboManager;
     private AttackManager attackManager;
     private TauntManager tauntManager;
+    private UltimateAttackManager ultimateManager;
 
     #endregion
 
@@ -23,7 +24,7 @@ public class Player : Character
 
     private const string JumpingState = "Jumping";
     private const string DefendingState = "Defending";
-    private const string FlinchingState = "Flinching";
+    private const string UltimateState = "Ultimate";
 
     public float spawnTime;
     public float fastFallSpeed;
@@ -61,6 +62,8 @@ public class Player : Character
 
     #region Stat Fields
 
+    public enum Characters { Chad = 0, Eva = 1, Harold = 2, Jules = 3 }
+    public Characters character;
     public ExperienceManager myExperience;
     public MoneyManager myMoney;
     public PerformanceManager myPerformance;
@@ -86,12 +89,15 @@ public class Player : Character
         // create states
         CreateState(SpawningState, SpawningEnter, info => {});
         CreateState(IdlingState, IdlingEnter, IdlingExit);
-        CreateState(JumpingState, JumpingEnter, info => { });
+        CreateState(JumpingState, JumpingEnter, info => {});
         CreateState(MovingState, MovingEnter, MovingExit);
         CreateState(FallingState, FallingEnter, FallingExit);
         CreateState(AttackingState, AttackingEnter, info => {});
+        CreateState(UltimateState, UltimateEnter, UltimateExit);
         CreateState(DefendingState, DefendingEnter, DefendingExit);
         CreateState(FlinchingState, FlinchingEnter, FlinchingExit);
+        // dying state
+        
         initialState = SpawningState;
 
         // combat
@@ -100,18 +106,22 @@ public class Player : Character
         comboManager = GetComponent<ComboManager>();
         comboManager.Initialize(this);
         tauntManager = GetComponent<TauntManager>();
+        ultimateManager = GetComponent<UltimateAttackManager>();
     }
 
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
 #if UNITY_EDITOR
-        UnityEditor.Selection.objects = new UnityEngine.Object[1] { gameObject };
+        //UnityEditor.Selection.objects = new UnityEngine.Object[1] { gameObject };
 #endif
 
         // events
         MoneyEvent += CollectMoney;
-        myHealth.HitEvent += HitHandler;
+        tauntManager.OnTauntOver += (x, y) => SetState(IdlingState, new Dictionary<string,object>());
+        attackManager.OnAttackOver += OnAttackOver;
+        comboManager.OnAttackOver += OnAttackOver;
     }
 
 
@@ -171,6 +181,16 @@ public class Player : Character
         myExperience.Increase(experience);
         myPerformance.IncreaseKill(enemy.ToString());
         myScore.IncreaseScore(Mathf.CeilToInt(experience*SCOREEXPMODIFIER));
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="number"></param>
+    public void Retag(int number)
+    {
+        tag = "Player" + number;
     }
 
     #endregion
@@ -234,7 +254,17 @@ public class Player : Character
                 yield break;
             }
 
-            // enter attacking state
+            // ultimate state
+            if (GetUltimateInput())
+            {
+                if (ultimateManager.CanActivate())
+                {
+                    ultimateManager.Activate();
+                    SetState(UltimateState, new Dictionary<string, object>());
+                }
+            }
+
+            // attacking state
             AttackTypes attack = GetAttackingInput();
             if (attack != AttackTypes.None)
             {
@@ -242,35 +272,35 @@ public class Player : Character
                 yield break;
             }
 
-            // enter defending state
+            // defending state
             if (GetDefendingInput())
             {
                 SetState(DefendingState, new Dictionary<string, object>());
                 yield break;
             }
 
-            // enter jumping state
+            // jumping state
             if (GetJumpingInput())
             {
                 SetState(JumpingState, null);
                 yield break;
             }
 
-            // enter moving state
+            // moving state
             if (GetMovingInput().x != 0f)
             {
                 SetState(MovingState, null);
                 yield break;
             }
 
-            // enter falling state
+            // falling state
             if (!myMotor.IsGrounded())
             {
                 SetState(FallingState, null);
                 yield break;
             }
 
-            // taunt
+            // taunting state
             Texture tauntTexture = GetTauntingInput();
             if (tauntTexture != null)
             {
@@ -285,6 +315,15 @@ public class Player : Character
 
     private void IdlingExit(Dictionary<string, object> info)
     {
+    }
+
+
+    private void MovingEnter(Dictionary<string, object> info)
+    {
+        // attackAnimation
+        PlayAnimation(MovingState);
+
+        currentStateJob = new Job(MovingUpdate());
     }
 
 
@@ -357,15 +396,6 @@ public class Player : Character
 
             yield return null;
         }
-    }
-
-
-    private void MovingEnter(Dictionary<string, object> info)
-    {
-        // attackAnimation
-        PlayAnimation(MovingState);
-    
-        currentStateJob = new Job(MovingUpdate());
     }
 
 
@@ -578,9 +608,23 @@ public class Player : Character
     }
 
 
+    private void UltimateEnter(Dictionary<string, object> info)
+    {
+        myHealth.invincible = true;
+    }
+
+
+    private void UltimateExit(Dictionary<string, object> info)
+    {
+        myHealth.invincible = false;
+    }
+
+
     private void DefendingEnter(Dictionary<string, object> info)
     {
         myHealth.invincible = true;
+
+        PlayAnimation("Splat");
 
         currentStateJob = new Job(DefendingUpdate());
     }
@@ -626,10 +670,10 @@ public class Player : Character
         }
         else
         {
-            PlayAnimation("Fall Flinch");            
+            PlayAnimation("Fall Flinch");
         }
 
-        currentStateJob = new Job(FlinchingUpdate(knockBack, flinchTimeBase + knockBack.magnitude*knockBackMultiplier));
+        currentStateJob = new Job(FlinchingUpdate(knockBack, flinchTimeBase + knockBack.magnitude * knockBackMultiplier));
     }
 
 
@@ -665,7 +709,7 @@ public class Player : Character
             // fall
             if (!grounded)
             {
-                fallSpeed -= myMotor.gravity*GameTime.deltaTime;
+                fallSpeed -= myMotor.gravity * GameTime.deltaTime;
                 myMotor.SetVelocityY(fallSpeed);
             }
 
@@ -673,7 +717,7 @@ public class Player : Character
             myMotor.AddVelocity(knockBack);
 
             // recover
-            knockBack.x -= Mathf.Sign(knockBack.x) * knockBackRecoverySpeed*GameTime.deltaTime;
+            knockBack.x -= Mathf.Sign(knockBack.x) * knockBackRecoverySpeed * GameTime.deltaTime;
 
             yield return null;
         }
@@ -741,9 +785,9 @@ public class Player : Character
 
 
     /// <summary>
-    /// Detect attack input.
+    /// Detect attackValue input.
     /// </summary>
-    /// <returns>Returns corresponding attack type.</returns>
+    /// <returns>Returns corresponding attackValue type.</returns>
     private AttackTypes GetAttackingInput()
     {
         if (keyboard)
@@ -920,14 +964,31 @@ public class Player : Character
         return null;
     }
 
+
+    /// <summary>
+    /// Detect Ultimate Attack input.
+    /// </summary>
+    /// <returns>True, if Ultimate Attack input pressed.</returns>
+    private bool GetUltimateInput()
+    {
+        if (keyboard)
+        {
+            return Input.GetKeyDown(KeyCode.E);
+        }
+        else
+        {
+            return Input.GetButtonDown("RB_" + playerInfo.playerNumber);
+        }
+    }
+
     #endregion
 
     #region Combat Methods
 
     /// <summary>
-    /// Activate either combo or attack manager and set state to Attacking.
+    /// Activate either combo or attackValue manager and set state to Attacking.
     /// </summary>
-    /// <param name="attack">Attack performed.</param>
+    /// <param name="attackValue">Attack performed.</param>
     /// <param name="info">Info to pass to the attacking state.</param>
     private void CalculateAttack(AttackTypes attack, Dictionary<string, object> info)
     {
@@ -952,14 +1013,14 @@ public class Player : Character
 
     #region Event Handlers
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="args"></param>
-    private void HitHandler(object sender, HitEventArgs args)
+    protected override void HitHandler(object sender, HitEventArgs args)
     {
-        SetState(FlinchingState, new Dictionary<string, object>{{"knockBack", args.hitInfo.knockBack}});
+        // end attacks
+        attackManager.Cancel();
+        comboManager.Cancel();
+        // cancel taunt
+
+        base.HitHandler(sender, args);
     }
 
     #endregion

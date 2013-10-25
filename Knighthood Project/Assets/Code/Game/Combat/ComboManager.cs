@@ -62,11 +62,11 @@ public class ComboManager : CombatManager
     }
 
 
-    public override void EndAttack()
+    public override void EndAttack(bool cancelled)
     {
         if (comboQueue.Count == 0)
         {
-            myCharacter.EndAttack();
+            base.EndAttack(false);
             currentComboString = "";
         }
         else
@@ -82,7 +82,7 @@ public class ComboManager : CombatManager
     /// <summary>
     /// Timer for setting toggling the queue open status.
     /// </summary>
-    /// <param name="openTime">Attack time of an attack.</param>
+    /// <param name="openTime">Attack time of an attackValue.</param>
     private IEnumerator OpenQueue(float openTime)
     {
         attacking = true;
@@ -92,7 +92,7 @@ public class ComboManager : CombatManager
 
 
     /// <summary>
-    /// Starts the next attack if one is queued up.
+    /// Starts the next attackValue if one is queued up.
     /// </summary>
     private void ActivateComboNext()
     {
@@ -104,10 +104,10 @@ public class ComboManager : CombatManager
 
 
     /// <summary>
-    /// Get the index of the next possible attack.
+    /// Get the index of the next possible attackValue.
     /// </summary>
     /// <param name="attackInput">Name of input.</param>
-    /// <returns>Index of the attack corresponding with the next combo.</returns>
+    /// <returns>Index of the attackValue corresponding with the next combo.</returns>
     private int GetAttackIndexFromInput(string attackInput)
     {
         int inputIndex = Array.IndexOf(inputs, attackInput);
@@ -119,10 +119,10 @@ public class ComboManager : CombatManager
 
 
     /// <summary>
-    /// Get index of attack.
+    /// Get index of attackValue.
     /// </summary>
-    /// <param name="comboString">Combo string for attack.</param>
-    /// <returns>Index of the corresponding attack.</returns>
+    /// <param name="comboString">Combo string for attackValue.</param>
+    /// <returns>Index of the corresponding attackValue.</returns>
     private int GetAttackIndexFromComboString(string comboString)
     {
         return Array.IndexOf(comboStrings, comboString);

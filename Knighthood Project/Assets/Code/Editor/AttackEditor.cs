@@ -36,6 +36,7 @@ public class AttackEditor : Editor
     {
         myObject.Update();
 
+        EditorGUILayout.PropertyField(myObject.FindProperty("log"), new GUIContent("Log"));
         EditorGUILayout.LabelField("Base", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
 
@@ -45,6 +46,8 @@ public class AttackEditor : Editor
             EditorGUILayout.LabelField(attackName.stringValue, EditorStyles.boldLabel, GUILayout.MinWidth(0));
         }
         EditorGUILayout.EndHorizontal();
+
+        myObject.ApplyModifiedProperties();
     }
 
     #endregion

@@ -62,7 +62,7 @@ public class Magic : BaseMono
 
 
     /// <summary>
-    /// Does the character have enough magic to cast attack?
+    /// Does the character have enough magic to cast attackValue?
     /// </summary>
     /// <param name="amount">Amount needed.</param>
     /// <returns>True, if there is enough magic in reserve.</returns>

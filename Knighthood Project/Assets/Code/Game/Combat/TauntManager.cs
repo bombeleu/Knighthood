@@ -3,6 +3,7 @@
 
 using System.Collections;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// Manager for activating player taunts.
@@ -24,6 +25,12 @@ public class TauntManager : BaseMono
 
     private Character myCharacter;
     private readonly bool[] used = new bool[4];
+
+    #endregion
+
+    #region Events
+
+    public EventHandler<AttackOverArgs> OnTauntOver;
 
     #endregion
 
@@ -96,7 +103,7 @@ public class TauntManager : BaseMono
 
 
     /// <summary>
-    /// Returns attack stats back to normal after set time.
+    /// Returns attackValue stats back to normal after set time.
     /// </summary>
     private IEnumerator AttackIncrease()
     {
@@ -112,7 +119,7 @@ public class TauntManager : BaseMono
     private IEnumerator Taunt()
     {
         yield return WaitForTime(tauntTime);
-        myCharacter.EndAttack();
+        if (OnTauntOver != null) OnTauntOver(this, new AttackOverArgs(false));
     }
 
     #endregion

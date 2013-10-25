@@ -19,10 +19,10 @@ public class Health : BaseMono
 
     #endregion
 
-    #region Private Fields
+    #region Protected Fields
 
-    private int lastHitID;
-    private string[] statusMethods = new string[5];
+    protected int lastHitID;
+    protected string[] statusMethods = new string[5];
 
     #endregion
 
@@ -30,6 +30,8 @@ public class Health : BaseMono
 
     /// <summary>Triggered when the owner recieves a hit and not invincible.</summary>
     public EventHandler<HitEventArgs> HitEvent;
+    public delegate void GroupHit(object[] senders, HitEventArgs args);
+    public event GroupHit GroupHitEvent;
     public EventHandler<StatusEffectEventArgs> FireEvent;
     public EventHandler<StatusEffectEventArgs> LightningEvent;
     public EventHandler<StatusEffectEventArgs> AcidEvent;
@@ -94,10 +96,10 @@ public class Health : BaseMono
     #region Virtual Methods
 
     /// <summary>
-    /// Recieve an attack.
+    /// Recieve an attackValue.
     /// </summary>
-    /// <param name="sender">Who sent the attack.</param>
-    /// <param name="hitInfo">Attack info associated with the attack.</param>
+    /// <param name="sender">Who sent the attackValue.</param>
+    /// <param name="hitInfo">Attack info associated with the attackValue.</param>
     public virtual void RecieveHit(object sender, int hitID, HitInfo hitInfo)
     {
         if (invincible) return;
@@ -109,10 +111,10 @@ public class Health : BaseMono
         // status effect
         if (hitInfo.effect != HitInfo.Effects.None)
         {
-            damage = Mathf.CeilToInt(damage*statusEffectivenesses[(int)hitInfo.effect]);
+            damage = Mathf.CeilToInt(damage * statusEffectivenesses[(int)hitInfo.effect]);
             if (damage > 0)
             {
-                Log(hitInfo.effect + ":" + (int) hitInfo.effect, Debugger.LogTypes.Combat);
+                Log(hitInfo.effect + ":" + (int)hitInfo.effect, Debugger.LogTypes.Combat);
                 StopAllCoroutines();
                 StartCoroutine(statusMethods[(int)hitInfo.effect], damage);
             }
@@ -124,6 +126,41 @@ public class Health : BaseMono
         if (HitEvent != null)
         {
             HitEvent(sender, new HitEventArgs(hitInfo, currentHealth == 0));
+        }
+    }
+
+
+    /// <summary>
+    /// Recieve an attackValue.
+    /// </summary>
+    /// <param name="senders">ALl of the characters that sent the attackValue.</param>
+    /// <param name="hitInfo">Attack info associated with the attackValue.</param>
+    public virtual void RecieveHit(object[] senders, int hitID, HitInfo hitInfo)
+    {
+        if (invincible) return;
+        if (hitID == lastHitID) return;
+        lastHitID = hitID;
+
+        var damage = hitInfo.damage;
+
+        // status effect
+        if (hitInfo.effect != HitInfo.Effects.None)
+        {
+            damage = Mathf.CeilToInt(damage * statusEffectivenesses[(int)hitInfo.effect]);
+            if (damage > 0)
+            {
+                Log(hitInfo.effect + ":" + (int)hitInfo.effect, Debugger.LogTypes.Combat);
+                StopAllCoroutines();
+                StartCoroutine(statusMethods[(int)hitInfo.effect], damage);
+            }
+        }
+
+        ChangeHealth(-damage);
+        CreateIndicator(damage);
+
+        if (GroupHitEvent != null)
+        {
+            GroupHitEvent(senders, new HitEventArgs(hitInfo, currentHealth == 0));
         }
     }
 
@@ -163,15 +200,25 @@ public class Health : BaseMono
 
     #endregion
 
-    #region Private Methods
+    #region Protected Methods
 
     /// <summary>
     /// Create a damage indicator.
     /// </summary>
     /// <param name="damage">Damage to be displayed.</param>
-    private void CreateIndicator(int damage)
+    protected void CreateIndicator(int damage)
     {
         GameResources.Instance.DamageIndicator_Pool.nextFree.GetComponent<DamageIndicator>().Initiate(transform, damage);
+    }
+
+
+    //
+    protected void OnGroupHitEvent(object[] senders, HitEventArgs args)
+    {
+        if (GroupHitEvent != null)
+        {
+            GroupHitEvent(senders, args);
+        }
     }
 
     #endregion

@@ -5,7 +5,7 @@ using UnityEngine;
 using System;
 
 /// <summary>
-/// Info to pass from an attack.
+/// Info to pass from an attackValue.
 /// </summary>
 [Serializable]
 public class HitInfo
@@ -78,9 +78,10 @@ public class HitInfo
 
 
     /// <summary>
-    /// Multiply base damage by correct attack stat.
+    /// Multiply base damage by correct attackValue stat.
     /// </summary>
     /// <param name="statManager">Attacker's myStats.</param>
+    /// <remarks>May need to change. Wind and Earth don't have effects.</remarks>
     public void FactorAttackStats(StatManager statManager)
     {
         if (effect == Effects.None)
@@ -91,6 +92,16 @@ public class HitInfo
         {
             damage = Mathf.CeilToInt(baseDamage * statManager.magicAttack*ATTACKMODIFIER);
         }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="magicAttack"></param>
+    public void FactorMagicAttack(int magicAttack)
+    {
+        damage = Mathf.CeilToInt(baseDamage * magicAttack * ATTACKMODIFIER);
     }
 
     #endregion
