@@ -26,7 +26,6 @@ public class UltimateAttackManager : BaseMono
     #region Private Fields
 
     private Vector3 previousPosition;
-    private int[] attacks;
     private bool ready = true;
 
     #endregion
@@ -78,8 +77,6 @@ public class UltimateAttackManager : BaseMono
                 playerValue = 8;
                 break;
         }
-
-        attacks = participantAttacks[playerValue];
     }
 
     #endregion

@@ -32,6 +32,7 @@ public class Health : BaseMono
     public EventHandler<HitEventArgs> HitEvent;
     public delegate void GroupHit(object[] senders, HitEventArgs args);
     public event GroupHit GroupHitEvent;
+
     public EventHandler<StatusEffectEventArgs> FireEvent;
     public EventHandler<StatusEffectEventArgs> LightningEvent;
     public EventHandler<StatusEffectEventArgs> AcidEvent;
@@ -102,6 +103,11 @@ public class Health : BaseMono
     /// <param name="hitInfo">Attack info associated with the attackValue.</param>
     public virtual void RecieveHit(object sender, int hitID, HitInfo hitInfo)
     {
+        if (HitEvent != null)
+        {
+            HitEvent(sender, new HitEventArgs(hitInfo, currentHealth == 0));
+        }
+
         if (invincible) return;
         if (hitID == lastHitID) return;
         lastHitID = hitID;
@@ -122,11 +128,6 @@ public class Health : BaseMono
 
         ChangeHealth(-damage);
         CreateIndicator(damage);
-
-        if (HitEvent != null)
-        {
-            HitEvent(sender, new HitEventArgs(hitInfo, currentHealth == 0));
-        }
     }
 
 
@@ -137,6 +138,11 @@ public class Health : BaseMono
     /// <param name="hitInfo">Attack info associated with the attackValue.</param>
     public virtual void RecieveHit(object[] senders, int hitID, HitInfo hitInfo)
     {
+        if (GroupHitEvent != null)
+        {
+            GroupHitEvent(senders, new HitEventArgs(hitInfo, currentHealth == 0));
+        }
+
         if (invincible) return;
         if (hitID == lastHitID) return;
         lastHitID = hitID;
@@ -157,11 +163,6 @@ public class Health : BaseMono
 
         ChangeHealth(-damage);
         CreateIndicator(damage);
-
-        if (GroupHitEvent != null)
-        {
-            GroupHitEvent(senders, new HitEventArgs(hitInfo, currentHealth == 0));
-        }
     }
 
 

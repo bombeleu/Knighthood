@@ -94,7 +94,6 @@ public class Magic : BaseMono
         regenerating = true;
         while (currentMagic < maxMagic)
         {
-            
             yield return WaitForTime(regenInterval);
             currentMagic++;
         }

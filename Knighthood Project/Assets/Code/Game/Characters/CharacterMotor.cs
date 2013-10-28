@@ -154,7 +154,7 @@ public class CharacterMotor : BaseMono
 
 
     /// <summary>
-    /// MoveX character by fraction of moveSpeed.
+    /// Move character by fraction of moveSpeed.
     /// </summary>
     /// <param name="input">[-1, 1]</param>
     public virtual void MoveX(float input)
