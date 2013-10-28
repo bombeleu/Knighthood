@@ -24,6 +24,8 @@ public class Player : Character
 
     private const string JumpingState = "Jumping";
     private const string DefendingState = "Defending";
+    private const string DodgeRollingState = "DodgeRolling";
+    private const string AirDodgingState = "AirDodging";
     private const string UltimateState = "Ultimate";
 
     public float spawnTime;
@@ -36,6 +38,35 @@ public class Player : Character
     public float prematureJumpTime;
     /// <summary>How long the myCharacter can jump.</summary>
     public float climbTime = 0.3f;
+
+    /// <summary>How long perfectShield lasts after Defending starts.</summary>
+    public float perfectShieldTime;
+    /// <summary>If hit during perfectShield enemy will flinch.<summary>
+    private bool perfectShield;
+    /// <summary>How much damage the player can take while defending.</summary>
+    public int shieldHealthMax;
+    /// <summary>Current damage taken while defending.</summary>
+    private int shieldHealth;
+    /// <summary>Time in seconds to increase shieldHealth.</summary>
+    public float shieldRegenTime;
+    /// <summary>Multiplied by normal speed.</summary>
+    public float defendSpeedModifier = 0.5f;
+
+    /// <summary>How long the air dodge lasts.</summary>
+    public float airDodgeTime;
+    /// <summary>Buffer time between air dodges.</summary>
+    public float airDodgeBuffer;
+    /// <summary>Can air dodge?</summary>
+    private bool canAirDodge = true;
+
+    /// <summary>Speed of roll.</summary>
+    public float dodgeRollSpeed;
+    /// <summary>How long the dodge roll lasts.</summary>
+    public float dodgeRollTime;
+    /// <summary>Buffer time between dodge rolls.</summary>
+    public float dodgeRollBuffer;
+    /// <summary>Can dodge roll?</summary>
+    private bool canDodgeRoll = true;
 
     #endregion
 
@@ -95,6 +126,8 @@ public class Player : Character
         CreateState(AttackingState, AttackingEnter, info => {});
         CreateState(UltimateState, UltimateEnter, UltimateExit);
         CreateState(DefendingState, DefendingEnter, DefendingExit);
+        CreateState(DodgeRollingState, DodgeRollingEnter, DodgeRollingExit);
+        CreateState(AirDodgingState, AirDodgingEnter, AirDodgingExit);
         CreateState(FlinchingState, FlinchingEnter, FlinchingExit);
         // dying state
         
@@ -247,6 +280,20 @@ public class Player : Character
     {
         while (true)
         {
+            // defending state
+            if (GetDefendingInput())
+            {
+                SetState(DefendingState, new Dictionary<string, object>());
+                yield break;
+            }
+
+            // dodge roll
+            if (GetDodgeRollingInput() != 0f)
+            {
+                SetState(DodgeRollingState, new Dictionary<string, object> { { "velocity", GetDodgeRollingInput() } });
+                yield break;
+            }
+
             // fall through
             if (CanFallThrough())
             {
@@ -269,13 +316,6 @@ public class Player : Character
             if (attack != AttackTypes.None)
             {
                 CalculateAttack(attack, new Dictionary<string, object>());
-                yield break;
-            }
-
-            // defending state
-            if (GetDefendingInput())
-            {
-                SetState(DefendingState, new Dictionary<string, object>());
                 yield break;
             }
 
@@ -346,6 +386,13 @@ public class Player : Character
             if (GetDefendingInput())
             {
                 SetState(DefendingState, new Dictionary<string, object>());
+                yield break;
+            }
+
+            // dodge roll
+            if (GetDodgeRollingInput() != 0f)
+            {
+                SetState(DodgeRollingState, new Dictionary<string, object> { { "velocity", GetDodgeRollingInput() } });
                 yield break;
             }
 
@@ -437,6 +484,13 @@ public class Player : Character
         float inputX;
         while (GetJumpingInput(true))
         {
+            // air dodge
+            if (GetAirDodgeInput())
+            {
+                SetState(AirDodgingState, new Dictionary<string, object>());
+                yield break;
+            }
+
             // enter attacking state
             AttackTypes attack = GetAttackingInput();
             if (attack != AttackTypes.None)
@@ -460,6 +514,13 @@ public class Player : Character
         float inputX = 0f;
         while (myMotor.velocity.y > 0.1f)
         {
+            // air dodge
+            if (GetAirDodgeInput())
+            {
+                SetState(AirDodgingState, new Dictionary<string, object>());
+                yield break;
+            }
+
             // enter attacking state
             AttackTypes attack = GetAttackingInput();
             if (attack != AttackTypes.None)
@@ -467,11 +528,6 @@ public class Player : Character
                 CalculateAttack(attack, new Dictionary<string, object>());
                 yield break;
             }
-
-            //myMotor.SetRotation(GetMovingInput().x);
-            //velocity.x = GetMovingInput().x * moveSpeed;
-            //velocity.y -= gravity * GameTime.deltaTime;
-            //SetVelocity(velocity);
 
             inputX = GetMovingInput().x;
             myMotor.SetRotation(inputX);
@@ -523,6 +579,13 @@ public class Player : Character
             if (!fallingThrough && myMotor.IsGrounded(true))
             {
                 SetState((prematureJump ? JumpingState : IdlingState), new Dictionary<string, object>());
+                yield break;
+            }
+
+            // air dodge
+            if (GetAirDodgeInput())
+            {
+                SetState(AirDodgingState, new Dictionary<string, object>());
                 yield break;
             }
 
@@ -623,31 +686,67 @@ public class Player : Character
     private void DefendingEnter(Dictionary<string, object> info)
     {
         myHealth.invincible = true;
+        StartCoroutine("PerfectShieldTimer");
+        StopCoroutine("ShieldRegen");
 
-        PlayAnimation("Splat");
+        PlayAnimation(myMotor.IsGrounded(true) ? "Defend Ground" : "Defend Air");
 
         currentStateJob = new Job(DefendingUpdate());
     }
-
+    
 
     private IEnumerator DefendingUpdate()
     {
+        bool grounded = myMotor.IsGrounded(true);
         while (true)
         {
-            // enter idle state
-            if (!GetDefendingInput())
-            {
-                SetState(IdlingState, new Dictionary<string, object>());
-                yield break;
-            }
-
-            // stop movement
             if (myMotor.IsGrounded(true))
             {
-                myMotor.SetVelocityX(0f);
-            }
+                // land
+                if (!grounded)
+                {
+                    grounded = true;
+                    myMotor.SetVelocityY(0f);
+                    PlayAnimation("Defend Ground");
+                }
 
-            myMotor.SetRotation(GetMovingInput().x);
+                // dodge roll
+                if (GetDodgeRollingInput() != 0f)
+                {
+                    SetState(DodgeRollingState, new Dictionary<string, object> { { "velocity", GetDodgeRollingInput() } });
+                    yield break;
+                }
+
+                // enter idle state
+                if (!GetDefendingInput())
+                {
+                    SetState(IdlingState, new Dictionary<string, object>());
+                    yield break;
+                }
+
+                // move
+                myMotor.MoveX(GetMovingInput().x*defendSpeedModifier);
+            }
+            else
+            {
+                // enter falling state
+                if (!GetDefendingInput())
+                {
+                    SetState(FallingState, new Dictionary<string, object>());
+                    yield break;
+                }
+
+                // air dodge
+                if (GetDodgeRollingInput() != 0f)
+                {
+                    SetState(AirDodgingState, new Dictionary<string, object>());
+                    yield break;
+                }
+
+                // move
+                myMotor.ApplyGravity();
+                myMotor.MoveX(GetMovingInput().x * defendSpeedModifier);
+            }
 
             yield return null;
         }
@@ -657,6 +756,119 @@ public class Player : Character
     private void DefendingExit(Dictionary<string, object> info)
     {
         myHealth.invincible = false;
+        StopCoroutine("PerfectShieldTimer");
+        StartCoroutine("RegenShield");
+    }
+
+
+    private IEnumerator RegenShield()
+    {
+        while (shieldHealth < shieldHealthMax)
+        {
+            yield return WaitForTime(shieldRegenTime);
+            shieldHealth++;
+        }
+
+        shieldHealth = shieldHealthMax;
+    }
+
+
+    private void DodgeRollingEnter(Dictionary<string, object> info)
+    {
+        myHealth.invincible = true;
+
+        PlayAnimation("Dodge Roll");
+        myMotor.SetVelocity((float)info["velocity"], 0f);
+
+        currentStateJob = new Job(DodgeRollingUpdate());
+    }
+
+
+    private IEnumerator DodgeRollingUpdate()
+    {
+        float time = dodgeRollTime;
+        while (time > 0f)
+        {
+            time -= GameTime.deltaTime;
+
+            // fall
+            if (!myMotor.IsGrounded(true))
+            {
+                SetState(FallingState, new Dictionary<string, object>());
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        SetState(IdlingState, new Dictionary<string, object>());
+    }
+
+
+    private void DodgeRollingExit(Dictionary<string, object> info)
+    {
+        myHealth.invincible = false;
+        myMotor.ClearVelocity();
+        StartCoroutine("DodgeRollBuffer");
+    }
+
+
+    private IEnumerator DodgeRollBuffer()
+    {
+        canDodgeRoll = false;
+        yield return WaitForTime(dodgeRollBuffer);
+        canDodgeRoll = true;
+    }
+
+
+    private void AirDodgingEnter(Dictionary<string, object> info)
+    {
+        myHealth.invincible = true;
+
+        PlayAnimation("Air Dodge");
+
+        currentStateJob = new Job(AirDodgingUpdate());
+    }
+
+
+    private IEnumerator AirDodgingUpdate()
+    {
+        float time = airDodgeTime;
+        while (time > 0f)
+        {
+            time -= GameTime.deltaTime;
+
+            // land
+            if (myMotor.IsGrounded(true))
+            {
+                SetState(IdlingState, new Dictionary<string, object>());
+                yield break;
+            }
+
+            // move
+            myMotor.ApplyGravity();
+            myMotor.MoveX(GetMovingInput().x);
+
+            yield return null;
+        }
+
+        SetState(FallingState, new Dictionary<string, object>());
+    }
+
+
+    private void AirDodgingExit(Dictionary<string, object> info)
+    {
+        myHealth.invincible = false;
+
+        StartCoroutine("AirDodgingBuffer");
+    }
+
+
+    private IEnumerator AirDodgingBuffer()
+    {
+        canAirDodge = false;
+        yield return WaitForTime(airDodgeBuffer);
+        canAirDodge = true;
     }
 
 
@@ -666,11 +878,11 @@ public class Player : Character
 
         if (myMotor.IsGrounded() && knockBack.y == 0f)
         {
-            PlayAnimation("Stand Flinch");
+            PlayAnimation("Flinch Ground");
         }
         else
         {
-            PlayAnimation("Fall Flinch");
+            PlayAnimation("Flinch Fall");
         }
 
         currentStateJob = new Job(FlinchingUpdate(knockBack, flinchTimeBase + knockBack.magnitude * knockBackMultiplier));
@@ -694,7 +906,7 @@ public class Player : Character
             if (grounded && falling)
             {
                 myMotor.Ground();
-                PlayAnimation("Splat");
+                PlayAnimation("Flinch Land");
                 yield return WaitForTime(1f);
                 break;
             }
@@ -703,7 +915,7 @@ public class Player : Character
             if (!grounded && !falling)
             {
                 falling = true;
-                PlayAnimation("Fall Flinch");
+                PlayAnimation("Flinch Fall");
             }
 
             // fall
@@ -893,6 +1105,55 @@ public class Player : Character
 
 
     /// <summary>
+    /// Detect dodge input.
+    /// </summary>
+    /// <returns>Dodge Roll speed in correct direction.</returns>
+    private float GetDodgeRollingInput()
+    {
+        if (!canDodgeRoll) return 0f;
+
+        if (keyboard)
+        {
+            return 0f;
+        }
+        else
+        {
+            // right
+            if (Input.GetAxis("R_XAxis_" + playerInfo.playerNumber) > 0.2f)
+            {
+                return dodgeRollSpeed;
+            }
+            // left
+            else if (Input.GetAxis("R_XAxis_" + playerInfo.playerNumber) < -0.2f)
+            {
+                return -dodgeRollSpeed;
+            }
+        }
+
+        return 0f;
+    }
+
+
+    /// <summary>
+    /// Detect air dodging input.
+    /// </summary>
+    /// <returns>True, if recieving air dodging input.</returns>
+    public bool GetAirDodgeInput()
+    {
+        if (!canAirDodge) return false;
+
+        if (keyboard)
+        {
+            return false;
+        }
+        else
+        {
+            return Mathf.Abs(Input.GetAxis("R_XAxis_" + playerInfo.playerNumber)) > 0.2f;
+        }
+    }
+
+
+    /// <summary>
     /// Can the player fall through the platform?
     /// </summary>
     /// <returns>True, if player is pressing down and the platform is Translucent.</returns>
@@ -1007,6 +1268,17 @@ public class Player : Character
 
         info.Add("attackTexture", attackTexture);
         SetState(AttackingState, info);
+    }
+
+
+    /// <summary>
+    /// Activate perfectShield for a time.
+    /// </summary>
+    private IEnumerator PerfectShieldTimer()
+    {
+        perfectShield = true;
+        yield return WaitForTime(perfectShieldTime);
+        perfectShield = false;
     }
 
     #endregion

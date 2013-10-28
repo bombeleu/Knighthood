@@ -204,7 +204,6 @@ MonoBehaviour:
   log: 1
   playerUsernames:
   - yeagz7
-  - mmfane
   allUsernames:
   - 
   playerCharacters: 0000000002000000
@@ -465,6 +464,7 @@ MonoBehaviour:
     baseDamage: 10
     effect: 4
     knockBack: {x: 0, y: 0, z: 0}
+  SpearAnim: {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
 --- !u!114 &167056715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1844,7 +1844,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400002, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
       propertyPath: playerUsernames.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400004, guid: 675bd46718aefea42b9b229709b7ba6e, type: 2}
       propertyPath: EnemyPrefabTypes.Array.size
@@ -2802,7 +2802,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1689187940
 Transform:
   m_ObjectHideFlags: 0

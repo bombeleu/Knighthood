@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57a1995f2ef1ade43a256907a2f91dd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 1
+  log: 0
   flinchTimeBase: .300000012
   knockBackMultiplier: .075000003
   knockBackRecoverySpeed: 1
@@ -240,10 +240,10 @@ MonoBehaviour:
   - {fileID: 11400012}
   inputs:
   - Melee0
-  open: 00
+  open: 01
 --- !u!114 &11400012
 MonoBehaviour:
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
@@ -266,7 +266,7 @@ MonoBehaviour:
   hitInfo:
     baseDamage: 5
     effect: -1
-    knockBack: {x: 20, y: 20, z: 0}
+    knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: .200000003
   offset: {x: 2, y: 1.5}
   parented: 0
