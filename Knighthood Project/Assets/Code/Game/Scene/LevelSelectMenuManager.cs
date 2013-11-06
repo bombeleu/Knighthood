@@ -12,6 +12,7 @@ public class LevelSelectMenuManager : BaseMono
 
     private readonly string[] levels =
     {
+        "Combat Arena",
         "Test Room",
         "Level 0"
     };
@@ -26,11 +27,11 @@ public class LevelSelectMenuManager : BaseMono
         // move cursor
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            levelCursor = 1;
+            if (levelCursor < levels.Length-1) levelCursor++;
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            levelCursor = 0;
+            if (levelCursor > 0) levelCursor--;
         }
     }
 

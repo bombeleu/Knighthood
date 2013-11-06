@@ -9,17 +9,28 @@ using UnityEngine;
 /// </summary>
 public class Magic : BaseMono
 {
+    #region Reference Fields
+
+    private StatManager myStats;
+
+    #endregion
+
     #region Public Fields
 
-    public int maxMagic;
-    public int currentMagic;
-    public float regenInterval;
+    public float currentMagic;
 
     #endregion
 
     #region Private Fields
 
     private bool regenerating;
+    private Job regenerate;
+
+    #endregion
+
+    #region Const Fields
+
+    private float REGENINTERVAL = 0.3f;
 
     #endregion
 
@@ -27,22 +38,13 @@ public class Magic : BaseMono
     #region Public Methods
 
     /// <summary>
-    /// Get magic ready for new character.
-    /// </summary>
-    public void Initialize()
-    {
-        currentMagic = maxMagic;
-    }
-
-
-    /// <summary>
     /// Get magic ready for new character that has a myStats.
     /// </summary>
     /// <param name="stats"></param>
     public void Initialize(StatManager stats)
     {
-        maxMagic = stats.magicMax;
-        currentMagic = maxMagic;
+        myStats = stats;
+        currentMagic = (int)stats.magicPool.value;
     }
 
 
@@ -54,9 +56,10 @@ public class Magic : BaseMono
     public bool CastMagic(int amount)
     {
         if (amount > currentMagic) return false;
+
         currentMagic -= amount;
-        StopCoroutine("RegenerateMagic");
-        StartCoroutine("RegenerateMagic");
+        if (!regenerating) regenerate = new Job(RegenerateMagic());
+
         return true;
     }
 
@@ -78,7 +81,7 @@ public class Magic : BaseMono
     /// <param name="amount">Amount to add to magic reserve.</param>
     public void ChangeMagic(int amount)
     {
-        currentMagic = Mathf.Clamp(currentMagic + amount, 0, maxMagic);
+        currentMagic = Mathf.Clamp(currentMagic + amount, 0, (int)myStats.magicPool.value);
     }
 
     #endregion
@@ -90,14 +93,14 @@ public class Magic : BaseMono
     /// </summary>
     private IEnumerator RegenerateMagic()
     {
-        if (regenerating) yield break;
         regenerating = true;
-        while (currentMagic < maxMagic)
+        while (currentMagic < myStats.magicPool.value)
         {
-            yield return WaitForTime(regenInterval);
-            currentMagic++;
+            yield return WaitForTime(REGENINTERVAL);
+            currentMagic += myStats.magicRegen.value;
         }
-        currentMagic = maxMagic;
+        currentMagic = myStats.magicPool.value;
+        regenerating = false;
     }
 
     #endregion

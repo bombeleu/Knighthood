@@ -4,6 +4,7 @@
 using System.Collections;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// Health component for objects that can recieve hits and die.
@@ -28,10 +29,14 @@ public class Health : BaseMono
 
     #region Events
 
-    /// <summary>Triggered when the owner recieves a hit and not invincible.</summary>
-    public EventHandler<HitEventArgs> HitEvent;
-    public delegate void GroupHit(object[] senders, HitEventArgs args);
-    public event GroupHit GroupHitEvent;
+    /// <summary>Triggered when the owner recieves a hit.</summary>
+    //[Obsolete("Use group hit", true)]
+    //public EventHandler<HitEventArgs> HitEvent;
+
+    public delegate void HitDelegate(List<object> senders, HitEventArgs args);
+    /// <summary>Triggered when the owner recieves a hit.</summary>
+    public event HitDelegate HitEvent;
+    //public EventHandler<HealthEventArgs> HealthEvent;
 
     public EventHandler<StatusEffectEventArgs> FireEvent;
     public EventHandler<StatusEffectEventArgs> LightningEvent;
@@ -101,69 +106,79 @@ public class Health : BaseMono
     /// </summary>
     /// <param name="sender">Who sent the attackValue.</param>
     /// <param name="hitInfo">Attack info associated with the attackValue.</param>
-    public virtual void RecieveHit(object sender, int hitID, HitInfo hitInfo)
+    public virtual void RecieveHit(List<object> senders, int hitID, HitInfo hitInfo)
     {
+        if (hitID == lastHitID) return;
+
+        if (invincible) return;
+        
+        lastHitID = hitID;
+
+        int damage = hitInfo.damage;
+
+        // status effect
+        if (hitInfo.effect != HitInfo.Effects.None)
+        {
+            damage = Mathf.CeilToInt(damage * statusEffectivenesses[(int)hitInfo.effect]);
+            if (damage > 0)
+            {
+                Log(hitInfo.effect + ":" + (int)hitInfo.effect, Debugger.LogTypes.Combat);
+                StopAllCoroutines();
+                StartCoroutine(statusMethods[(int)hitInfo.effect], damage);
+            }
+        }
+
+        ChangeHealth(-damage);
+        CreateIndicator(damage);
+
+        //if (HitEvent != null)
+        //{
+        //    HitEvent(senders, new HitEventArgs(hitInfo, currentHealth, damage));
+        //}
         if (HitEvent != null)
         {
-            HitEvent(sender, new HitEventArgs(hitInfo, currentHealth == 0));
+            HitEvent(senders, new HitEventArgs(hitInfo, currentHealth, damage));
         }
-
-        if (invincible) return;
-        if (hitID == lastHitID) return;
-        lastHitID = hitID;
-
-        var damage = hitInfo.damage;
-
-        // status effect
-        if (hitInfo.effect != HitInfo.Effects.None)
-        {
-            damage = Mathf.CeilToInt(damage * statusEffectivenesses[(int)hitInfo.effect]);
-            if (damage > 0)
-            {
-                Log(hitInfo.effect + ":" + (int)hitInfo.effect, Debugger.LogTypes.Combat);
-                StopAllCoroutines();
-                StartCoroutine(statusMethods[(int)hitInfo.effect], damage);
-            }
-        }
-
-        ChangeHealth(-damage);
-        CreateIndicator(damage);
     }
 
 
-    /// <summary>
-    /// Recieve an attackValue.
-    /// </summary>
-    /// <param name="senders">ALl of the characters that sent the attackValue.</param>
-    /// <param name="hitInfo">Attack info associated with the attackValue.</param>
-    public virtual void RecieveHit(object[] senders, int hitID, HitInfo hitInfo)
-    {
-        if (GroupHitEvent != null)
-        {
-            GroupHitEvent(senders, new HitEventArgs(hitInfo, currentHealth == 0));
-        }
+    ///// <summary>
+    ///// Recieve an attackValue.
+    ///// </summary>
+    ///// <param name="senders">ALl of the characters that sent the attackValue.</param>
+    ///// <param name="hitInfo">Attack info associated with the attackValue.</param>
+    //public virtual void RecieveHit(List<object> senders, int hitID, HitInfo hitInfo)
+    //{
+    //    if (hitID == lastHitID) return;
 
-        if (invincible) return;
-        if (hitID == lastHitID) return;
-        lastHitID = hitID;
+    //    int damage = 0;
+    //    if (!invincible)
+    //    {
+    //        lastHitID = hitID;
 
-        var damage = hitInfo.damage;
+    //        damage = hitInfo.damage;
 
-        // status effect
-        if (hitInfo.effect != HitInfo.Effects.None)
-        {
-            damage = Mathf.CeilToInt(damage * statusEffectivenesses[(int)hitInfo.effect]);
-            if (damage > 0)
-            {
-                Log(hitInfo.effect + ":" + (int)hitInfo.effect, Debugger.LogTypes.Combat);
-                StopAllCoroutines();
-                StartCoroutine(statusMethods[(int)hitInfo.effect], damage);
-            }
-        }
+    //        // status effect
+    //        if (hitInfo.effect != HitInfo.Effects.None)
+    //        {
+    //            damage = Mathf.CeilToInt(damage * statusEffectivenesses[(int)hitInfo.effect]);
+    //            if (damage > 0)
+    //            {
+    //                Log(hitInfo.effect + ":" + (int)hitInfo.effect, Debugger.LogTypes.Combat);
+    //                StopAllCoroutines();
+    //                StartCoroutine(statusMethods[(int)hitInfo.effect], damage);
+    //            }
+    //        }
 
-        ChangeHealth(-damage);
-        CreateIndicator(damage);
-    }
+    //        ChangeHealth(-damage);
+    //        CreateIndicator(damage);
+    //    }
+
+    //    if (GroupHitEvent != null)
+    //    {
+    //        GroupHitEvent(senders, new HitEventArgs(hitInfo, currentHealth, damage));
+    //    }
+    //}
 
 
     protected virtual IEnumerator FireEffect(int damage)
@@ -214,11 +229,11 @@ public class Health : BaseMono
 
 
     //
-    protected void OnGroupHitEvent(object[] senders, HitEventArgs args)
+    protected void OnGroupHitEvent(List<object> senders, HitEventArgs args)
     {
-        if (GroupHitEvent != null)
+        if (HitEvent != null)
         {
-            GroupHitEvent(senders, args);
+            HitEvent(senders, args);
         }
     }
 

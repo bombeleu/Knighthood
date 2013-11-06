@@ -45,6 +45,7 @@ public class GameData : Singleton<GameData>
     /// <summary>When a new scene is being loaded.</summary>
     public static EventHandler<LoadSceneEventArgs> LoadSceneEvent;
     public EventHandler<PauseEventArgs> PauseEvent;
+    public static EventHandler SaveEvent;
 
     #endregion
 
@@ -83,7 +84,7 @@ public class GameData : Singleton<GameData>
         }
 
         #if UNITY_EDITOR
-        // test
+        // clear console
         if (Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             Assembly assembly = Assembly.GetAssembly(typeof(UnityEditor.SceneView));
@@ -91,6 +92,12 @@ public class GameData : Singleton<GameData>
             Type type = assembly.GetType("UnityEditorInternal.LogEntries");
             MethodInfo method = type.GetMethod("Clear");
             method.Invoke(new object(), null);
+        }
+
+        // save
+        if (Input.GetKeyDown(KeyCode.F12))
+        {
+            Save();
         }
         #endif
     }
@@ -185,6 +192,19 @@ public class GameData : Singleton<GameData>
         if (PauseEvent != null)
         {
             PauseEvent(this, new PauseEventArgs(paused, player));
+        }
+    }
+
+    #endregion
+
+    #region Public Methods
+
+    public void Save()
+    {
+        Log("Saving game.", Debugger.LogTypes.Data);
+        if (SaveEvent != null)
+        {
+            SaveEvent(this, null);
         }
     }
 

@@ -53,7 +53,6 @@ public class UltimateAttacks : Singleton<UltimateAttacks>
 
     #region Events
 
-    public static EventHandler OpenEvent;
     public static EventHandler<UltimateAttackUnleashArgs> UnleashedEvent;
     public static EventHandler AttackOverEvent;
 
@@ -70,7 +69,6 @@ public class UltimateAttacks : Singleton<UltimateAttacks>
             attackPivot.transform.position = player.position;
             attackPivot.transform.rotation = player.rotation;
             open = true;
-            //OpenEvent(player.GetComponent<Player>(), null);
             attackValue = playerValue;
 
             StartCoroutine(Attack());
@@ -107,7 +105,9 @@ public class UltimateAttacks : Singleton<UltimateAttacks>
     }
 
 
-    //
+    /// <summary>
+    /// Empty participants after attack.
+    /// </summary>
     private static void ClearPlayers()
     {
         for (int i = 0; i < 4; i++)

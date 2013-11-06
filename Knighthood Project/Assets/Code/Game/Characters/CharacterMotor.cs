@@ -10,6 +10,7 @@ public class CharacterMotor : BaseMono
 {
     #region Reference Fields
 
+    protected Character myCharacter;
     protected Transform myTransform;
     private Rigidbody myRigidbody;
 
@@ -47,10 +48,17 @@ public class CharacterMotor : BaseMono
     private void Awake()
     {
         // get references
+        myCharacter = GetComponent<Character>();
         myTransform = transform;
         myRigidbody = rigidbody;
 
         terrainLayer = 1 << LayerMask.NameToLayer("Terrain");
+    }
+
+
+    private void Start()
+    {
+        moveSpeed = myCharacter.myStats.speedMovement.value;
     }
 
 

@@ -24,7 +24,7 @@ public class Level0LevelManager : LevelManager
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            RetagPlayers();
+            AssignPlayerTeams();
         }
     }
 

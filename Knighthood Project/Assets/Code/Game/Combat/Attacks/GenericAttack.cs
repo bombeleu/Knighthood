@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// Attack that can be created using public variables in the inspector.
@@ -177,7 +178,7 @@ public class GenericAttack : Attack
         currentAttack.transform.localRotation = Quaternion.identity;
         currentAttack.transform.localPosition = new Vector3(0f, offset.y, offset.x);
         currentAttack.transform.localScale = new Vector3(1f, meleeSize.y, meleeSize.x);
-        currentAttack.GetComponent<Hitbox>().Initialize(myCharacter, hitInfo, hitboxTime, hitNumber);
+        currentAttack.GetComponent<Hitbox>().Initialize(myCharacter, FactorAttack(), hitboxTime, hitNumber);
     }
 
 
@@ -187,7 +188,7 @@ public class GenericAttack : Attack
         currentAttack.transform.localPosition = myTransform.position + myTransform.TransformDirection(0f, offset.y, offset.x);
         currentAttack.transform.rotation = myTransform.rotation;
         currentAttack.transform.Align();
-        currentAttack.GetComponent<Hitbox>().Initialize(myCharacter, hitInfo, hitboxTime, hitNumber, myTransform.forward * projectileSpeed, oneShot);
+        currentAttack.GetComponent<Hitbox>().Initialize(myCharacter, FactorAttack(), hitboxTime, hitNumber, myTransform.forward * projectileSpeed, oneShot);
     }
 
 
@@ -197,7 +198,28 @@ public class GenericAttack : Attack
         currentAttack.transform.localPosition = new Vector3(0f, offset.y, offset.x);
         currentAttack.transform.localRotation = Quaternion.identity;
         currentAttack.transform.Align();
-        currentAttack.GetComponent<Hitbox>().Initialize(myCharacter, hitInfo, hitboxTime, hitNumber, oneShot);
+        currentAttack.GetComponent<Hitbox>().Initialize(myCharacter, FactorAttack(), hitboxTime, hitNumber, oneShot);
+    }
+
+    #endregion
+
+
+    #region Private Methods
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    private HitInfo FactorAttack()
+    {
+        if (magic)
+        {
+            return hitInfo.Attack(myCharacter.myStats.attackMagic.value);
+        }
+        else
+        {
+            return hitInfo.Attack(myCharacter.myStats.attackPhysical.value);
+        }
     }
 
     #endregion

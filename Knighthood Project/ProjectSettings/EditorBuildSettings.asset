@@ -25,3 +25,5 @@ EditorBuildSettings:
     path: Assets/Content/Test/Test Room.unity
   - enabled: 1
     path: Assets/Content/Test/Level 0.unity
+  - enabled: 1
+    path: Assets/Content/Scenes/Combat Arena.unity

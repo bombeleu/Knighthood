@@ -23,6 +23,7 @@ GameObject:
   - 114: {fileID: 11400020}
   - 114: {fileID: 11400022}
   - 114: {fileID: 11400006}
+  - 114: {fileID: 11400026}
   m_Layer: 8
   m_Name: Eva
   m_TagString: Player
@@ -137,44 +138,87 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 086fdd72e7824a0479a940111cc43c35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  log: 0
+  log: 1
   flinchTimeBase: .200000003
   knockBackMultiplier: .0500000007
   knockBackRecoverySpeed: 1
-  flinchInvincibleTime: .5
+  flinchInvincibleTime: 0
   myStats:
-    health: 100
-    physicalAttack: 1
-    physicalDefense: 1
-    magicAttack: 1
-    magicDefense: 1
-    magicMax: 0
-    attackSpeed: 0
+    statsFile: {fileID: 4900000, guid: 7431c88ee3f9ff44fbc9a320e44aaf2d, type: 3}
+    attackPhysical:
+      level: 0
+      value: 0
+    attackMagic:
+      level: 0
+      value: 0
+    defenseStoutness:
+      level: 0
+      value: 0
+    defenseShield:
+      level: 0
+      value: 0
+    speedMovement:
+      level: 0
+      value: 0
+    speedAgility:
+      level: 0
+      value: 0
+    magicPool:
+      level: 0
+      value: 0
+    magicRegen:
+      level: 0
+      value: 0
+    abilityStrength:
+      level: 0
+      value: 0
+    abilityRegen:
+      level: 0
+      value: 0
   animationNames:
   - Idling
   - Moving
   - Jumping
   - Falling
-  - Stand Flinch
-  - Fall Flinch
-  - Splat
+  - Flinch Ground
+  - Flinch Fall
+  - Flinch Land
+  - Dodge Roll
+  - Defend Ground
+  - Air Dodge
+  - Dead
+  - Defend Air
   animationTex:
   - {fileID: 2800000, guid: 0e5999ff83efc6f459f61cb19b2e4a01, type: 3}
   - {fileID: 2800000, guid: 6cebf2eb05df4b24eb2bfc14f9cdec29, type: 3}
   - {fileID: 2800000, guid: b76e982ed2fb82f4b8d0cb0a5cfacda1, type: 3}
   - {fileID: 2800000, guid: cb4e16837103d614eb9de021cfceffb9, type: 3}
-  - {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
-  - {fileID: 2800000, guid: cb4e16837103d614eb9de021cfceffb9, type: 3}
-  - {fileID: 2800000, guid: fdb604bebe40ac34cbebb2a72e1b622e, type: 3}
+  - {fileID: 2800000, guid: bbe7ea12fe50fd24dbc635abfbcffbf0, type: 3}
+  - {fileID: 2800000, guid: f681bc12b4e4c424d8b0f4c0990159f3, type: 3}
+  - {fileID: 2800000, guid: 1280583ea46c07f4fba97285e8b05e50, type: 3}
+  - {fileID: 2800000, guid: 4ab0ccd9b6b5a1c4da6b38a87d26dfa3, type: 3}
+  - {fileID: 2800000, guid: e249194d4049fe443adad019f94cf6e6, type: 3}
+  - {fileID: 2800000, guid: 09cfb8eeb8cc58946aa9d85b54b3c5c9, type: 3}
+  - {fileID: 2800000, guid: 22261ddaee8c70546b2504312bcf531f, type: 3}
+  - {fileID: 2800000, guid: a92a0f47308010042a61032bb79ac7f8, type: 3}
   spawnTime: 0
   fastFallSpeed: 50
   extraJumpTime: .0199999996
   prematureJumpTime: .100000001
   climbTime: .300000012
+  perfectShieldTime: .100000001
+  shieldRegenTime: .200000003
+  defendSpeedModifier: .25
+  airDodgeTime: .300000012
+  airDodgeBuffer: .5
+  dodgeRollSpeed: 20
+  dodgeRollTime: .200000003
+  dodgeRollBuffer: .349999994
   keyboard: 0
   attackDeadZone: .699999988
   superModifierDeadZone: .800000012
   moveBuffer: 0
+  character: 1
   myExperience:
     currentEXP: 0
     neededEXP: 0
@@ -221,7 +265,7 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
   Attack_Prefab: {fileID: 100002, guid: 4530b46cf5c1ea74092d6631af734071, type: 2}
   hitInfo:
-    baseDamage: 5
+    damage: 80
     effect: 0
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: 3
@@ -262,7 +306,7 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
   Attack_Prefab: {fileID: 100000, guid: 14610f11a1edb1a4eb1a2d32a745568e, type: 2}
   hitInfo:
-    baseDamage: 5
+    damage: 100
     effect: 4
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: 3
@@ -292,9 +336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
-  maxMagic: 100
   currentMagic: 100
-  regenInterval: .200000003
 --- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -342,8 +384,8 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
   Attack_Prefab: {fileID: 0}
   hitInfo:
-    baseDamage: 1
-    effect: 0
+    damage: 50
+    effect: -1
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: .200000003
   offset: {x: 2, y: 1.5}
@@ -383,9 +425,9 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
   Attack_Prefab: {fileID: 0}
   hitInfo:
-    baseDamage: 3
-    effect: 0
-    knockBack: {x: 5, y: 20, z: 0}
+    damage: 100
+    effect: -1
+    knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: .400000006
   offset: {x: 0, y: 2}
   parented: 0
@@ -436,8 +478,8 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: fdb604bebe40ac34cbebb2a72e1b622e, type: 3}
   Attack_Prefab: {fileID: 0}
   hitInfo:
-    baseDamage: 2
-    effect: 0
+    damage: 75
+    effect: -1
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: .5
   offset: {x: 2, y: 2}
@@ -488,16 +530,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
-  maxHealth: 100
-  currentHealth: 100
+  maxHealth: 1000
+  currentHealth: 1000
   invincible: 0
   statusEffectivenesses:
-  - 2
+  - 1
   - 1
   - 1
   - 1
   - 1
   attackArmor: 0
+--- !u!114 &11400026
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8caa4851bf1f2514bb5d822773a775ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  acceptAnim: {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

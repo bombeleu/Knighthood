@@ -21,13 +21,15 @@ public class Debugger : Singleton<Debugger>
     {
         true,    // None
         true,    // Navigation
-        true     // Combat
+        true,    // Combat
+        true,    // Data
     };
     public enum LogTypes
     {
         Default = 0,
         Navigation = 1,
-        Combat = 2
+        Combat = 2,
+        Data = 3,
     }
 
     #endregion

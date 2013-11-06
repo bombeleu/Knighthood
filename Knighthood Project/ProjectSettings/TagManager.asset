@@ -8,10 +8,10 @@ TagManager:
   - GameMaster
   - Floor
   - Money
-  - Player0
-  - Player1
-  - Player2
-  - Player3
+  - Team 1
+  - Team 2
+  - Team 3
+  - Team 4
   - 
   Builtin Layer 0: Default
   Builtin Layer 1: TransparentFX

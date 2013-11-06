@@ -8,20 +8,18 @@ using System;
 /// </summary>
 public class HitEventArgs : EventArgs
 {
-  /// <summary>Hit info to be passed.</summary>
-  public readonly HitInfo hitInfo;
-  /// <summary>If the attackValue killed the object.</summary>
-  public readonly bool dead;
+    /// <summary>Hit info to be passed.</summary>
+    public readonly HitInfo hitInfo;
+    /// <summary>How much health remaining.</summary>
+    public readonly int health;
+    /// <summary>How much damage done.</summary>
+    public readonly int damage;
 
 
-  /// <summary>
-  /// Constructor.
-  /// </summary>
-  /// <param name="hitInfo">Hit info to be passed.</param>
-  /// <param name="dead">If the attackValue killed the object.</param>
-  public HitEventArgs(HitInfo hitInfo, bool dead)
-  {
-    this.hitInfo = hitInfo;
-    this.dead = dead;
-  }
+    public HitEventArgs(HitInfo hitInfo, int health, int damage)
+    {
+        this.hitInfo = hitInfo;
+        this.health = health;
+        this.damage = damage;
+    }
 }

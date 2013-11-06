@@ -47,7 +47,7 @@ public class MoneyContainer : BaseMono
     /// </summary>
     private void HitHandler(object sender, HitEventArgs args)
     {
-        if (args.dead)
+        if (args.health == 0)
         {
             int amount = random ? Random.Range(minAmount, maxAmount) : minAmount;
 

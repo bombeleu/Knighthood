@@ -90,14 +90,14 @@ public class GenericAttackEditor : AttackEditor
 
         PropertyField(attackAnimation, "Animation", "Sprite animation to play while attacking.");
         PropertyField(windUp, "Wind Up Time", "Time in seconds before hitbox is created.");
-        PropertyField(attackTime, "Attack Time", "Time in seconds performing the attack takes.");
-        PropertyField(windDown, "Wind Down Time", "Time in seconds after the attack stops but the animation is still playing.");
-        PropertyField(cooldown, "Cool Down Time", "Time in seconds after the attack is completed before it can be activated again.");
+        PropertyField(attackTime, "Attack Time", "Time in seconds performing the attackStat takes.");
+        PropertyField(windDown, "Wind Down Time", "Time in seconds after the attackStat stops but the animation is still playing.");
+        PropertyField(cooldown, "Cool Down Time", "Time in seconds after the attackStat is completed before it can be activated again.");
         GUI.enabled = !melee.boolValue;
-        PropertyField(Attack_Prefab, "Attack Prefab", "Time in seconds after the attack is completed before it can be activated again.");
+        PropertyField(Attack_Prefab, "Attack Prefab", "Time in seconds after the attackStat is completed before it can be activated again.");
         GUI.enabled = true;
-        PropertyField(hitInfo, "Hit Info", "Time in seconds after the attack is completed before it can be activated again.", true);
-        PropertyField(hitboxTime, "Hitbox Duration", "Time in seconds after the attack is completed before it can be activated again.");
+        PropertyField(hitInfo, "Hit Info", "Time in seconds after the attackStat is completed before it can be activated again.", true);
+        PropertyField(hitboxTime, "Hitbox Duration", "Time in seconds after the attackStat is completed before it can be activated again.");
         DrawVector(offset, "Hitbox Offset", "Hitbox local offset from character when created.");
         PropertyField(hitNumber, "Hit Number", "How many hits the hitbox can land. Usaully 1.");
         PropertyField(oneShot, "One Shot", "Should the hitbox disappear after landing one hit?");
@@ -111,7 +111,7 @@ public class GenericAttackEditor : AttackEditor
         EditorGUILayout.LabelField("Melee", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
 
-        melee.boolValue = EditorGUILayout.Toggle(new GUIContent("Melee", "Should the attack be a melee?"), melee.boolValue);
+        melee.boolValue = EditorGUILayout.Toggle(new GUIContent("Melee", "Should the attackStat be a melee?"), melee.boolValue);
         if (melee.boolValue)
         {
             DrawVector(meleeSize, "Size", "Hitbox size.");
@@ -125,10 +125,10 @@ public class GenericAttackEditor : AttackEditor
         EditorGUILayout.LabelField("Magic", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
 
-        magic.boolValue = EditorGUILayout.Toggle(new GUIContent("Magic", "Does the attack require magic?"), magic.boolValue);
+        magic.boolValue = EditorGUILayout.Toggle(new GUIContent("Magic", "Does the attackStat require magic?"), magic.boolValue);
         if (magic.boolValue)
         {
-            PropertyField(magicRequired, "Magic Required", "How much magic is needed to perform the attack.");
+            PropertyField(magicRequired, "Magic Required", "How much magic is needed to perform the attackStat.");
         }
         EditorGUI.indentLevel--;
 
@@ -139,7 +139,7 @@ public class GenericAttackEditor : AttackEditor
         EditorGUILayout.LabelField("Projectile", EditorStyles.boldLabel);
         EditorGUI.indentLevel++;
 
-        projectile.boolValue = EditorGUILayout.Toggle(new GUIContent("Projectile", "Does this attack get shot?"), projectile.boolValue);
+        projectile.boolValue = EditorGUILayout.Toggle(new GUIContent("Projectile", "Does this attackStat get shot?"), projectile.boolValue);
         if (projectile.boolValue)
         {
             DrawVector(projectileVector, "Direction", "Vector the hitbox is shot from.");

@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400000}
+  - 114: {fileID: 11400000}
+  - 114: {fileID: 11400002}
+  - 114: {fileID: 11400004}
+  m_Layer: 0
+  m_Name: _UltimateAttacks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400000
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b9d981e6612b9b48b7df81d3ab89933, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  attacks:
+  - {fileID: 11400002}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400004}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29233bfd0ac755b4e941c3fd3cac434b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  attackName: Ice Spear
+  attackTime: 2
+  IceSpear_Prefab: {fileID: 100002, guid: a65115db838757945b9abd1495bb0b3c, type: 2}
+  offset: {x: 6, y: 1.5}
+  hitInfo:
+    baseDamage: 0
+    effect: 0
+    knockBack: {x: 0, y: 0, z: 0}
+  SpearAnim: {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bcec1e5d6731334bb67c9aa906c4c65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: 1
+  attackName: Ice Shotgun
+  attackTime: 2
+  Wall_Prefab: {fileID: 100000, guid: 52b044f918697e742a3bdfd064e44ae6, type: 2}
+  Shard_Prefab: {fileID: 100000, guid: 4c2581d15aa5b8f46bb4ac34e519fd72, type: 2}
+  shardCount: 20
+  maxYRot: -25
+  minYRot: 10
+  shardSpeed: 30
+  shardTime: 3
+  hitInfo:
+    baseDamage: 0
+    effect: 0
+    knockBack: {x: 0, y: 0, z: 0}
+  wallTime: 1
+  punchTime: .5
+  wallCenter: 1.5
+  HaroldX: -2
+  HaroldPunchAnim: {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
+  ChadX: -4
+  ChadConjureAnim: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 100000}
+  m_IsPrefabParent: 1
+  m_IsExploded: 1

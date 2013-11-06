@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// Pass hit info from sender to receiver.
@@ -25,7 +26,8 @@ public class Hitbox : BaseMono
 
     private static int HitIDs = 1;
     private int hitID;
-    private Character sender;
+    //private Character sender;
+    private List<object> senders;
     private bool oneShot;
     private Job moveJob;
 
@@ -49,7 +51,7 @@ public class Hitbox : BaseMono
         Health opponentHealth = other.GetComponent<Health>();
         if (opponentHealth != null)
         {
-            opponentHealth.RecieveHit(sender, hitID, hitInfo.TransformKnockBack(opponentHealth.transform.position, sender.transform.position));
+            opponentHealth.RecieveHit(senders, hitID, hitInfo);
             if (oneShot)
             {
                 gameObject.SetActive(false);
@@ -81,21 +83,43 @@ public class Hitbox : BaseMono
     /// <param name="time">How long the hitbox should last.</param>
     /// <param name="hitNumber">How many hits to perform. Usually 1.</param>
     /// <param name="oneShot">Does the hitbox get destroyed after landing one hit?</param>
-    public void Initialize(Character sender, HitInfo hitInfo, float time, int hitNumber, bool oneShot = false)
+    public void Initialize(object sender, HitInfo hitInfo, float time, int hitNumber, bool oneShot = false)
     {
-        this.sender = sender;
+        senders = new List<object> { sender };
         this.hitInfo = hitInfo;
         this.oneShot = oneShot;
 
-        tag = sender.gameObject.tag;
+        tag = (sender as MonoBehaviour).tag;
         SetHitID();
         if (hitNumber > 1)
         {
             StartCoroutine(MultiHit(time, hitNumber));
         }
 
-        // physical/magic attackValue
-        hitInfo.FactorAttackStats(sender.myStats);
+        InvokeMethod("End", time);
+    }
+
+
+    /// <summary>
+    /// Create a new hitbox with new data.
+    /// </summary>
+    /// <param name="sender">Character who sent the attackValue.</param>
+    /// <param name="hitInfo">HitInfo to pass along to the reciever's Health.</param>
+    /// <param name="time">How long the hitbox should last.</param>
+    /// <param name="hitNumber">How many hits to perform. Usually 1.</param>
+    /// <param name="oneShot">Does the hitbox get destroyed after landing one hit?</param>
+    public void Initialize(List<object> senders, HitInfo hitInfo, float time, int hitNumber, bool oneShot = false)
+    {
+        this.senders = senders;
+        this.hitInfo = hitInfo;
+        this.oneShot = oneShot;
+
+        tag = (senders[0] as MonoBehaviour).tag;
+        SetHitID();
+        if (hitNumber > 1)
+        {
+            StartCoroutine(MultiHit(time, hitNumber));
+        }
 
         InvokeMethod("End", time);
     }
@@ -110,10 +134,26 @@ public class Hitbox : BaseMono
     /// <param name="hitNumber">How many hits to perform. Usually 1.</param>
     /// <param name="shootVector">Move vector for hitbox.</param>
     /// <param name="oneShot">Does the hitbox get destroyed after landing one hit?</param>
-    public void Initialize(Character sender, HitInfo hitInfo, float time, int hitNumber, Vector3 shootVector, bool oneShot = false)
+    public void Initialize(object sender, HitInfo hitInfo, float time, int hitNumber, Vector3 shootVector, bool oneShot = false)
     {
         moveJob = new Job(Move(shootVector), time);
         Initialize(sender, hitInfo, time, hitNumber, oneShot);
+    }
+
+
+    /// <summary>
+    /// Create a new hitbox with new data.
+    /// </summary>
+    /// <param name="sender">Character who sent the attackValue.</param>
+    /// <param name="hitInfo">HitInfo to pass along to the reciever's Health.</param>
+    /// <param name="time">How long the hitbox should last.</param>
+    /// <param name="hitNumber">How many hits to perform. Usually 1.</param>
+    /// <param name="shootVector">Move vector for hitbox.</param>
+    /// <param name="oneShot">Does the hitbox get destroyed after landing one hit?</param>
+    public void Initialize(List<object> senders, HitInfo hitInfo, float time, int hitNumber, Vector3 shootVector, bool oneShot = false)
+    {
+        moveJob = new Job(Move(shootVector), time);
+        Initialize(senders, hitInfo, time, hitNumber, oneShot);
     }
 
 

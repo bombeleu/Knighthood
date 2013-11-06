@@ -68,14 +68,14 @@ public class TauntManager : BaseMono
                     break;
                 // defense increase
                 case 2:
-                    myCharacter.myStats.TempChangeStat(StatManager.Stats.MagicDefense, combatIncrease);
-                    myCharacter.myStats.TempChangeStat(StatManager.Stats.PhysicalDefense, combatIncrease);
+                    myCharacter.myStats.TempChangeStat(StatManager.Stats.DefenseStoutness, combatIncrease);
+                    myCharacter.myStats.TempChangeStat(StatManager.Stats.DefenseShield, combatIncrease);
                     StartCoroutine("DefenseIncrease");
                     break;
                 // strength increase
                 case 3:
-                    myCharacter.myStats.TempChangeStat(StatManager.Stats.MagicAttack, combatIncrease);
-                    myCharacter.myStats.TempChangeStat(StatManager.Stats.PhysicalAttack, combatIncrease);
+                    myCharacter.myStats.TempChangeStat(StatManager.Stats.AttackPhysical, combatIncrease);
+                    myCharacter.myStats.TempChangeStat(StatManager.Stats.AttackMagic, combatIncrease);
                     StartCoroutine("AttackIncrease");
                     break;
             }
@@ -97,8 +97,8 @@ public class TauntManager : BaseMono
     private IEnumerator DefenseIncrease()
     {
         yield return WaitForTime(increaseTime);
-        myCharacter.myStats.TempChangeStat(StatManager.Stats.MagicDefense, -combatIncrease);
-        myCharacter.myStats.TempChangeStat(StatManager.Stats.PhysicalDefense, -combatIncrease);
+        myCharacter.myStats.TempChangeStat(StatManager.Stats.DefenseStoutness, -combatIncrease);
+        myCharacter.myStats.TempChangeStat(StatManager.Stats.DefenseShield, -combatIncrease);
     }
 
 
@@ -108,8 +108,8 @@ public class TauntManager : BaseMono
     private IEnumerator AttackIncrease()
     {
         yield return WaitForTime(increaseTime);
-        myCharacter.myStats.TempChangeStat(StatManager.Stats.MagicAttack, -combatIncrease);
-        myCharacter.myStats.TempChangeStat(StatManager.Stats.PhysicalAttack, -combatIncrease);
+        myCharacter.myStats.TempChangeStat(StatManager.Stats.AttackPhysical, -combatIncrease);
+        myCharacter.myStats.TempChangeStat(StatManager.Stats.AttackMagic, -combatIncrease);
     }
 
 

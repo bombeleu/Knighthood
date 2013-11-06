@@ -3,6 +3,8 @@
 
 using UnityEngine;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 /// <summary>
 /// Info to pass from an attackValue.
@@ -12,96 +14,83 @@ public class HitInfo
 {
     #region Public Fields
 
-    /// <summary>Base damage before stats are factored in.</summary>
-    public int baseDamage;
-    public int damage { get; private set; }
+    public int damage;
     public enum Effects { None = -1, Fire = 0, Lightning = 1, Acid = 2, Earth = 3, Ice = 4 }
-    public Effects effect;
+    public Effects effect = Effects.None;
     public Vector3 knockBack;
+
+    #endregion
+
+    #region Private Fields
+
+    private float attackStat;
 
     #endregion
 
     #region Const Fields
 
     private const float ATTACKMODIFIER = 0.5f;
+    private const float MODIFIER = 20f;
 
     #endregion
 
 
     #region Public Methods
-    
+
     /// <summary>
-    /// Factor in reciever's StatManager to the damage.
+    /// Factor attack strength into damage.
     /// </summary>
-    /// <param name="statManager">Reciever.</param>
-    /// <returns>New HitInfo with correct damage.</returns>
-    public HitInfo LocalizeDamage(StatManager statManager)
+    /// <param name="attackStat">Attack strength. Usually AttackPhysical or AttackMagic.</param>
+    /// <returns>New HitInfo to give to Hitbox.</returns>
+    public HitInfo Attack(float attackStat)
     {
-        int newDamage = damage;
-
-        if (effect == Effects.None)
-        {
-            newDamage = Mathf.CeilToInt(damage / statManager.physicalDefense);
-        }
-        else
-        {
-            newDamage = Mathf.CeilToInt(damage / statManager.magicDefense);
-        }
-
         return new HitInfo()
         {
-            baseDamage = baseDamage,
-            damage = newDamage,
-            effect = effect,
-            knockBack = knockBack
+            //damage = Mathf.CeilToInt(damage * (int)attackStat * ATTACKMODIFIER),
+            damage = this.damage,
+            effect = this.effect,
+            knockBack = this.knockBack,
+            attackStat = attackStat,
         };
     }
 
 
     /// <summary>
-    /// Correct knockback horizontal direction.
+    /// Factor average attack strength of multiple attackers into damage.
     /// </summary>
-    /// <param name="target">Reciever.</param>
-    /// <param name="position">Attacker.</param>
-    /// <returns>New HitInfo with correct knockback.</returns>
-    public HitInfo TransformKnockBack(Vector3 target, Vector3 position)
+    /// <param name="attackStat">Attack strengths of all attackers. Usually AttackPhysical or AttackMagic.</param>
+    /// <returns>New HitInfo to give to Hitbox.</returns>
+    public HitInfo Attack(IEnumerable<float> attackStats)
     {
         return new HitInfo()
         {
-            baseDamage = baseDamage,
-            damage = damage,
-            effect = effect,
-            knockBack = new Vector3(Mathf.Sign(target.x - position.x)*knockBack.x, knockBack.y, 0f)
+            //damage = Mathf.CeilToInt(damage * (int)attackStats.Average() * ATTACKMODIFIER),
+            damage = this.damage,
+            effect = this.effect,
+            knockBack = this.knockBack,
+            attackStat = attackStats.Average(),
         };
     }
 
 
-
     /// <summary>
-    /// Multiply base damage by correct attackValue stat.
+    /// Factor defense strength into damage. Usually DefenseStoutness.
     /// </summary>
-    /// <param name="statManager">Attacker's myStats.</param>
-    /// <remarks>May need to change. Wind and Earth don't have effects.</remarks>
-    public void FactorAttackStats(StatManager statManager)
+    public void Defend(float defendStat, Vector3 defender, Vector3 attacker)
     {
-        if (effect == Effects.None)
+        //damage = Mathf.CeilToInt(damage / defendStat);
+        var delta = attackStat - defendStat;
+        var mult = 1 + Mathf.Abs(delta / MODIFIER);
+        if (attackStat > defendStat)
         {
-            damage = Mathf.CeilToInt(baseDamage * statManager.physicalAttack*ATTACKMODIFIER);
+            damage = Mathf.CeilToInt(damage * mult);
         }
         else
         {
-            damage = Mathf.CeilToInt(baseDamage * statManager.magicAttack*ATTACKMODIFIER);
+            damage = Mathf.CeilToInt(damage / mult);
         }
-    }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="magicAttack"></param>
-    public void FactorMagicAttack(int magicAttack)
-    {
-        damage = Mathf.CeilToInt(baseDamage * magicAttack * ATTACKMODIFIER);
+        knockBack = new Vector3(Mathf.Sign(attacker.x - defender.x) * knockBack.x, knockBack.y, 0f);
     }
 
     #endregion

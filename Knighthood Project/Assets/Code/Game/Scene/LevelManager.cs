@@ -20,7 +20,7 @@ public abstract class LevelManager : Singleton<LevelManager>
 
     #region Player Fields
 
-    public List<Transform> PlayerTransforms { get; private set; }
+    public List<Transform> PlayerTransforms { get; protected set; }
 
     #endregion
 
@@ -36,7 +36,7 @@ public abstract class LevelManager : Singleton<LevelManager>
 
     #region Camera Fields
 
-    public new Camera camera { get; private set; }
+    public new Camera camera { get; protected set; }
     protected LevelCamera levelCamera;
 
     #endregion
@@ -186,11 +186,11 @@ public abstract class LevelManager : Singleton<LevelManager>
     /// <summary>
     /// Change the tag for every player for PvP.
     /// </summary>
-    public void RetagPlayers()
+    public void AssignPlayerTeams()
     {
         for (int i = 0; i < PlayerTransforms.Count; i++)
         {
-            PlayerTransforms[i].GetComponent<Player>().Retag(i);
+            PlayerTransforms[i].GetComponent<Player>().Retag("Team " + (i+1));
         }
     }
 
@@ -201,12 +201,11 @@ public abstract class LevelManager : Singleton<LevelManager>
     /// <summary>
     /// Create the players at the beginning of the level.
     /// </summary>
-    protected void CreatePlayers()
+    protected virtual void CreatePlayers()
     {
         PlayerTransforms = new List<Transform>();
 
-        Transform playerParent = (new GameObject().transform);
-        playerParent.name = "Players";
+        Transform playerParent = new GameObject("Players").transform;
 
         for (int i = 0; i < GameData.Instance.playerUsernames.Count; i++)
         {
@@ -259,7 +258,7 @@ public abstract class LevelManager : Singleton<LevelManager>
 
     public void HitHandler(object sender, HitEventArgs args)
     {
-        if (!args.dead) return;
+        if (args.health > 0) return;
 
         enemiesLeft--;
         if (enemiesLeft == 0)

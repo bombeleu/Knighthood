@@ -4,6 +4,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// <summary>
 /// Base enemy class.
@@ -69,20 +70,20 @@ public class Enemy : Character
 
     #region Event Handlers
 
-    protected override void HitHandler(object sender, HitEventArgs args)
+    protected override void HitHandler(List<object> senders, HitEventArgs args)
     {
-        if (args.dead)
+        if (args.health == 0)
         {
-            Log("Killed by: " + sender, Debugger.LogTypes.Combat);
-
-            Player player = (Player)sender;
-            player.RecieveKill(enemyType, experience);
+            foreach (var player in senders)
+            {
+                ((Player)player).RecieveKill(enemyType, experience);
+            }
 
             SetState(DyingState, new Dictionary<string, object>());
         }
         else
         {
-            currentTarget = ((Character)sender).transform;
+            currentTarget = ((Character)senders[0]).transform;
             SetState(FlinchingState, new Dictionary<string, object> { { "knockBack", args.hitInfo.knockBack } });
         }
     }

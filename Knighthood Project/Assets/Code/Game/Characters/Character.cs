@@ -59,6 +59,12 @@ public class Character : BaseMono
 
     #endregion
 
+    #region Events
+
+    public EventHandler DieEvent;
+
+    #endregion
+
 
     #region MonoBehaviour Overrides
 
@@ -187,9 +193,19 @@ public class Character : BaseMono
     /// <summary>
     /// Start flinching after being hit.
     /// </summary>
-    protected virtual void HitHandler(object sender, HitEventArgs args)
+    protected virtual void HitHandler(List<object> senders, HitEventArgs args)
     {
-        SetState(FlinchingState, new Dictionary<string, object> { { "knockBack", args.hitInfo.knockBack } });
+        if (args.damage > 0)
+        {
+            if (args.health > 0)
+            {
+                SetState(FlinchingState, new Dictionary<string, object> { { "knockBack", args.hitInfo.knockBack } });
+            }
+            else
+            {
+                SetState(DyingState, new Dictionary<string, object>());
+            }
+        }
     }
 
 

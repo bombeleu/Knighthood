@@ -390,8 +390,8 @@ SphereCollider:
 --- !u!1 &167056711
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabParentObject: {fileID: 100000, guid: fc787d4c4ae2fe640bc341628c89753e, type: 2}
+  m_PrefabInternal: {fileID: 367002220}
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 167056712}
@@ -408,8 +408,8 @@ GameObject:
 --- !u!4 &167056712
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabParentObject: {fileID: 400000, guid: fc787d4c4ae2fe640bc341628c89753e, type: 2}
+  m_PrefabInternal: {fileID: 367002220}
   m_GameObject: {fileID: 167056711}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -419,8 +419,9 @@ Transform:
 --- !u!114 &167056713
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabParentObject: {fileID: 11400000, guid: fc787d4c4ae2fe640bc341628c89753e,
+    type: 2}
+  m_PrefabInternal: {fileID: 367002220}
   m_GameObject: {fileID: 167056711}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -447,8 +448,9 @@ MonoBehaviour:
 --- !u!114 &167056714
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabParentObject: {fileID: 11400002, guid: fc787d4c4ae2fe640bc341628c89753e,
+    type: 2}
+  m_PrefabInternal: {fileID: 367002220}
   m_GameObject: {fileID: 167056711}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -461,15 +463,16 @@ MonoBehaviour:
   IceSpear_Prefab: {fileID: 100002, guid: a65115db838757945b9abd1495bb0b3c, type: 2}
   offset: {x: 6, y: 1.5}
   hitInfo:
-    baseDamage: 10
-    effect: 4
+    baseDamage: 0
+    effect: 0
     knockBack: {x: 0, y: 0, z: 0}
   SpearAnim: {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
 --- !u!114 &167056715
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabParentObject: {fileID: 11400004, guid: fc787d4c4ae2fe640bc341628c89753e,
+    type: 2}
+  m_PrefabInternal: {fileID: 367002220}
   m_GameObject: {fileID: 167056711}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -487,8 +490,8 @@ MonoBehaviour:
   shardSpeed: 30
   shardTime: 3
   hitInfo:
-    baseDamage: 5
-    effect: 4
+    baseDamage: 0
+    effect: 0
     knockBack: {x: 0, y: 0, z: 0}
   wallTime: 1
   punchTime: .5
@@ -971,6 +974,46 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &367002220
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: fc787d4c4ae2fe640bc341628c89753e, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: fc787d4c4ae2fe640bc341628c89753e, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: fc787d4c4ae2fe640bc341628c89753e, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: fc787d4c4ae2fe640bc341628c89753e, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: fc787d4c4ae2fe640bc341628c89753e, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: fc787d4c4ae2fe640bc341628c89753e, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: fc787d4c4ae2fe640bc341628c89753e, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: fc787d4c4ae2fe640bc341628c89753e, type: 2}
+  m_RootGameObject: {fileID: 167056711}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!1 &372075910
 GameObject:
   m_ObjectHideFlags: 0

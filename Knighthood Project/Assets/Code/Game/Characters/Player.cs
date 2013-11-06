@@ -17,6 +17,7 @@ public class Player : Character
     private AttackManager attackManager;
     private TauntManager tauntManager;
     private UltimateAttackManager ultimateManager;
+    private Magic myMagic;
 
     #endregion
 
@@ -27,6 +28,7 @@ public class Player : Character
     private const string DodgeRollingState = "DodgeRolling";
     private const string AirDodgingState = "AirDodging";
     private const string UltimateState = "Ultimate";
+    private const string StunState = "Stunned";
 
     public float spawnTime;
     public float fastFallSpeed;
@@ -43,14 +45,14 @@ public class Player : Character
     public float perfectShieldTime;
     /// <summary>If hit during perfectShield enemy will flinch.<summary>
     private bool perfectShield;
-    /// <summary>How much damage the player can take while defending.</summary>
-    public int shieldHealthMax;
     /// <summary>Current damage taken while defending.</summary>
-    private int shieldHealth;
+    public int shieldHealth { get; private set; }
     /// <summary>Time in seconds to increase shieldHealth.</summary>
     public float shieldRegenTime;
+    /// <summary>Regenerates the shield health.</summary>
+    private Job shieldRegen;
     /// <summary>Multiplied by normal speed.</summary>
-    public float defendSpeedModifier = 0.5f;
+    public float defendSpeedModifier = 0.25f;
 
     /// <summary>How long the air dodge lasts.</summary>
     public float airDodgeTime;
@@ -129,9 +131,12 @@ public class Player : Character
         CreateState(DodgeRollingState, DodgeRollingEnter, DodgeRollingExit);
         CreateState(AirDodgingState, AirDodgingEnter, AirDodgingExit);
         CreateState(FlinchingState, FlinchingEnter, FlinchingExit);
-        // dying state
+        CreateState(StunState, StunEnter, info => {});
+        CreateState(DyingState, info => {}, info => {});
         
         initialState = SpawningState;
+
+        myStats.Initialize(playerInfo.username);
 
         // combat
         attackManager = GetComponent<AttackManager>();
@@ -140,6 +145,10 @@ public class Player : Character
         comboManager.Initialize(this);
         tauntManager = GetComponent<TauntManager>();
         ultimateManager = GetComponent<UltimateAttackManager>();
+        shieldHealth = (int)myStats.defenseShield.value;
+        myMagic = GetComponent<Magic>();
+        myMagic.Initialize(myStats);
+        shieldRegen = new Job(RegenShield(), false);
     }
 
 
@@ -199,6 +208,7 @@ public class Player : Character
         myMoney = new MoneyManager(playerInfo.username);
         myPerformance = new PerformanceManager(playerInfo.username);
         myScore = new ScoreManager(playerInfo.username);
+        myStats.Initialize(playerInfo.username);
 
         StartInitialState(null);
     }
@@ -221,9 +231,9 @@ public class Player : Character
     /// 
     /// </summary>
     /// <param name="number"></param>
-    public void Retag(int number)
+    public void Retag(string tag)
     {
-        tag = "Player" + number;
+        this.tag = tag;
     }
 
     #endregion
@@ -621,7 +631,7 @@ public class Player : Character
             // fast fall
             if (GetMovingInput().y < -0.9f)
             {
-                myMotor.AddVelocityY(fastFallSpeed * GameTime.deltaTime);
+                myMotor.AddVelocityY(-fastFallSpeed * GameTime.deltaTime);
             }
 
             // move
@@ -687,7 +697,7 @@ public class Player : Character
     {
         myHealth.invincible = true;
         StartCoroutine("PerfectShieldTimer");
-        StopCoroutine("ShieldRegen");
+        shieldRegen.Kill();
 
         PlayAnimation(myMotor.IsGrounded(true) ? "Defend Ground" : "Defend Air");
 
@@ -757,19 +767,19 @@ public class Player : Character
     {
         myHealth.invincible = false;
         StopCoroutine("PerfectShieldTimer");
-        StartCoroutine("RegenShield");
+        shieldRegen = new Job(RegenShield());
     }
 
 
     private IEnumerator RegenShield()
     {
-        while (shieldHealth < shieldHealthMax)
+        while (shieldHealth < myStats.defenseShield.value)
         {
             yield return WaitForTime(shieldRegenTime);
             shieldHealth++;
         }
 
-        shieldHealth = shieldHealthMax;
+        shieldHealth = (int)myStats.defenseShield.value;
     }
 
 
@@ -941,6 +951,13 @@ public class Player : Character
     private void FlinchingExit(Dictionary<string, object> info)
     {
         StartCoroutine("Invincible", flinchInvincibleTime);
+    }
+
+
+    private void StunEnter(Dictionary<string, object> info)
+    {
+        PlayAnimation("Flinch Ground");
+        InvokeAction(() => SetState(IdlingState, new Dictionary<string, object>()), (float)info["stunTime"]);
     }
 
     #endregion
@@ -1285,14 +1302,32 @@ public class Player : Character
 
     #region Event Handlers
 
-    protected override void HitHandler(object sender, HitEventArgs args)
+    protected override void HitHandler(List<object> senders, HitEventArgs args)
     {
+        if (currentState == DefendingState)
+        {
+            if (perfectShield)
+            {
+                Log("Perfect Shield!", Debugger.LogTypes.Combat);
+            }
+            else
+            {
+                shieldHealth -= args.hitInfo.damage / 10;
+                if (shieldHealth < 0)
+                {
+                    shieldHealth = 0;
+                    SetState(StunState, new Dictionary<string, object> { { "stunTime", 2f } }); // need to calculate stun time
+                }
+            }
+            return;
+        }
+
         // end attacks
         attackManager.Cancel();
         comboManager.Cancel();
         // cancel taunt
 
-        base.HitHandler(sender, args);
+        base.HitHandler(senders, args);
     }
 
     #endregion

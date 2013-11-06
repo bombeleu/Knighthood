@@ -1,6 +1,8 @@
 ﻿// Steve Yeager
 // 8.25.2013
 
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -11,6 +13,7 @@ public class CharacterHealth : Health
     #region Reference Fields
 
     private StatManager statManager;
+    private Transform myTransform;
 
     #endregion
 
@@ -28,6 +31,7 @@ public class CharacterHealth : Health
     {
         // get references
         statManager = GetSafeComponent<Character>().myStats;
+        myTransform = transform;
     }
 
     #endregion
@@ -40,7 +44,6 @@ public class CharacterHealth : Health
     /// <param name="statManager"></param>
     public void Initialize(StatManager stats)
     {
-        maxHealth = stats.health;
         currentHealth = maxHealth;
         this.statManager = stats;
     }
@@ -49,69 +52,76 @@ public class CharacterHealth : Health
 
     #region Health Overrides
 
-    public override void RecieveHit(object sender, int hitID, HitInfo hitInfo)
+    public override void RecieveHit(List<object> senders, int hitID, HitInfo hitInfo)
     {
-        if (attackArmor == AttackArmor.Strong) return;
-        if (invincible) return;
+        // no hit if same hitID
         if (hitID == lastHitID) return;
         lastHitID = hitID;
 
-        var damage = hitInfo.damage;
-
-        // status effect
-        if (hitInfo.effect != HitInfo.Effects.None)
+        int damage = 0;
+        // no damage applied if invincible or have Strong Attack Armor
+        if (!invincible && attackArmor != AttackArmor.Strong)
         {
-            damage = Mathf.CeilToInt(damage * statusEffectivenesses[(int)hitInfo.effect]);
-            if (damage > 0)
+            hitInfo.Defend(statManager.defenseStoutness.value, myTransform.position, ((MonoBehaviour)senders[0]).transform.position);
+            damage = hitInfo.damage;
+
+            // status effect
+            if (hitInfo.effect != HitInfo.Effects.None)
             {
-                Log(hitInfo.effect + ":" + (int)hitInfo.effect, Debugger.LogTypes.Combat);
-                StopAllCoroutines();
-                StartCoroutine(statusMethods[(int)hitInfo.effect], damage);
+                damage = Mathf.CeilToInt(damage * statusEffectivenesses[(int)hitInfo.effect]);
+                if (damage > 0)
+                {
+                    Log(hitInfo.effect + ":" + (int)hitInfo.effect, Debugger.LogTypes.Combat);
+                    StopAllCoroutines();
+                    StartCoroutine(statusMethods[(int)hitInfo.effect], damage);
+                }
             }
+
+            ChangeHealth(-damage);
+            CreateIndicator(damage);
         }
 
-        ChangeHealth(-damage);
-        CreateIndicator(damage);
+        //if (HitEvent != null)
+        //{
+        //    HitEvent(senders, new HitEventArgs(hitInfo, currentHealth, damage));
+        //}
 
-        if (attackArmor == AttackArmor.None)
-        {
-            if (HitEvent != null)
-            {
-                HitEvent(sender, new HitEventArgs(hitInfo, currentHealth == 0));
-            }
-        }
+        OnGroupHitEvent(senders, new HitEventArgs(hitInfo, currentHealth, damage));
     }
 
 
-    public override void RecieveHit(object[] senders, int hitID, HitInfo hitInfo)
-    {
-        if (attackArmor == AttackArmor.Strong) return;
-        if (invincible) return;
-        if (hitID == lastHitID) return;
-        lastHitID = hitID;
+    //[Obsolete("Making one RecieveHit")]
+    //public override void RecieveHit(object[] senders, int hitID, HitInfo hitInfo)
+    //{
+    //    // no hit if same hitID
+    //    if (hitID == lastHitID) return;
+    //    lastHitID = hitID;
 
-        var damage = hitInfo.damage;
+    //    int damage = 0;
+    //    // no damage applied if invincible or have Strong Attack Armor
+    //    if (!invincible && attackArmor != AttackArmor.Strong)
+    //    {
+    //        hitInfo = hitInfo.LocalizeDamage(statManager);
+    //        damage = hitInfo.damage;
 
-        // status effect
-        if (hitInfo.effect != HitInfo.Effects.None)
-        {
-            damage = Mathf.CeilToInt(damage * statusEffectivenesses[(int)hitInfo.effect]);
-            if (damage > 0)
-            {
-                Log(hitInfo.effect + ":" + (int)hitInfo.effect, Debugger.LogTypes.Combat);
-                StopAllCoroutines();
-                StartCoroutine(statusMethods[(int)hitInfo.effect], damage);
-            }
-        }
+    //        // status effect
+    //        if (hitInfo.effect != HitInfo.Effects.None)
+    //        {
+    //            damage = Mathf.CeilToInt(damage * statusEffectivenesses[(int)hitInfo.effect]);
+    //            if (damage > 0)
+    //            {
+    //                Log(hitInfo.effect + ":" + (int)hitInfo.effect, Debugger.LogTypes.Combat);
+    //                StopAllCoroutines();
+    //                StartCoroutine(statusMethods[(int)hitInfo.effect], damage);
+    //            }
+    //        }
 
-        ChangeHealth(-damage);
-        CreateIndicator(damage);
+    //        ChangeHealth(-damage);
+    //        CreateIndicator(damage);
+    //    }
 
-        if (attackArmor == AttackArmor.None)
-        {
-            OnGroupHitEvent(senders, new HitEventArgs(hitInfo, currentHealth == 0));
-        }
-    }
+    //    OnGroupHitEvent(senders, new HitEventArgs(hitInfo, currentHealth, damage));
+    //}
 
     #endregion
 }

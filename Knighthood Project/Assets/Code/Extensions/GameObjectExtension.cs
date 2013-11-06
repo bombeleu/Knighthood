@@ -9,7 +9,6 @@ using UnityEngine;
 /// </summary>
 public static class GameObjectExtension
 {
-    [Obsolete]
     public static T GetSafeComponent<T>(this GameObject go) where T : class
     {
         T component = go.GetComponent(typeof(T)) as T;

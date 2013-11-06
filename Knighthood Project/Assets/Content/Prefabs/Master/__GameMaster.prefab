@@ -77,8 +77,8 @@ MonoBehaviour:
   log: 1
   Player_Prefabs:
   - {fileID: 100000, guid: bcf3c8837549784408f986a3d284cda3, type: 2}
-  - {fileID: 100000, guid: ca5c12640e5788f4c898b0657cc7cb13, type: 2}
-  - {fileID: 100000, guid: 4e0b4521eb1639e4d8960fc34a99e33b, type: 2}
+  - {fileID: 100000, guid: 3ee67ac4171a75b449003709055f3323, type: 2}
+  - {fileID: 100000, guid: c6c2de9ebfd0a5b4d968e33d1c5cc48b, type: 2}
   - {fileID: 100000, guid: 02ec61d68c2aa944b983fc3849d8a7ee, type: 2}
   EnemyPrefabTypes: 
   Enemy_Prefabs: []

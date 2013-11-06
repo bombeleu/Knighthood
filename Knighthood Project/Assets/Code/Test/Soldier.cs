@@ -430,12 +430,12 @@ public sealed class Soldier : Enemy
 
     #region Event Handlers
 
-    protected override void HitHandler(object sender, HitEventArgs args)
+    protected override void HitHandler(List<object> senders, HitEventArgs args)
     {
         // end attacks
         attackManager.Cancel();
 
-        base.HitHandler(sender, args);
+        base.HitHandler(senders, args);
     }
 
     #endregion

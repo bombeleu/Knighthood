@@ -45,24 +45,24 @@ public class GroupHitbox : BaseMono
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == tag) return;
+        //if (other.tag == tag) return;
 
-        // hit opponent
-        Health opponentHealth = other.GetComponent<Health>();
-        if (opponentHealth != null)
-        {
-            opponentHealth.RecieveHit(senders, hitID, hitInfo.TransformKnockBack(opponentHealth.transform.position, myTransform.position));
-            if (oneShot)
-            {
-                gameObject.SetActive(false);
-            }
-        }
+        //// hit opponent
+        //Health opponentHealth = other.GetComponent<Health>();
+        //if (opponentHealth != null)
+        //{
+        //    opponentHealth.RecieveHit(senders, hitID, hitInfo.TransformKnockBack(opponentHealth.transform.position, myTransform.position));
+        //    if (oneShot)
+        //    {
+        //        gameObject.SetActive(false);
+        //    }
+        //}
 
-        // hit terrain
-        if (oneShot && other.gameObject.layer == LayerMask.NameToLayer("Terrain"))
-        {
-            gameObject.SetActive(false);
-        }
+        //// hit terrain
+        //if (oneShot && other.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+        //{
+        //    gameObject.SetActive(false);
+        //}
     }
 
 
@@ -96,7 +96,7 @@ public class GroupHitbox : BaseMono
             StartCoroutine(MultiHit(time, hitNumber));
         }
 
-        hitInfo.FactorMagicAttack((int)senders.Average(s => s.myStats.magicAttack));
+        //hitInfo.FactorAttackStats(senders.Select(s => s.myStats));
 
         InvokeMethod("End", time);
     }

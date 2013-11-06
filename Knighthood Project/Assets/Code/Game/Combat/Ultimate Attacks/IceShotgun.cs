@@ -3,6 +3,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 /// <summary>
 /// Ultimate 4: Harold, Chad
@@ -63,7 +64,7 @@ public class IceShotgun : UltimateAttack
         {
             shard = (GameObject)Instantiate(Shard_Prefab, startPosition + Vector3.up * wallCenter, startRotation * Quaternion.Euler(Random.Range(minYRot, maxYRot), 0f, 0f));
             shard.transform.Align();
-            shard.GetComponent<GroupHitbox>().Initialize(UltimateAttacks.participants, hitInfo, shardTime, 1, shard.transform.forward*shardSpeed, true);
+            shard.GetComponent<GroupHitbox>().Initialize(UltimateAttacks.participants, hitInfo.Attack(UltimateAttacks.participants.Select(p => p.myStats.abilityStrength.value)), shardTime, 1, shard.transform.forward*shardSpeed, true);
         }
         Destroy(Wall);
     }

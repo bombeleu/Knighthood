@@ -2,7 +2,9 @@
 // 8.22.2013
 
 using System;
+using System.Collections.Generic;
 using System.Xml;
+using UnityEngine;
 
 /// <summary>
 /// Holds all stat info for a myCharacter.
@@ -10,26 +12,98 @@ using System.Xml;
 [Serializable]
 public class StatManager
 {
-    #region Stat Fields
+    #region Public Fields
 
     public enum Stats
     {
-        Health,
-        PhysicalAttack,
-        PhysicalDefense,
-        MagicAttack,
-        MagicDefense,
-        MagicMax,
-        AttackSpeed
+        AttackPhysical,
+        AttackMagic,
+        DefenseStoutness,
+        DefenseShield,
+        SpeedMovement,
+        SpeedAgility,
+        MagicPool,
+        MagicRegen,
+        AbilityStrength,
+        AbilityRegen
     };
 
-    public int health;// { get; private set; }
-    public int physicalAttack = 1;// { get; private set; }
-    public int physicalDefense = 1;// { get; private set; }
-    public int magicAttack = 1;// { get; private set; }
-    public int magicDefense = 1;// { get; private set; }
-    public int magicMax;// { get; private set; }
-    public int attackSpeed;// { get; private set; }
+    public TextAsset statsFile;
+
+    public double Attack { get { return (attackPhysical.value + attackMagic.value) / 2d; } }
+    /// <summary>Strength of physical attacks.</summary>
+    public Stat attackPhysical;
+    /// <summary>Strength of magic attacks.</summary>
+    public Stat attackMagic;
+
+    public double Defense { get { return (defenseStoutness.value + defenseShield.value) / 2d; } }
+    /// <summary>Used to counter attackPhysical and attackMagic.</summary>
+    public Stat defenseStoutness;
+    /// <summary>Shield max health.</summary>
+    public Stat defenseShield;
+
+    public double Speed { get { return (speedMovement.value + speedAgility.value) / 2d; } }
+    /// <summary>Normal and shield speed.</summary>
+    public Stat speedMovement;
+    /// <summary>Attack speed.</summary>
+    public Stat speedAgility;
+
+    public double Magic { get { return (magicPool.value + magicRegen.value) / 2d; } }
+    /// <summary>Amount of magic available.</summary>
+    public Stat magicPool;
+    /// <summary>How fast magic regenerates.</summary>
+    public Stat magicRegen;
+
+    public double Ability { get { return (abilityStrength.value + abilityRegen.value) / 2d; } }
+    /// <summary>How strong special abilites are.</summary>
+    public Stat abilityStrength;
+    /// <summary>How fast the abilities regenerate.</summary>
+    public Stat abilityRegen;
+
+    #endregion
+
+    #region Properties Fields
+
+    public string user { get; private set; }
+    
+    #endregion
+
+    #region Const Fields
+
+    private const int ATTACKPHYSICALINITIALVALUE = 1;
+    private const int ATTACKPHYSICALLEVELVALUE = 1;
+    private const string ATTACKPHYSICALPATH = ": Attack Physical";
+    private const int ATTACKMAGICINITIALVALUE = 1;
+    private const int ATTACKMAGICLEVELVALUE = 1;
+    private const string ATTACKMAGICPATH = ": Attack Magic";
+
+    private const int DEFENSESTOUTNESSINITIALVALUE = 1;
+    private const int DEFENSESTOUTNESSLEVELVALUE = 1;
+    private const string DEFENSESTOUTNESSPATH = ": Defense Stoutness";
+    private const int DEFENSESHIELDINITIALVALUE = 100;
+    private const int DEFENSESHIELDLEVELVALUE = 2;
+    private const string DEFENSESHIELDPATH = ": Defense Shield";
+
+    private const int SPEEDMOVEMENTINITIALVALUE = 1;
+    private const float SPEEDMOVEMENTLEVELVALUE = 0.1f;
+    private const string SPEEDMOVEMENTPATH = ": Speed Movement";
+    private const int SPEEDAGILITYINITIALVALUE = 1;
+    private const int SPEEDAGILITYLEVELVALUE = 1;
+    private const string SPEEDAGILITYPATH = ": Speed Agility";
+
+    private const int MAGICPOOLINITIALVALUE = 100;
+    private const int MAGICPOOLLEVELVALUE = 2; 
+    private const string MAGICPOOLPATH = ": Magic Pool";
+    private const int MAGICREGENINITIALVALUE = 1;
+    private const float MAGICREGENLEVELVALUE = 0.1f;
+    private const string MAGICREGENPATH = ": Magic Regen";
+
+    private const int ABILITYSTRENGTHINITIALVALUE = 1;
+    private const int ABILITYSTRENGTHLEVELVALUE = 1; 
+    private const string ABILITYSTRENGTHPATH = ": Ability Strength";
+    private const int ABILITYREGENPATHINITIALVALUE = 1;
+    private const int ABILITYREGENPATHLEVELVALUE = 1; 
+    private const string ABILITYREGENPATH = ": Ability Regen";
 
     #endregion
 
@@ -37,19 +111,139 @@ public class StatManager
     #region Public Methods
 
     /// <summary>
-    /// LoadHighscore NPC stats.
+    /// Set stats to initial.
     /// </summary>
-    /// <param name="name">Name of the NPC</param>
-    [Obsolete]
-    public void LoadNPC(string name)
+    public void Initialize()
     {
         XmlDocument statSheet = new XmlDocument();
-        statSheet.LoadXml(GameResources.Instance.NPCStats.text);
-        XmlNode root = statSheet.SelectSingleNode("/Enemies/Enemy/" + name);
-        foreach (XmlNode stat in root)
+        statSheet.LoadXml(statsFile.text);
+        XmlNode root = statSheet.SelectSingleNode("/stats");
+        XmlNode cursor;
+
+        cursor = root.SelectSingleNode("AttackPhysical");
+        attackPhysical = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                  int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                  ATTACKPHYSICALINITIALVALUE, ATTACKPHYSICALLEVELVALUE);
+        cursor = root.SelectSingleNode("AttackMagic");
+        attackMagic = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                  int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                  ATTACKMAGICINITIALVALUE, ATTACKMAGICLEVELVALUE);
+
+        cursor = root.SelectSingleNode("DefenseStoutness");
+        defenseStoutness = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                  int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                  DEFENSESTOUTNESSINITIALVALUE, DEFENSESTOUTNESSLEVELVALUE);
+        cursor = root.SelectSingleNode("DefenseShield");
+        defenseShield = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                  int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                  DEFENSESHIELDINITIALVALUE, DEFENSESHIELDLEVELVALUE);
+
+        cursor = root.SelectSingleNode("SpeedMovement");
+        speedMovement = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                  int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                  SPEEDMOVEMENTINITIALVALUE, SPEEDMOVEMENTLEVELVALUE);
+        cursor = root.SelectSingleNode("SpeedAgility");
+        speedAgility = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                  int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                  SPEEDAGILITYINITIALVALUE, SPEEDAGILITYLEVELVALUE);
+
+        cursor = root.SelectSingleNode("MagicPool");
+        magicPool = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                  int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                  MAGICPOOLINITIALVALUE, MAGICPOOLLEVELVALUE);
+        cursor = root.SelectSingleNode("MagicRegen");
+        magicRegen = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                  int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                  MAGICREGENINITIALVALUE, MAGICREGENLEVELVALUE);
+
+        cursor = root.SelectSingleNode("AbilityStrength");
+        abilityStrength = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                  int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                  ABILITYSTRENGTHINITIALVALUE, ABILITYSTRENGTHLEVELVALUE);
+        cursor = root.SelectSingleNode("AbilityRegen");
+        abilityRegen = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                  int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                  ABILITYREGENPATHINITIALVALUE, ABILITYREGENPATHLEVELVALUE);
+    }
+
+
+    /// <summary>
+    /// Get stats from save data if applicable or set to initial.
+    /// </summary>
+    /// <param name="user">Player username.</param>
+    public void Initialize(string user)
+    {
+        this.user = user;
+
+        // no data saved
+        if (PlayerPrefs.GetInt(user + ATTACKPHYSICALPATH, -1) == -1)
         {
-            Debugger.Log(stat.Name + ": " + stat.InnerXml);
+            Initialize();
         }
+        // found saved data
+        else
+        {
+            XmlDocument statSheet = new XmlDocument();
+            statSheet.LoadXml(statsFile.text);
+            XmlNode root = statSheet.SelectSingleNode("/stats");
+            XmlNode cursor;
+
+            cursor = root.SelectSingleNode("AttackPhysical");
+            attackPhysical = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                      int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                      ATTACKPHYSICALINITIALVALUE, ATTACKPHYSICALLEVELVALUE,
+                                      PlayerPrefs.GetInt(user + ATTACKPHYSICALPATH));
+            cursor = root.SelectSingleNode("AttackMagic");
+            attackMagic = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                      int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                      ATTACKMAGICINITIALVALUE, ATTACKMAGICLEVELVALUE,
+                                      PlayerPrefs.GetInt(user + ATTACKMAGICPATH));
+
+            cursor = root.SelectSingleNode("DefenseStoutness");
+            defenseStoutness = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                      int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                      DEFENSESTOUTNESSINITIALVALUE, DEFENSESTOUTNESSLEVELVALUE,
+                                      PlayerPrefs.GetInt(user + DEFENSESTOUTNESSPATH));
+            cursor = root.SelectSingleNode("DefenseShield");
+            defenseShield = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                      int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                      DEFENSESHIELDINITIALVALUE, DEFENSESHIELDLEVELVALUE,
+                                      PlayerPrefs.GetInt(user + DEFENSESHIELDPATH));
+
+            cursor = root.SelectSingleNode("SpeedMovement");
+            speedMovement = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                      int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                      SPEEDMOVEMENTINITIALVALUE, SPEEDMOVEMENTLEVELVALUE,
+                                      PlayerPrefs.GetInt(user + SPEEDMOVEMENTPATH));
+            cursor = root.SelectSingleNode("SpeedAgility");
+            speedAgility = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                      int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                      SPEEDAGILITYINITIALVALUE, SPEEDAGILITYLEVELVALUE,
+                                      PlayerPrefs.GetInt(user + SPEEDAGILITYPATH));
+
+            cursor = root.SelectSingleNode("MagicPool");
+            magicPool = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                      int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                      MAGICPOOLINITIALVALUE, MAGICPOOLLEVELVALUE,
+                                      PlayerPrefs.GetInt(user + MAGICPOOLPATH));
+            cursor = root.SelectSingleNode("MagicRegen");
+            magicRegen = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                      int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                      MAGICREGENINITIALVALUE, MAGICREGENLEVELVALUE,
+                                      PlayerPrefs.GetInt(user + MAGICREGENPATH));
+
+            cursor = root.SelectSingleNode("AbilityStrength");
+            abilityStrength = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                      int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                      ABILITYSTRENGTHINITIALVALUE, ABILITYSTRENGTHLEVELVALUE,
+                                      PlayerPrefs.GetInt(user + ABILITYSTRENGTHPATH));
+            cursor = root.SelectSingleNode("AbilityRegen");
+            abilityRegen = new Stat(int.Parse(cursor.SelectSingleNode("initialStat").InnerXml),
+                                      int.Parse(cursor.SelectSingleNode("finalStat").InnerXml),
+                                      ABILITYREGENPATHINITIALVALUE, ABILITYREGENPATHLEVELVALUE,
+                                      PlayerPrefs.GetInt(user + ABILITYREGENPATH));
+        }
+        
     }
 
 
@@ -62,26 +256,35 @@ public class StatManager
     {
         switch (stat)
         {
-            case Stats.Health:
-                health += amount;
+            case Stats.AttackPhysical:
+                attackPhysical.ChangeLevel(amount);
                 break;
-            case Stats.PhysicalAttack:
-                physicalAttack += amount;
+            case Stats.AttackMagic:
+                attackMagic.ChangeLevel(amount);
                 break;
-            case Stats.PhysicalDefense:
-                physicalDefense += amount;
+            case Stats.DefenseStoutness:
+                defenseStoutness.ChangeLevel(amount);
                 break;
-            case Stats.MagicAttack:
-                magicAttack += amount;
+            case Stats.DefenseShield:
+                defenseShield.ChangeLevel(amount);
                 break;
-            case Stats.MagicDefense:
-                magicDefense += amount;
+            case Stats.SpeedMovement:
+                speedMovement.ChangeLevel(amount);
                 break;
-            case Stats.MagicMax:
-                magicMax += amount;
+            case Stats.SpeedAgility:
+                speedAgility.ChangeLevel(amount);
                 break;
-            case Stats.AttackSpeed:
-                attackSpeed += amount;
+            case Stats.MagicPool:
+                magicPool.ChangeLevel(amount);
+                break;
+            case Stats.MagicRegen:
+                magicRegen.ChangeLevel(amount);
+                break;
+            case Stats.AbilityStrength:
+                abilityStrength.ChangeLevel(amount);
+                break;
+            case Stats.AbilityRegen:
+                abilityRegen.ChangeLevel(amount);
                 break;
         }
     }
