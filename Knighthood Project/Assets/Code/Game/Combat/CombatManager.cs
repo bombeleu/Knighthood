@@ -19,7 +19,6 @@ public abstract class CombatManager : BaseMono
 
     public Attack[] attacks = new Attack[0];
     public string[] inputs = new string[0];
-    public bool[] open = new bool[0];
 
     #endregion
 

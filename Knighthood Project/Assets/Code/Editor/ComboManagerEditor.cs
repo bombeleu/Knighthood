@@ -305,12 +305,6 @@ public class ComboManagerEditor : Editor
                 }
             }
 
-            // toggle
-            if (GUILayout.Button(manager.open[index] ? "|" : "O", GUILayout.Width(ButtonSize)))
-            {
-                manager.open[index] = !manager.open[index];
-            }
-
             // delete
             if (GUILayout.Button("-", GUILayout.Width(ButtonSize)))
             {

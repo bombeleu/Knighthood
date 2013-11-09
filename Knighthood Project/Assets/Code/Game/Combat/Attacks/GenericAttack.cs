@@ -57,8 +57,7 @@ public class GenericAttack : Attack
     #region Projectile Fields
 
     public bool projectile;
-    [Obsolete("Maybe use angle? Or don't need at all?")]
-    public Vector2 projectileVector;
+    public float projectileAngle;
     public float projectileSpeed;
 
     #endregion
@@ -186,7 +185,7 @@ public class GenericAttack : Attack
     {
         currentAttack = Attack_Pool.nextFree;
         currentAttack.transform.localPosition = myTransform.position + myTransform.TransformDirection(0f, offset.y, offset.x);
-        currentAttack.transform.rotation = myTransform.rotation;
+        currentAttack.transform.rotation = myTransform.rotation * Quaternion.Euler(projectileAngle, 0f, 0f);
         currentAttack.transform.Align();
         currentAttack.GetComponent<Hitbox>().Initialize(myCharacter, FactorAttack(), hitboxTime, hitNumber, myTransform.forward * projectileSpeed, oneShot);
     }
@@ -201,10 +200,6 @@ public class GenericAttack : Attack
         currentAttack.GetComponent<Hitbox>().Initialize(myCharacter, FactorAttack(), hitboxTime, hitNumber, oneShot);
     }
 
-    #endregion
-
-
-    #region Private Methods
 
     /// <summary>
     /// 

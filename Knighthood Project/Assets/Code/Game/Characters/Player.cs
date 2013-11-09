@@ -79,17 +79,6 @@ public class Player : Character
     public float attackDeadZone = 0.7f;
     public float superModifierDeadZone = 0.8f;
     public float moveBuffer = 0.1f;
-    private enum AttackTypes
-    {
-        None = -1,
-        Light = 0,
-        Heavy = 1,
-        Stun = 2,
-        SuperLight = 3,
-        SuperHeavy = 4,
-        SuperStun = 5,
-        SuperJump = 6
-    };
 
     #endregion
 
@@ -103,6 +92,21 @@ public class Player : Character
     public ScoreManager myScore;
     private const float SCOREEXPMODIFIER = 1.5f;
     private const float SCOREMONEYMODIFIER = 5.5f;
+
+    #endregion
+
+    #region Const Fields
+
+    private const string LIGHTATTACK = "Light";
+    private const string HEAVYATTACK = "Heavy";
+    private const string SIDEATTACKMODIFIER = "Side";
+    private const string UPATTACKMODIFIER = "Up";
+    private const string DOWNATTACKMODIFIER = "Down";
+    private const string STUNATTACK = "Stun";
+    private const string SUPERLIGHTATTACK = "SuperLight";
+    private const string SUPERHEAVYATTACK = "SuperHeavy";
+    private const string SUPERSTUNATTACK = "SuperStun";
+    private const string SUPERJUMPATTACK = "SuperJump";
 
     #endregion
 
@@ -322,8 +326,8 @@ public class Player : Character
             }
 
             // attacking state
-            AttackTypes attack = GetAttackingInput();
-            if (attack != AttackTypes.None)
+            string attack = GetAttackingInput();
+            if (attack != "")
             {
                 CalculateAttack(attack, new Dictionary<string, object>());
                 yield break;
@@ -385,8 +389,8 @@ public class Player : Character
         while (true)
         {
             // enter attacking state
-            AttackTypes attack = GetAttackingInput();
-            if (attack != AttackTypes.None)
+            string attack = GetAttackingInput();
+            if (attack != "")
             {
                 CalculateAttack(attack, new Dictionary<string, object>());
                 yield break;
@@ -502,8 +506,8 @@ public class Player : Character
             }
 
             // enter attacking state
-            AttackTypes attack = GetAttackingInput();
-            if (attack != AttackTypes.None)
+            string attack = GetAttackingInput();
+            if (attack != "")
             {
                 CalculateAttack(attack, new Dictionary<string, object>());
                 yield break;
@@ -532,8 +536,8 @@ public class Player : Character
             }
 
             // enter attacking state
-            AttackTypes attack = GetAttackingInput();
-            if (attack != AttackTypes.None)
+            string attack = GetAttackingInput();
+            if (attack != "")
             {
                 CalculateAttack(attack, new Dictionary<string, object>());
                 yield break;
@@ -600,8 +604,8 @@ public class Player : Character
             }
 
             // enter attacking state
-            AttackTypes attack = GetAttackingInput();
-            if (attack != AttackTypes.None)
+            string attack = GetAttackingInput();
+            if (attack != "")
             {
                 CalculateAttack(attack, new Dictionary<string, object>());
                 yield break;
@@ -1017,46 +1021,46 @@ public class Player : Character
     /// Detect attackValue input.
     /// </summary>
     /// <returns>Returns corresponding attackValue type.</returns>
-    private AttackTypes GetAttackingInput()
+    private string GetAttackingInput()
     {
         if (keyboard)
         {
-            if (Input.GetKey(KeyCode.LeftControl)) return AttackTypes.None;
+            if (Input.GetKey(KeyCode.LeftControl)) return "";
             
             // super
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                if (Input.GetKeyDown(KeyCode.LeftArrow) && attackManager.CanActivate(AttackTypes.SuperLight.ToString()))
+                if (Input.GetKeyDown(KeyCode.LeftArrow) && attackManager.CanActivate(SUPERLIGHTATTACK))
                 {
-                    return AttackTypes.SuperLight;
+                    return SUPERLIGHTATTACK;
                 }
-                if (Input.GetKeyDown(KeyCode.UpArrow) && attackManager.CanActivate(AttackTypes.SuperHeavy.ToString()))
+                if (Input.GetKeyDown(KeyCode.UpArrow) && attackManager.CanActivate(SUPERHEAVYATTACK))
                 {
-                    return AttackTypes.SuperHeavy;
+                    return SUPERHEAVYATTACK;
                 }
-                if (Input.GetKeyDown(KeyCode.RightArrow) && attackManager.CanActivate(AttackTypes.SuperStun.ToString()))
+                if (Input.GetKeyDown(KeyCode.RightArrow) && attackManager.CanActivate(SUPERSTUNATTACK))
                 {
-                    return AttackTypes.SuperStun;
+                    return SUPERSTUNATTACK;
                 }
-                if (Input.GetKeyDown(KeyCode.DownArrow) && attackManager.CanActivate(AttackTypes.SuperJump.ToString()))
+                if (Input.GetKeyDown(KeyCode.DownArrow) && attackManager.CanActivate(SUPERJUMPATTACK))
                 {
-                    return AttackTypes.SuperJump;
+                    return SUPERJUMPATTACK;
                 }
             }
             // normal
             else
             {
-                if (Input.GetKeyDown(KeyCode.LeftArrow) && comboManager.CanActivate(AttackTypes.Light.ToString()))
+                if (Input.GetKeyDown(KeyCode.LeftArrow) && comboManager.CanActivate(LIGHTATTACK))
                 {
-                    return AttackTypes.Light;
+                    return LIGHTATTACK;
                 }
-                if (Input.GetKeyDown(KeyCode.UpArrow) && comboManager.CanActivate(AttackTypes.Heavy.ToString()))
+                if (Input.GetKeyDown(KeyCode.UpArrow) && comboManager.CanActivate(HEAVYATTACK))
                 {
-                    return AttackTypes.Heavy;
+                    return HEAVYATTACK;
                 }
-                if (Input.GetKeyDown(KeyCode.RightArrow) && comboManager.CanActivate(AttackTypes.Stun.ToString()))
+                if (Input.GetKeyDown(KeyCode.RightArrow) && comboManager.CanActivate(STUNATTACK))
                 {
-                    return AttackTypes.Stun;
+                    return STUNATTACK;
                 }
             }
         }
@@ -1065,42 +1069,83 @@ public class Player : Character
             // super
             if (Input.GetAxis("TriggersR_" + playerInfo.playerNumber) >= superModifierDeadZone)
             {
-                if (Input.GetButtonDown("X_" + playerInfo.playerNumber) && attackManager.CanActivate(AttackTypes.SuperLight.ToString()))
+                if (Input.GetButtonDown("X_" + playerInfo.playerNumber) && attackManager.CanActivate(SUPERLIGHTATTACK))
                 {
-                    return AttackTypes.SuperLight;
+                    return SUPERLIGHTATTACK;
                 }
-                if (Input.GetButtonDown("Y_" + playerInfo.playerNumber) && attackManager.CanActivate(AttackTypes.SuperHeavy.ToString()))
+                if (Input.GetButtonDown("Y_" + playerInfo.playerNumber) && attackManager.CanActivate(SUPERHEAVYATTACK))
                 {
-                    return AttackTypes.SuperHeavy;
+                    return SUPERHEAVYATTACK;
                 }
-                if (Input.GetButtonDown("B_" + playerInfo.playerNumber) && attackManager.CanActivate(AttackTypes.SuperStun.ToString()))
+                if (Input.GetButtonDown("B_" + playerInfo.playerNumber) && attackManager.CanActivate(SUPERSTUNATTACK))
                 {
-                    return AttackTypes.SuperStun;
+                    return SUPERSTUNATTACK;
                 }
-                if (Input.GetButtonDown("A_" + playerInfo.playerNumber) && attackManager.CanActivate(AttackTypes.SuperJump.ToString()))
+                if (Input.GetButtonDown("A_" + playerInfo.playerNumber) && attackManager.CanActivate(SUPERJUMPATTACK))
                 {
-                    return AttackTypes.SuperJump;
+                    return SUPERJUMPATTACK;
                 }
             }
             // normal
             else
             {
-                if (Input.GetButtonDown("X_" + playerInfo.playerNumber) && comboManager.CanActivate(AttackTypes.Light.ToString()))
+                string direction = "";
+                Vector3 input = GetMovingInput();
+                if (input.y >= 0.5f)
                 {
-                    return AttackTypes.Light;
+                    direction = UPATTACKMODIFIER;
                 }
-                if (Input.GetButtonDown("Y_" + playerInfo.playerNumber) && comboManager.CanActivate(AttackTypes.Heavy.ToString()))
+                else if (input.y <= -0.5f)
                 {
-                    return AttackTypes.Heavy;
+                    direction = DOWNATTACKMODIFIER;
                 }
-                if (Input.GetButtonDown("B_" + playerInfo.playerNumber) && comboManager.CanActivate(AttackTypes.Stun.ToString()))
+                else if (Mathf.Abs(input.x) >= 0.5f)
                 {
-                    return AttackTypes.Stun;
+                    direction = SIDEATTACKMODIFIER;
+                }
+
+                if (Input.GetButtonDown("X_" + playerInfo.playerNumber))
+                {
+                    if (direction == "")
+                    {
+                        if (comboManager.CanActivate(LIGHTATTACK + direction))
+                        {
+                            return LIGHTATTACK;
+                        }
+                    }
+                    else
+                    {
+                        if (attackManager.CanActivate(LIGHTATTACK + direction))
+                        {
+                            return LIGHTATTACK + direction;
+                        }
+                    }
+                }
+                if (Input.GetButtonDown("Y_" + playerInfo.playerNumber) && comboManager.CanActivate(HEAVYATTACK + direction))
+                {
+                    if (direction == "")
+                    {
+                        if (comboManager.CanActivate(HEAVYATTACK + direction))
+                        {
+                            return HEAVYATTACK;
+                        }
+                    }
+                    else
+                    {
+                        if (attackManager.CanActivate(HEAVYATTACK + direction))
+                        {
+                            return HEAVYATTACK + direction;
+                        }
+                    }
+                }
+                if (Input.GetButtonDown("B_" + playerInfo.playerNumber) && comboManager.CanActivate(STUNATTACK))
+                {
+                    return STUNATTACK;
                 }
             }
         }
 
-        return AttackTypes.None;
+        return "";
     }
 
 
@@ -1268,19 +1313,19 @@ public class Player : Character
     /// </summary>
     /// <param name="attackValue">Attack performed.</param>
     /// <param name="info">Info to pass to the attacking state.</param>
-    private void CalculateAttack(AttackTypes attack, Dictionary<string, object> info)
+    private void CalculateAttack(string attack, Dictionary<string, object> info)
     {
-        if (attack == AttackTypes.None) return;
+        if (attack == "") return;
 
         Texture attackTexture;
 
-        if ((int) attack < 3)
+        if (attack == LIGHTATTACK || attack == HEAVYATTACK)
         {
-            attackTexture = comboManager.Activate(attack.ToString());
+            attackTexture = comboManager.Activate(attack);
         }
         else
         {
-            attackTexture = attackManager.Activate(attack.ToString());
+            attackTexture = attackManager.Activate(attack);
         }
 
         info.Add("attackTexture", attackTexture);

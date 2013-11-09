@@ -9,7 +9,7 @@ using System;
 /// <summary>
 /// Base class for any myCharacter.
 /// </summary>
-[RequireComponent(typeof(Health))]
+//[RequireComponent(typeof(Health))]
 public class Character : BaseMono
 {
     #region Reference Fields

@@ -144,13 +144,37 @@ MonoBehaviour:
   knockBackRecoverySpeed: 1
   flinchInvincibleTime: .5
   myStats:
-    health: 100
-    physicalAttack: 1
-    physicalDefense: 1
-    magicAttack: 1
-    magicDefense: 1
-    magicMax: 0
-    attackSpeed: 0
+    statsFile: {fileID: 0}
+    attackPhysical:
+      level: 0
+      value: 0
+    attackMagic:
+      level: 0
+      value: 0
+    defenseStoutness:
+      level: 0
+      value: 0
+    defenseShield:
+      level: 0
+      value: 0
+    speedMovement:
+      level: 0
+      value: 0
+    speedAgility:
+      level: 0
+      value: 0
+    magicPool:
+      level: 0
+      value: 0
+    magicRegen:
+      level: 0
+      value: 0
+    abilityStrength:
+      level: 0
+      value: 0
+    abilityRegen:
+      level: 0
+      value: 0
   animationNames:
   - Idling
   - Moving
@@ -172,6 +196,14 @@ MonoBehaviour:
   extraJumpTime: .0199999996
   prematureJumpTime: .100000001
   climbTime: .300000012
+  perfectShieldTime: 0
+  shieldRegenTime: 0
+  defendSpeedModifier: .25
+  airDodgeTime: 0
+  airDodgeBuffer: 0
+  dodgeRollSpeed: 0
+  dodgeRollTime: 0
+  dodgeRollBuffer: 0
   keyboard: 1
   attackDeadZone: .699999988
   superModifierDeadZone: .800000012
@@ -223,7 +255,7 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
   Attack_Prefab: {fileID: 100002, guid: 4530b46cf5c1ea74092d6631af734071, type: 2}
   hitInfo:
-    baseDamage: 5
+    damage: 0
     effect: 0
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: 3
@@ -264,7 +296,7 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: c46b4de50d41f3f4aa4bffa5d6f6f517, type: 3}
   Attack_Prefab: {fileID: 100000, guid: 14610f11a1edb1a4eb1a2d32a745568e, type: 2}
   hitInfo:
-    baseDamage: 5
+    damage: 0
     effect: 4
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: 3
@@ -294,9 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: 1
-  maxMagic: 100
   currentMagic: 100
-  regenInterval: .200000003
 --- !u!114 &11400012
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -344,7 +374,7 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
   Attack_Prefab: {fileID: 0}
   hitInfo:
-    baseDamage: 1
+    damage: 0
     effect: 0
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: .200000003
@@ -385,7 +415,7 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
   Attack_Prefab: {fileID: 0}
   hitInfo:
-    baseDamage: 3
+    damage: 0
     effect: 0
     knockBack: {x: 5, y: 20, z: 0}
   hitboxTime: .400000006
@@ -438,7 +468,7 @@ MonoBehaviour:
   attackAnimation: {fileID: 2800000, guid: fdb604bebe40ac34cbebb2a72e1b622e, type: 3}
   Attack_Prefab: {fileID: 0}
   hitInfo:
-    baseDamage: 2
+    damage: 0
     effect: 0
     knockBack: {x: 0, y: 0, z: 0}
   hitboxTime: .5
@@ -513,38 +543,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   log: 1
   acceptAnim: {fileID: 2800000, guid: 4629824732632c84e801b2a9451e2816, type: 3}
-  positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: -2, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  attackAnimations:
-  - {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 2800000, guid: a6d46abe63efe3c49b80adc378a025de, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1

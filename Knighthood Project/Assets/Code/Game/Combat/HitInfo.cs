@@ -90,7 +90,7 @@ public class HitInfo
             damage = Mathf.CeilToInt(damage / mult);
         }
 
-        knockBack = new Vector3(Mathf.Sign(attacker.x - defender.x) * knockBack.x, knockBack.y, 0f);
+        knockBack = new Vector3(Mathf.Sign(defender.x - attacker.x) * knockBack.x, knockBack.y, 0f);
     }
 
     #endregion

@@ -61,6 +61,9 @@ public class AttackManagerEditor : Editor
 
     public override void OnInspectorGUI()
     {
+        DrawDefaultInspector();
+        return;
+        EditorGUIUtility.LookLikeInspector();
         managerSerialized.Update();
 
         #region  Title
@@ -227,12 +230,6 @@ public class AttackManagerEditor : Editor
             SerializedObject attack = new SerializedObject(manager.attacks[index]);
             EditorGUILayout.PropertyField(attack.FindProperty("attackName"), GUIContent.none, GUILayout.MinWidth(0));
             attack.ApplyModifiedProperties();
-
-            // toggle
-            if (GUILayout.Button(manager.open[index] ? "|" : "O", GUILayout.Width(ButtonSize)))
-            {
-                manager.open[index] = !manager.open[index];
-            }
 
             // delete
             if (GUILayout.Button("-", GUILayout.Width(ButtonSize)))

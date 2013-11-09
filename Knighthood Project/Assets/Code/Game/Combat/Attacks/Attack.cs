@@ -8,18 +8,31 @@ using UnityEngine;
 /// </summary>
 public abstract class Attack : BaseMono
 {
-    public string attackInput;
-    public string attackName;
+    #region References
+
     protected CombatManager manager;
     protected CharacterHealth myHealth;
 
+    #endregion
+
+    #region Public Fields
+
+    public string attackInput;
+    public string attackName;
     public float windUp;
     public float attackTime;
     public float windDown;
     public float cooldown;
-    protected bool canActivate = true;
-    public CharacterHealth.AttackArmor attackArmor;
     protected Job attackJob;
+    public CharacterHealth.AttackArmor attackArmor;
+
+    #endregion
+
+    #region Protected Fields
+
+    protected bool canActivate = true;
+
+    #endregion
 
 
     #region Abstract Methods
@@ -30,6 +43,7 @@ public abstract class Attack : BaseMono
     /// <returns>True, if the attackValue can be activated at this time.</returns>
     public abstract bool CanActivate();
 
+
     /// <summary>
     /// Start the attackValue.
     /// </summary>
@@ -38,7 +52,7 @@ public abstract class Attack : BaseMono
 
 
     /// <summary>
-    /// 
+    /// Cancel the current attack. Usually when hit.
     /// </summary>
     public abstract void Cancel();
 
